@@ -1,0 +1,60 @@
+name: Security Scanners
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  trufflehog:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Install TruffleHog
+        run: |
+          curl -sSL https://github.com/trufflesecurity/trufflehog/releases/download/v3.94.2/trufflehog_3.94.2_linux_amd64.tar.gz -o /tmp/trufflehog.tar.gz
+          tar -xzf /tmp/trufflehog.tar.gz -C /tmp
+          sudo install /tmp/trufflehog /usr/local/bin/trufflehog
+
+      - name: Scan git history
+        run: trufflehog git "file://${GITHUB_WORKSPACE}" --results=verified,unknown --fail --no-update
+
+  trivy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: Install Trivy
+        run: |
+          curl -sSL https://github.com/aquasecurity/trivy/releases/download/v0.69.3/trivy_0.69.3_Linux-64bit.tar.gz -o /tmp/trivy.tar.gz
+          tar -xzf /tmp/trivy.tar.gz -C /tmp
+          sudo install /tmp/trivy /usr/local/bin/trivy
+
+      - name: Scan repository filesystem
+        run: |
+          trivy filesystem \
+            --scanners vuln,secret,misconfig \
+            --severity HIGH,CRITICAL \
+            --exit-code 1 \
+            --no-progress \
+            --skip-dirs .runtime-cache \
+            --skip-dirs node_modules \
+            --skip-dirs dist \
+            --skip-dirs coverage \
+            --skip-dirs mcp-dist \
+            .

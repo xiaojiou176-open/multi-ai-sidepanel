@@ -21,6 +21,7 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           fetch-depth: 0
+          persist-credentials: false
 
       - name: Install uv
         run: |
@@ -31,7 +32,7 @@ jobs:
         uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
         with:
           node-version: 22
-          cache: npm
+          package-manager-cache: false
 
       - name: Install zip
         run: |
@@ -85,10 +86,12 @@ jobs:
           bundle=".runtime-cache/release/prompt-switchboard-v${version}-chrome-extension.zip"
           checksum="${bundle}.sha256.txt"
           sbom=".runtime-cache/release/prompt-switchboard-v${version}-chrome-extension.sbom.spdx.json"
-          echo "version=${version}" >> "$GITHUB_OUTPUT"
-          echo "bundle=${bundle}" >> "$GITHUB_OUTPUT"
-          echo "checksum=${checksum}" >> "$GITHUB_OUTPUT"
-          echo "sbom=${sbom}" >> "$GITHUB_OUTPUT"
+          {
+            echo "version=${version}"
+            echo "bundle=${bundle}"
+            echo "checksum=${checksum}"
+            echo "sbom=${sbom}"
+          } >> "$GITHUB_OUTPUT"
 
       - name: Attest release provenance
         id: attest_provenance
@@ -107,14 +110,22 @@ jobs:
           sbom-path: ${{ steps.release_meta.outputs.sbom }}
 
       - name: Summarize release proof
+        env:
+          RELEASE_BUNDLE: ${{ steps.release_meta.outputs.bundle }}
+          RELEASE_CHECKSUM: ${{ steps.release_meta.outputs.checksum }}
+          RELEASE_SBOM: ${{ steps.release_meta.outputs.sbom }}
+          PROVENANCE_ATTESTATION_URL: ${{ steps.attest_provenance.outputs.attestation-url }}
+          SBOM_ATTESTATION_URL: ${{ steps.attest_sbom.outputs.attestation-url }}
         run: |
-          echo "## Release proof" >> "$GITHUB_STEP_SUMMARY"
-          echo "" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Bundle: \`${{ steps.release_meta.outputs.bundle }}\`" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Checksum: \`${{ steps.release_meta.outputs.checksum }}\`" >> "$GITHUB_STEP_SUMMARY"
-          echo "- SBOM: \`${{ steps.release_meta.outputs.sbom }}\`" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Provenance attestation: ${{ steps.attest_provenance.outputs.attestation-url }}" >> "$GITHUB_STEP_SUMMARY"
-          echo "- SBOM attestation: ${{ steps.attest_sbom.outputs.attestation-url }}" >> "$GITHUB_STEP_SUMMARY"
+          {
+            echo "## Release proof"
+            echo
+            printf -- "- Bundle: \`%s\`\n" "$RELEASE_BUNDLE"
+            printf -- "- Checksum: \`%s\`\n" "$RELEASE_CHECKSUM"
+            printf -- "- SBOM: \`%s\`\n" "$RELEASE_SBOM"
+            printf -- "- Provenance attestation: %s\n" "$PROVENANCE_ATTESTATION_URL"
+            printf -- "- SBOM attestation: %s\n" "$SBOM_ATTESTATION_URL"
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload preview bundle
         if: github.event_name == 'workflow_dispatch'

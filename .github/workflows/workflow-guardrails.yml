@@ -1,0 +1,46 @@
+name: Workflow Guardrails
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/**'
+      - 'scripts/quality/verify-host-actions-policy.mjs'
+  pull_request:
+    paths:
+      - '.github/workflows/**'
+      - 'scripts/quality/verify-host-actions-policy.mjs'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lint-and-audit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: Install actionlint
+        run: |
+          curl -sSL https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_linux_amd64.tar.gz -o /tmp/actionlint.tar.gz
+          tar -xzf /tmp/actionlint.tar.gz -C /tmp
+          sudo install /tmp/actionlint /usr/local/bin/actionlint
+
+      - name: Run actionlint
+        run: actionlint -color
+
+      - name: Install zizmor
+        run: |
+          python3 -m venv "$RUNNER_TEMP/zizmor-venv"
+          "$RUNNER_TEMP/zizmor-venv/bin/pip" install --upgrade pip
+          "$RUNNER_TEMP/zizmor-venv/bin/pip" install zizmor==1.23.1
+
+      - name: Run zizmor
+        run: |
+          "$RUNNER_TEMP/zizmor-venv/bin/zizmor" --offline --min-severity high .github/workflows
