@@ -1,7 +1,8 @@
 # AGENTS
 
-This repository is a public application repository for the Prompt Switchboard
-browser extension.
+This repository carries the public-facing application surface for the Prompt
+Switchboard browser extension, even when the live GitHub repository remains
+private during closeout or host-surface remediation.
 
 ## Public Surface Rules
 
@@ -13,6 +14,20 @@ browser extension.
 - Do not add archive, audit, rehearsal, or governance-log documents to the
   tracked repository surface.
 - Do not track runtime artifacts, caches, logs, or agent working directories.
+
+## Current Visibility Truth
+
+- Keep the tracked docs ready for the intended public product surface, but do
+  not assume the current GitHub repository visibility already matches that
+  intent.
+- Treat repo-side truth, host-side GitHub truth, and anonymous public-surface
+  truth as separate ledgers during closeout.
+- Do not flip the repository public, enable a public Pages frontdoor, or claim
+  anonymous release/frontdoor availability until:
+  - repo-side verification is green
+  - host-side verification is green
+  - current and historical sensitive-surface checks are green or explicitly
+    classified as immutable platform residue
 
 ## Protected Paths
 
@@ -29,6 +44,16 @@ The following paths must stay out of the tracked repository surface:
 - `*.log`
 
 Root `AGENTS.md` and `CLAUDE.md` are intentionally tracked.
+
+## No-Code-Loss And Destructive Action Discipline
+
+- Treat every dirty worktree as meaningful until proven otherwise.
+- Preserve repo-owned changes before branch cleanup, history rewrite, or other
+  destructive Git operations.
+- Do not use `git reset --hard`, force-push history rewrites, or delete
+  branches/worktrees as a shortcut for closeout.
+- Prefer a dedicated closeout branch, logical commits, and pushed review
+  artifacts over local-only cleanup.
 
 ## Verification Baseline
 
