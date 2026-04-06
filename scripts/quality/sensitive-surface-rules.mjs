@@ -67,7 +67,7 @@ export const FORBIDDEN_TRACKED_PATH_RULES = [
 
 export const LOCAL_MACHINE_PATH_PATTERNS = [
   /\/Users\/(?!username(?:\/|$)|user(?:\/|$)|example(?:\/|$)|yourname(?:\/|$)|your-user(?:\/|$))/u,
-  /\/home\/(?!runner(?:\/|$)|username(?:\/|$)|user(?:\/|$)|example(?:\/|$)|yourname(?:\/|$)|your-user(?:\/|$))/u,
+  /\/home\/(?!runner(?:\/|$)|dependabot(?:\/|$)|username(?:\/|$)|user(?:\/|$)|example(?:\/|$)|yourname(?:\/|$)|your-user(?:\/|$))/u,
   /\/var\/folders\//u,
   /C:\\Users\\(?!username\\|user\\|example\\|yourname\\|your-user\\)/u,
   /Documents\/VS Code/u,

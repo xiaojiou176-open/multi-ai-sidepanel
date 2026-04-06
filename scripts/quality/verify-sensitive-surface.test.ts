@@ -38,6 +38,14 @@ describe('sensitive surface rules', () => {
     expect(findings).toEqual([]);
   });
 
+  it('does not flag GitHub automation home directories as maintainer-local output', () => {
+    const findings = findOutputSurfaceFindings(
+      'git clone https://github.com/xiaojiou176-open/multi-ai-sidepanel /home/dependabot/dependabot-updater/repo',
+    );
+
+    expect(findings).toEqual([]);
+  });
+
   it('flags raw preview fields in operational output and accepts redacted previews', () => {
     const leaked = JSON.stringify({ promptPreview: 'raw prompt body' });
     const redacted = JSON.stringify({ promptPreview: '[redacted promptPreview]' });
