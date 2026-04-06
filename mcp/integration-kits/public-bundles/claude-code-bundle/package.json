@@ -1,0 +1,13 @@
+{
+  "name": "prompt-switchboard-claude-code-bundle",
+  "version": "0.2.2",
+  "license": "MIT",
+  "description": "Compare-first Prompt Switchboard MCP bundle for Claude Code and compatible bundle consumers such as OpenClaw.",
+  "files": [
+    ".claude-plugin",
+    ".mcp.json",
+    "commands",
+    "README.md",
+    "SMOKE.md"
+  ]
+}

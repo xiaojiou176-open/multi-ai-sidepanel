@@ -1,0 +1,52 @@
+name: Marketing Assets Preview
+
+on:
+  pull_request:
+    paths:
+      - 'docs/**'
+      - 'src/**'
+      - 'scripts/marketing/**'
+      - 'scripts/verify/**'
+      - 'package.json'
+      - '.github/workflows/marketing-assets-preview.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  preview-assets:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install ffmpeg
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build extension
+        run: npm run build
+
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Generate front-door assets
+        run: xvfb-run -a npm run marketing:assets
+
+      - name: Upload front-door asset pack
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v4
+        with:
+          name: prompt-switchboard-frontdoor-assets
+          path: docs/assets

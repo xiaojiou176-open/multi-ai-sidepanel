@@ -1,0 +1,52 @@
+name: Manual Host Verify
+
+on:
+  workflow_dispatch:
+    inputs:
+      verify_release_proof:
+        description: Verify the currently published release assets after release publication
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+jobs:
+  host-verify:
+    runs-on: ubuntu-latest
+    environment:
+      name: host-verify
+    env:
+      HOST_VERIFY_GH_TOKEN: ${{ secrets.HOST_VERIFY_GH_TOKEN }}
+
+    steps:
+      - name: Confirm host verification token is configured
+        run: |
+          if [ -z "${HOST_VERIFY_GH_TOKEN}" ]; then
+            echo "[host-verify] HOST_VERIFY_GH_TOKEN is required in the host-verify environment."
+            exit 1
+          fi
+
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Verify default host-side pack
+        env:
+          GH_TOKEN: ${{ env.HOST_VERIFY_GH_TOKEN }}
+        run: npm run verify:host:pack
+
+      - name: Verify published release proof
+        if: inputs.verify_release_proof
+        env:
+          GH_TOKEN: ${{ env.HOST_VERIFY_GH_TOKEN }}
+        run: npm run verify:host-release-proof

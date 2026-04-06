@@ -1,0 +1,147 @@
+name: Release Package
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  attestations: write
+  id-token: write
+  artifact-metadata: write
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+
+      - name: Install uv
+        run: |
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install zip
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y zip
+
+      - name: Install Gitleaks
+        run: |
+          curl -sSL https://github.com/gitleaks/gitleaks/releases/download/v8.24.2/gitleaks_8.24.2_linux_x64.tar.gz -o /tmp/gitleaks.tar.gz
+          tar -xzf /tmp/gitleaks.tar.gz -C /tmp
+          sudo install /tmp/gitleaks /usr/local/bin/gitleaks
+
+      - name: Install git-secrets
+        run: |
+          tmp_dir="$(mktemp -d)"
+          curl -sSL https://codeload.github.com/awslabs/git-secrets/tar.gz/refs/tags/1.3.0 -o "$tmp_dir/git-secrets.tar.gz"
+          tar -xzf "$tmp_dir/git-secrets.tar.gz" -C "$tmp_dir"
+          sudo make -C "$tmp_dir/git-secrets-1.3.0" install
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install pre-commit
+        run: uv tool install --force pre-commit==4.5.0
+
+      - name: Setup git-secrets rules
+        run: npm run secrets:setup
+
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Build MCP sidecar
+        run: npm run build:mcp
+
+      - name: MCP smoke
+        run: npm run test:mcp:smoke
+
+      - name: Verify release package baseline
+        run: npm run verify:release-baseline
+
+      - name: Build release bundle
+        run: npm run release:bundle
+
+      - name: Generate release SBOM
+        run: npm run release:sbom
+
+      - name: Resolve release metadata
+        id: release_meta
+        run: |
+          version="$(node -p "JSON.parse(require('fs').readFileSync('package.json','utf8')).version")"
+          bundle=".runtime-cache/release/prompt-switchboard-v${version}-chrome-extension.zip"
+          checksum="${bundle}.sha256.txt"
+          sbom=".runtime-cache/release/prompt-switchboard-v${version}-chrome-extension.sbom.spdx.json"
+          echo "version=${version}" >> "$GITHUB_OUTPUT"
+          echo "bundle=${bundle}" >> "$GITHUB_OUTPUT"
+          echo "checksum=${checksum}" >> "$GITHUB_OUTPUT"
+          echo "sbom=${sbom}" >> "$GITHUB_OUTPUT"
+
+      - name: Attest release provenance
+        id: attest_provenance
+        uses: actions/attest@59d89421af93a897026c735860bf21b6eb4f7b26 # v4
+        with:
+          subject-path: |
+            ${{ steps.release_meta.outputs.bundle }}
+            ${{ steps.release_meta.outputs.checksum }}
+            ${{ steps.release_meta.outputs.sbom }}
+
+      - name: Attest release SBOM
+        id: attest_sbom
+        uses: actions/attest@59d89421af93a897026c735860bf21b6eb4f7b26 # v4
+        with:
+          subject-path: ${{ steps.release_meta.outputs.bundle }}
+          sbom-path: ${{ steps.release_meta.outputs.sbom }}
+
+      - name: Summarize release proof
+        run: |
+          echo "## Release proof" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Bundle: \`${{ steps.release_meta.outputs.bundle }}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Checksum: \`${{ steps.release_meta.outputs.checksum }}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- SBOM: \`${{ steps.release_meta.outputs.sbom }}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Provenance attestation: ${{ steps.attest_provenance.outputs.attestation-url }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- SBOM attestation: ${{ steps.attest_sbom.outputs.attestation-url }}" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload preview bundle
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v4
+        with:
+          name: prompt-switchboard-release-bundle
+          path: .runtime-cache/release
+
+      - name: Publish GitHub release assets
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@153bb8e04406b158c6c84fc1615b65b24149a1fe # v2
+        with:
+          files: |
+            .runtime-cache/release/*.zip
+            .runtime-cache/release/*.txt
+            .runtime-cache/release/*.json
+
+      - name: Verify published release proof
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          for attempt in 1 2 3; do
+            if npm run verify:host-release-proof; then
+              exit 0
+            fi
+            echo "[release-proof] retrying after publish propagation delay (attempt ${attempt})"
+            sleep 5
+          done
+          exit 1

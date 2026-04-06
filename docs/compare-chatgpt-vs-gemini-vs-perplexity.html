@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Compare ChatGPT vs Gemini vs Perplexity | Prompt Switchboard</title>
+    <meta
+      name="description"
+      content="Compare ChatGPT, Gemini, and Perplexity side by side in one local browser side panel without adding a hosted relay."
+    />
+    <link rel="canonical" href="https://xiaojiou176-open.github.io/multi-ai-sidepanel/compare-chatgpt-vs-gemini-vs-perplexity.html" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Compare ChatGPT vs Gemini vs Perplexity | Prompt Switchboard" />
+    <meta
+      property="og:description"
+      content="Use one prompt, keep the tabs you already trust open, and compare ChatGPT, Gemini, and Perplexity in one local workspace."
+    />
+    <meta property="og:url" content="https://xiaojiou176-open.github.io/multi-ai-sidepanel/compare-chatgpt-vs-gemini-vs-perplexity.html" />
+    <meta property="og:image" content="https://xiaojiou176-open.github.io/multi-ai-sidepanel/assets/prompt-switchboard-social-preview.png" />
+    <meta property="og:image:alt" content="Prompt Switchboard social preview showing the compare-first browser extension." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Compare ChatGPT vs Gemini vs Perplexity | Prompt Switchboard" />
+    <meta name="twitter:description" content="Run the same prompt across ChatGPT, Gemini, and Perplexity inside one local compare workspace." />
+    <meta name="twitter:image" content="https://xiaojiou176-open.github.io/multi-ai-sidepanel/assets/prompt-switchboard-social-preview.png" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Compare ChatGPT vs Gemini vs Perplexity",
+        "description": "Compare ChatGPT, Gemini, and Perplexity side by side in one local browser side panel without adding a hosted relay.",
+        "author": {
+          "@type": "Organization",
+          "name": "Prompt Switchboard"
+        },
+        "about": [
+          "ChatGPT",
+          "Gemini",
+          "Perplexity",
+          "Local-first AI compare workflow"
+        ],
+        "url": "https://xiaojiou176-open.github.io/multi-ai-sidepanel/compare-chatgpt-vs-gemini-vs-perplexity.html",
+        "image": "https://xiaojiou176-open.github.io/multi-ai-sidepanel/assets/prompt-switchboard-social-preview.png",
+        "keywords": [
+          "compare chatgpt vs gemini vs perplexity",
+          "ai comparison workflow",
+          "Prompt Switchboard",
+          "local-first AI compare workspace"
+        ]
+      }
+    </script>
+    <style>body{margin:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:linear-gradient(180deg,#fffaf6 0%,#ffffff 45%,#fff5e9 100%);color:#0f172a}.shell{width:min(960px,calc(100vw - 32px));margin:0 auto;padding:28px 0 64px}.nav,.actions{display:flex;flex-wrap:wrap;gap:12px}.nav{align-items:center;justify-content:space-between}.wordmark{display:flex;align-items:center;gap:12px;font-weight:700}.nav-link,.cta,.chip{display:inline-flex;align-items:center;border-radius:999px;padding:12px 18px;border:1px solid rgba(251,113,133,.16);background:rgba(255,255,255,.82);font-size:14px;font-weight:600}.chip{padding:10px 14px;background:#fff1f6;border-color:#fbcfe8;color:#be185d;letter-spacing:.1em;text-transform:uppercase}.cta{color:#fff;border:none;background:linear-gradient(135deg,#d946ef,#f43f5e,#f59e0b)}.card{margin-top:28px;padding:28px;border-radius:28px;background:rgba(255,255,255,.92);box-shadow:0 24px 64px rgba(15,23,42,.08)}h1{margin:18px 0 0;font-size:clamp(38px,6vw,60px);line-height:1.02;letter-spacing:-.05em}h2{margin:0;font-size:28px;letter-spacing:-.03em}p,li{color:#475569;font-size:18px;line-height:1.7}ul{margin:16px 0 0;padding-left:24px}.grid{display:grid;gap:16px;grid-template-columns:repeat(2,minmax(0,1fr));margin-top:16px}.subcard{padding:22px;border-radius:24px;background:rgba(255,255,255,.88);border:1px solid rgba(251,113,133,.16)}@media (max-width:820px){.grid{grid-template-columns:1fr}}</style>
+  </head>
+  <body>
+    <div class="shell">
+      <nav class="nav">
+        <div class="wordmark"><img src="./assets/prompt-switchboard-nav-icon.svg" alt="Prompt Switchboard logo" width="32" height="32" /><span>Prompt Switchboard</span></div>
+        <div class="actions">
+          <a class="nav-link" href="./index.html">Landing page</a>
+          <a class="nav-link" href="./install.html">Install guide</a>
+          <a class="nav-link" href="./first-compare-guide.html">First compare guide</a>
+          <a class="nav-link" href="./prompt-packs.html">Prompt packs</a>
+          <a class="nav-link" href="./supported-sites.html">Supported sites</a>
+          <a class="nav-link" href="./trust-boundary.html">Trust boundary</a>
+          <a class="cta" href="https://github.com/xiaojiou176-open/multi-ai-sidepanel/releases/latest">Install latest build</a>
+        </div>
+      </nav>
+      <main class="card">
+        <span class="chip">Use case</span>
+        <h1>Compare ChatGPT, Gemini, and Perplexity in one local workspace.</h1>
+        <p>Prompt Switchboard does not try to declare a universal winner. It gives you one clean place to run the same prompt, inspect the different answers, and move into the next round without rebuilding context by hand.</p>
+        <div class="grid">
+          <section class="subcard">
+            <h2>Why this page exists</h2>
+            <ul>
+              <li>You already use these tabs and want the same prompt aligned across them.</li>
+              <li>You want the trust boundary to stay inside the browser.</li>
+              <li>You want to recover failures or continue from the strongest answer without tab juggling.</li>
+            </ul>
+          </section>
+          <section class="subcard">
+            <h2>What Prompt Switchboard gives you</h2>
+            <ul>
+              <li>One prompt fan-out across supported tabs you already trust</li>
+              <li>A compare board with per-model run timelines and diagnostics</li>
+              <li>Next-step seed drafting when the answers split</li>
+              <li>Readable local exports you can keep or share outside the side panel</li>
+            </ul>
+          </section>
+        </div>
+      </main>
+
+      <section class="card">
+        <h2>What changes in practice</h2>
+        <p>The value here is concrete: fewer duplicate prompts, less tab juggling, and one board where model differences stay visible instead of dissolving into browser history.</p>
+        <img
+          src="./assets/prompt-switchboard-compare-detail.png"
+          alt="Prompt Switchboard compare detail showing aligned model cards, status chips, copy action, and open-site action."
+          style="width:100%;display:block;border-radius:24px;border:1px solid rgba(251,113,133,.16);margin-top:18px"
+        />
+        <p style="margin-top:14px">The compare board keeps status, response text, retry actions, and source-tab recovery in one place, which is the part that feels different from opening three tabs and hoping you remember what each model said.</p>
+      </section>
+
+      <section class="card">
+        <div class="grid">
+          <section class="subcard">
+            <h2>Before you try this workflow</h2>
+            <ul>
+              <li>Keep the ChatGPT, Gemini, and Perplexity tabs already open in the same signed-in browser profile.</li>
+              <li>Open the side panel and check readiness before the first compare run.</li>
+              <li>Expect the product to stay inside supported AI chat surfaces, not arbitrary websites.</li>
+            </ul>
+          </section>
+          <section class="subcard">
+            <h2>Good first compare prompt</h2>
+            <p>Try a prompt that makes differences easy to see:</p>
+            <pre style="white-space:pre-wrap;margin:16px 0 0;padding:16px;border-radius:18px;background:#fff1f6;color:#475569">Compare the strongest launch plan for a local-first browser extension. Give me:
+1. the fastest path to first user value,
+2. the biggest trust-boundary risk,
+3. one follow-up question I should ask next.</pre>
+          </section>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>What to open next</h2>
+        <div class="grid">
+          <section class="subcard">
+            <h2>Install and first run</h2>
+            <p>Use the packaged GitHub Release zip, then walk through the shortest path to a clean compare run.</p>
+            <p><a href="./install.html">Open the install guide</a></p>
+          </section>
+          <section class="subcard">
+            <h2>Prompt packs</h2>
+            <p>Jump into reusable compare prompts for writing, research, coding explanations, and rewriting.</p>
+            <p><a href="./prompt-packs.html">Open prompt packs</a></p>
+          </section>
+          <section class="subcard">
+            <h2>Supported sites</h2>
+            <p>Confirm which tabs are in scope today before you build a benchmark workflow around them.</p>
+            <p><a href="./supported-sites.html">Open supported sites</a></p>
+          </section>
+          <section class="subcard">
+            <h2>Trust boundary</h2>
+            <p>Read the exact local-first boundary so you know what this compare lane does not become.</p>
+            <p><a href="./trust-boundary.html">Open the trust boundary page</a></p>
+          </section>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,201 @@
+{
+  "surface": "prompt_switchboard_public_distribution_matrix",
+  "official_docs_inspected_at": "2026-04-06",
+  "current_install_surface": "The supported install path today is the packaged GitHub Release zip.",
+  "bundle_claim": "A Prompt Switchboard public bundle means repo-owned config, skill or prompt guidance, placement hints, smoke flow, and synced public docs.",
+  "hosts": {
+    "codex": {
+      "label": "Codex",
+      "support_tier": "supported_now",
+      "official_docs": [
+        "https://developers.openai.com/codex/mcp"
+      ],
+      "official_public_surface": {
+        "status": "official_docs_verified_no_listing_surface_verified",
+        "summary": "Official Codex MCP setup docs are verified. No official Prompt Switchboard marketplace or registry listing surface was verified from current official Codex docs."
+      },
+      "current_public_distribution_surface": "repo_owned_public_bundle",
+      "public_bundle_assets": [
+        "mcp/integration-kits/codex.config.toml.example",
+        "mcp/integration-kits/codex.skill.prompt-switchboard.md.example",
+        "mcp/integration-kits/public-bundles/codex-bundle/",
+        "mcp/integration-kits/support-matrix.json",
+        "mcp/integration-kits/public-distribution-matrix.json",
+        "docs/codex-mcp-setup.html",
+        "docs/mcp-host-packets.html",
+        "docs/mcp-coding-agents.html",
+        "docs/mcp-starter-kits.html",
+        "docs/public-distribution-matrix.html",
+        "docs/faq.html",
+        "README.md"
+      ],
+      "placement_hint": "Paste the MCP block into the Codex MCP server section inside config.toml.",
+      "smallest_useful_flow": [
+        "prompt_switchboard.bridge_status",
+        "prompt_switchboard.check_readiness",
+        "prompt_switchboard.compare"
+      ],
+      "preferred_followthrough": [
+        "prompt_switchboard.analyze_compare",
+        "prompt_switchboard.run_workflow",
+        "prompt_switchboard.get_workflow_run",
+        "prompt_switchboard.list_workflow_runs",
+        "prompt_switchboard.resume_workflow"
+      ],
+      "truthful_claim": "Prompt Switchboard ships a public Codex starter bundle, but not an official Codex marketplace listing.",
+      "external_publish_packet": null
+    },
+    "claude_code": {
+      "label": "Claude Code",
+      "support_tier": "supported_now",
+      "official_docs": [
+        "https://docs.anthropic.com/en/docs/claude-code/mcp"
+      ],
+      "official_public_surface": {
+        "status": "official_docs_verified_no_listing_surface_verified",
+        "summary": "Official Claude Code MCP setup docs are verified. No official Prompt Switchboard marketplace or registry listing surface was verified from current official Claude Code MCP docs."
+      },
+      "current_public_distribution_surface": "repo_owned_public_bundle",
+      "public_bundle_assets": [
+        "mcp/integration-kits/claude.mcp.json.example",
+        "mcp/integration-kits/claude.skill.prompt-switchboard.md.example",
+        "mcp/integration-kits/public-bundles/claude-code-bundle/",
+        "mcp/integration-kits/support-matrix.json",
+        "mcp/integration-kits/public-distribution-matrix.json",
+        "docs/claude-code-mcp-setup.html",
+        "docs/mcp-host-packets.html",
+        "docs/mcp-coding-agents.html",
+        "docs/mcp-starter-kits.html",
+        "docs/public-distribution-matrix.html",
+        "docs/faq.html",
+        "README.md"
+      ],
+      "placement_hint": "Paste the MCP block into a Claude Code MCP config file such as .mcp.json.",
+      "smallest_useful_flow": [
+        "prompt_switchboard.bridge_status",
+        "prompt_switchboard.check_readiness",
+        "prompt_switchboard.compare"
+      ],
+      "preferred_followthrough": [
+        "prompt_switchboard.analyze_compare",
+        "prompt_switchboard.run_workflow",
+        "prompt_switchboard.get_workflow_run",
+        "prompt_switchboard.list_workflow_runs",
+        "prompt_switchboard.resume_workflow"
+      ],
+      "truthful_claim": "Prompt Switchboard ships a public Claude Code starter bundle, but not an official Claude Code marketplace listing.",
+      "external_publish_packet": null
+    },
+    "opencode": {
+      "label": "OpenCode",
+      "support_tier": "starter_kit_only_unverified_host_lane",
+      "official_docs": [
+        "https://opencode.ai/docs/config",
+        "https://opencode.ai/docs/plugins"
+      ],
+      "official_public_surface": {
+        "status": "official_plugin_surface_exists",
+        "summary": "Official OpenCode docs expose a plugin system and public plugin distribution shape, but this repo does not yet ship a published OpenCode plugin package."
+      },
+      "current_public_distribution_surface": "repo_owned_public_bundle",
+      "public_bundle_assets": [
+        "mcp/integration-kits/opencode.jsonc.example",
+        "mcp/integration-kits/opencode.skill.prompt-switchboard.md.example",
+        "mcp/integration-kits/public-bundles/opencode-plugin/",
+        "mcp/integration-kits/support-matrix.json",
+        "mcp/integration-kits/public-distribution-matrix.json",
+        "docs/opencode-mcp-setup.html",
+        "docs/mcp-host-packets.html",
+        "docs/mcp-coding-agents.html",
+        "docs/mcp-starter-kits.html",
+        "docs/public-distribution-matrix.html",
+        "docs/faq.html",
+        "README.md"
+      ],
+      "placement_hint": "Save the example as a project-root opencode.jsonc inside your Prompt Switchboard clone.",
+      "smallest_useful_flow": [
+        "prompt_switchboard.bridge_status",
+        "prompt_switchboard.check_readiness",
+        "prompt_switchboard.compare"
+      ],
+      "preferred_followthrough": [
+        "prompt_switchboard.analyze_compare",
+        "prompt_switchboard.run_workflow",
+        "prompt_switchboard.get_workflow_run",
+        "prompt_switchboard.list_workflow_runs",
+        "prompt_switchboard.resume_workflow"
+      ],
+      "truthful_claim": "Prompt Switchboard ships a public OpenCode starter bundle, but not a published OpenCode plugin package.",
+      "external_publish_packet": {
+        "surface": "opencode_plugin_publication",
+        "missing": [
+          "published OpenCode plugin package under an owner-controlled namespace",
+          "owner publish permission"
+        ],
+        "verify_after": [
+          "package URL",
+          "plugin install flow",
+          "docs link"
+        ]
+      }
+    },
+    "openclaw": {
+      "label": "OpenClaw",
+      "support_tier": "starter_kit_only_unverified_host_lane",
+      "official_docs": [
+        "https://docs.openclaw.ai/cli/mcp",
+        "https://docs.openclaw.ai/plugins",
+        "https://docs.openclaw.ai/plugins/bundles"
+      ],
+      "official_public_surface": {
+        "status": "official_registry_flow_plugin_docs_and_bundle_docs_exist",
+        "summary": "Official OpenClaw docs inspected for this matrix expose MCP registry setup through openclaw mcp set, plugin install docs, and bundle install docs, but they do not prove a published Prompt Switchboard listing."
+      },
+      "current_public_distribution_surface": "repo_owned_public_bundle",
+      "public_bundle_assets": [
+        "mcp/integration-kits/openclaw.prompt-switchboard.json.example",
+        "mcp/integration-kits/openclaw.mcp.servers.json.example",
+        "mcp/integration-kits/openclaw.mcp.set.example.sh",
+        "mcp/integration-kits/openclaw.skill.prompt-switchboard.md.example",
+        "mcp/integration-kits/public-bundles/openclaw-bundle/",
+        "mcp/integration-kits/public-bundles/codex-bundle/",
+        "mcp/integration-kits/public-bundles/claude-code-bundle/",
+        "mcp/integration-kits/support-matrix.json",
+        "mcp/integration-kits/public-distribution-matrix.json",
+        "docs/openclaw-mcp-setup.html",
+        "docs/mcp-host-packets.html",
+        "docs/mcp-coding-agents.html",
+        "docs/mcp-starter-kits.html",
+        "docs/public-distribution-matrix.html",
+        "docs/faq.html",
+        "README.md"
+      ],
+      "placement_hint": "Register the JSON with openclaw mcp set or place the server definition under mcp.servers.",
+      "smallest_useful_flow": [
+        "prompt_switchboard.bridge_status",
+        "prompt_switchboard.check_readiness",
+        "prompt_switchboard.compare"
+      ],
+      "preferred_followthrough": [
+        "prompt_switchboard.analyze_compare",
+        "prompt_switchboard.run_workflow",
+        "prompt_switchboard.get_workflow_run",
+        "prompt_switchboard.list_workflow_runs",
+        "prompt_switchboard.resume_workflow"
+      ],
+      "truthful_claim": "Prompt Switchboard ships a public OpenClaw packet through bundle-ready artifacts and MCP registry snippets, but no published Prompt Switchboard OpenClaw listing is verified from the official docs checked in this run.",
+      "external_publish_packet": {
+        "surface": "openclaw_plugin_or_bundle_publication",
+        "missing": [
+          "published OpenClaw plugin or bundle listing under an owner-controlled surface",
+          "owner-controlled publish permission"
+        ],
+        "verify_after": [
+          "listing or package URL",
+          "install flow",
+          "official listing proof"
+        ]
+      }
+    }
+  }
+}

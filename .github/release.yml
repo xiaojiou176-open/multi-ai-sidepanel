@@ -1,0 +1,24 @@
+changelog:
+  exclude:
+    labels:
+      - skip-changelog
+  categories:
+    - title: Product
+      labels:
+        - feature
+        - ux
+        - product
+    - title: Front Door
+      labels:
+        - docs
+        - marketing
+        - branding
+    - title: Verification
+      labels:
+        - test
+        - ci
+        - security
+    - title: Maintenance
+      labels:
+        - chore
+        - dependencies

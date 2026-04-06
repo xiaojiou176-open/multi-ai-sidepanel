@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "ES2023",
+    "lib": ["ES2023", "DOM"],
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "types": ["node"],
+    "strict": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "outDir": "./mcp-dist",
+    "rootDir": ".",
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
+  },
+  "include": [
+    "mcp/server.ts",
+    "mcp/bridgeServer.ts",
+    "mcp/doctor.ts",
+    "mcp/smoke.ts",
+    "mcp/modelCatalog.ts",
+    "src/bridge/**/*.ts"
+  ],
+  "exclude": ["mcp/**/*.test.ts"]
+}

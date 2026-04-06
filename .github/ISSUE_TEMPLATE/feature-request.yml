@@ -1,0 +1,37 @@
+name: Feature request
+description: Suggest a product improvement or compare-first workflow idea.
+title: "[Feature] "
+labels:
+  - enhancement
+  - feature
+  - product
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please focus on product behavior, compare workflow, or trust boundary improvements.
+        Do not include secrets, tokens, cookies, private keys, or personal data.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem to solve
+      description: What is painful, slow, confusing, or missing today?
+    validations:
+      required: true
+  - type: textarea
+    id: ideal
+    attributes:
+      label: Ideal outcome
+      description: What should Prompt Switchboard let you do instead?
+    validations:
+      required: true
+  - type: textarea
+    id: scenario
+    attributes:
+      label: Compare workflow
+      description: Describe the prompt flow, supported sites, or session behavior involved.
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Why this matters
+      description: Share examples, screenshots, or repeated friction points if you have them.

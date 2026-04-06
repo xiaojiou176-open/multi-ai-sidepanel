@@ -1,0 +1,7 @@
+{
+  "name": "prompt-switchboard-claude-code-bundle",
+  "version": "0.2.2",
+  "title": "Prompt Switchboard for Claude Code",
+  "description": "Compare-first Prompt Switchboard MCP bundle for Claude Code sessions.",
+  "homepage": "https://github.com/xiaojiou176-open/multi-ai-sidepanel"
+}

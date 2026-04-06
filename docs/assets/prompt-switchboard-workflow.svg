@@ -1,0 +1,66 @@
+<svg width="1280" height="720" viewBox="0 0 1280 720" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="80" y1="64" x2="1200" y2="656" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF8FC"/>
+      <stop offset="1" stop-color="#FFF5E8"/>
+    </linearGradient>
+    <linearGradient id="card" x1="0" y1="0" x2="320" y2="220" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#FFFDF8"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#D946EF"/>
+      <stop offset="0.6" stop-color="#F43F5E"/>
+      <stop offset="1" stop-color="#F59E0B"/>
+    </linearGradient>
+    <filter id="shadow" x="0" y="0" width="1280" height="720" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="22" stdDeviation="24" flood-color="#0F172A" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+  <rect width="1280" height="720" rx="36" fill="url(#bg)"/>
+  <circle cx="140" cy="132" r="118" fill="#FBCFE8" fill-opacity="0.35"/>
+  <circle cx="1146" cy="610" r="126" fill="#FDE68A" fill-opacity="0.32"/>
+
+  <text x="80" y="72" fill="#BE185D" font-family="Arial, sans-serif" font-size="18" font-weight="700" letter-spacing="2.8">PROMPT SWITCHBOARD</text>
+  <text x="80" y="118" fill="#0F172A" font-family="Arial, sans-serif" font-size="40" font-weight="700">How one prompt becomes</text>
+  <text x="80" y="162" fill="#0F172A" font-family="Arial, sans-serif" font-size="40" font-weight="700">a compare-first workspace</text>
+
+  <g filter="url(#shadow)">
+    <rect x="80" y="216" width="316" height="212" rx="28" fill="url(#card)"/>
+    <rect x="482" y="216" width="316" height="212" rx="28" fill="url(#card)"/>
+    <rect x="884" y="216" width="316" height="212" rx="28" fill="url(#card)"/>
+  </g>
+
+  <rect x="112" y="246" width="112" height="28" rx="14" fill="#FFF1F6" stroke="#FBCFE8"/>
+  <text x="132" y="265" fill="#BE185D" font-family="Arial, sans-serif" font-size="12" font-weight="700" letter-spacing="1.8">STEP 1</text>
+  <text x="112" y="314" fill="#0F172A" font-family="Arial, sans-serif" font-size="30" font-weight="700">Open the sites</text>
+  <text x="112" y="352" fill="#475569" font-family="Arial, sans-serif" font-size="18">Keep ChatGPT, Gemini,</text>
+  <text x="112" y="378" fill="#475569" font-family="Arial, sans-serif" font-size="18">Perplexity, Qwen, or Grok</text>
+  <text x="112" y="404" fill="#475569" font-family="Arial, sans-serif" font-size="18">ready in tabs you already use.</text>
+
+  <rect x="514" y="246" width="112" height="28" rx="14" fill="#FFF7ED" stroke="#FCD34D"/>
+  <text x="534" y="265" fill="#B45309" font-family="Arial, sans-serif" font-size="12" font-weight="700" letter-spacing="1.8">STEP 2</text>
+  <text x="514" y="314" fill="#0F172A" font-family="Arial, sans-serif" font-size="30" font-weight="700">Ask once</text>
+  <text x="514" y="352" fill="#475569" font-family="Arial, sans-serif" font-size="18">Write one prompt inside the</text>
+  <text x="514" y="378" fill="#475569" font-family="Arial, sans-serif" font-size="18">Prompt Switchboard side panel</text>
+  <text x="514" y="404" fill="#475569" font-family="Arial, sans-serif" font-size="18">and fan it out in one action.</text>
+
+  <rect x="916" y="246" width="112" height="28" rx="14" fill="#ECFDF5" stroke="#A7F3D0"/>
+  <text x="936" y="265" fill="#047857" font-family="Arial, sans-serif" font-size="12" font-weight="700" letter-spacing="1.8">STEP 3</text>
+  <text x="916" y="314" fill="#0F172A" font-family="Arial, sans-serif" font-size="30" font-weight="700">Compare clearly</text>
+  <text x="916" y="352" fill="#475569" font-family="Arial, sans-serif" font-size="18">Review answers side by side,</text>
+  <text x="916" y="378" fill="#475569" font-family="Arial, sans-serif" font-size="18">copy the best response, and jump</text>
+  <text x="916" y="404" fill="#475569" font-family="Arial, sans-serif" font-size="18">back into the original model tab.</text>
+
+  <path d="M408 322H470" stroke="url(#accent)" stroke-width="10" stroke-linecap="round"/>
+  <path d="M810 322H872" stroke="url(#accent)" stroke-width="10" stroke-linecap="round"/>
+  <path d="M456 310L478 322L456 334" stroke="#F43F5E" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M858 310L880 322L858 334" stroke="#F43F5E" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <g filter="url(#shadow)">
+    <rect x="120" y="484" width="1040" height="156" rx="30" fill="#FFFFFF"/>
+  </g>
+  <text x="164" y="540" fill="#0F172A" font-family="Arial, sans-serif" font-size="34" font-weight="700">Trust boundary</text>
+  <text x="164" y="582" fill="#475569" font-family="Arial, sans-serif" font-size="20">Prompt Switchboard keeps prompt fan-out inside the browser, uses your existing login sessions,</text>
+  <text x="164" y="612" fill="#475569" font-family="Arial, sans-serif" font-size="20">and does not require a hosted relay or account system to compare supported AI chats.</text>
+</svg>

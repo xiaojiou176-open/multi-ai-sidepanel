@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>First compare guide | Prompt Switchboard</title>
+    <meta
+      name="description"
+      content="Follow the shortest path from install to a real Prompt Switchboard compare run, then use the repair ladder when readiness or login state blocks the first turn."
+    />
+    <link
+      rel="canonical"
+      href="https://xiaojiou176-open.github.io/multi-ai-sidepanel/first-compare-guide.html"
+    />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="First compare guide | Prompt Switchboard" />
+    <meta
+      property="og:description"
+      content="One public map for the first compare run: what to open, what success looks like, and how to recover when tabs, readiness, or login state block the run."
+    />
+    <meta
+      property="og:image"
+      content="https://xiaojiou176-open.github.io/multi-ai-sidepanel/assets/prompt-switchboard-social-preview.png"
+    />
+    <meta
+      property="og:image:alt"
+      content="Prompt Switchboard social preview showing the compare-first browser extension."
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="First compare guide | Prompt Switchboard" />
+    <meta
+      name="twitter:description"
+      content="Use the shortest Prompt Switchboard path from install to first compare, then follow the readiness repair ladder when the run gets blocked."
+    />
+    <meta
+      name="twitter:image"
+      content="https://xiaojiou176-open.github.io/multi-ai-sidepanel/assets/prompt-switchboard-social-preview.png"
+    />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "HowTo",
+        "name": "Run the first Prompt Switchboard compare successfully",
+        "description": "Install Prompt Switchboard, open supported AI tabs in the same browser profile, refresh readiness, and repair the most common first-run blockers without guessing.",
+        "image": "https://xiaojiou176-open.github.io/multi-ai-sidepanel/assets/prompt-switchboard-social-preview.png",
+        "step": [
+          {
+            "@type": "HowToStep",
+            "name": "Start with the packaged release build",
+            "text": "Install the latest packaged Prompt Switchboard build from GitHub Releases and open the side panel in a Chromium-compatible browser."
+          },
+          {
+            "@type": "HowToStep",
+            "name": "Open supported AI tabs in the same profile",
+            "text": "Keep the AI sites you want to compare already open and signed in inside the same browser profile where Prompt Switchboard is loaded."
+          },
+          {
+            "@type": "HowToStep",
+            "name": "Refresh readiness and send the first compare prompt",
+            "text": "Use the first-run checklist or the sidepanel readiness action to confirm the selected tabs are ready, then send one compare prompt."
+          },
+          {
+            "@type": "HowToStep",
+            "name": "Use the repair ladder when a model is blocked",
+            "text": "If a model is missing, still loading, login-gated, or not exposing send controls, fix that state in the same browser profile and rerun the compare turn."
+          }
+        ]
+      }
+    </script>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #fffaf6;
+        --ink: #0f172a;
+        --muted: #475569;
+        --line: rgba(251, 113, 133, 0.16);
+        --panel: rgba(255, 255, 255, 0.9);
+        --shadow: 0 24px 64px rgba(15, 23, 42, 0.08);
+        --brand-a: #d946ef;
+        --brand-b: #f43f5e;
+        --brand-c: #f59e0b;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at top left, rgba(244, 114, 182, 0.22), transparent 24%),
+          radial-gradient(circle at bottom right, rgba(251, 191, 36, 0.18), transparent 20%),
+          linear-gradient(180deg, #fffaf6 0%, #ffffff 45%, #fff5e9 100%);
+      }
+      a { color: inherit; text-decoration: none; }
+      code { background: #fff1f6; border-radius: 10px; padding: 3px 7px; }
+      .shell { width: min(980px, calc(100vw - 32px)); margin: 0 auto; padding: 28px 0 64px; }
+      .nav, .actions { display: flex; flex-wrap: wrap; gap: 12px; }
+      .nav { align-items: center; justify-content: space-between; }
+      .wordmark { display: flex; align-items: center; gap: 12px; font-weight: 700; }
+      .chip, .nav-link, .cta, .ghost {
+        display: inline-flex; align-items: center; border-radius: 999px; padding: 12px 18px;
+        border: 1px solid var(--line); background: rgba(255,255,255,0.82); font-size: 14px; font-weight: 600;
+      }
+      .chip {
+        padding: 10px 14px; background: #fff1f6; border-color: #fbcfe8; color: #be185d;
+        letter-spacing: 0.1em; text-transform: uppercase;
+      }
+      .cta {
+        color: white; border: none; background: linear-gradient(135deg, var(--brand-a), var(--brand-b), var(--brand-c));
+        box-shadow: 0 16px 40px rgba(244,114,182,0.24);
+      }
+      .card { margin-top: 28px; padding: 28px; border-radius: 28px; background: var(--panel); box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,0.88); }
+      .grid { display: grid; gap: 16px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .stack { display: grid; gap: 16px; }
+      h1 { margin: 18px 0 0; font-size: clamp(40px, 6vw, 64px); line-height: 1.02; letter-spacing: -0.05em; }
+      h2 { margin: 0; font-size: 28px; letter-spacing: -0.03em; }
+      h3 { margin: 0; font-size: 22px; }
+      p, li { color: var(--muted); font-size: 18px; line-height: 1.7; }
+      ol, ul { margin: 16px 0 0; padding-left: 24px; }
+      .callout { border-left: 4px solid #f43f5e; padding-left: 16px; }
+      @media (max-width: 840px) {
+        .grid { grid-template-columns: 1fr; }
+        .nav { flex-direction: column; align-items: flex-start; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <nav class="nav">
+        <div class="wordmark">
+          <img src="./assets/prompt-switchboard-nav-icon.svg" alt="Prompt Switchboard logo" width="32" height="32" />
+          <span>Prompt Switchboard</span>
+        </div>
+        <div class="actions">
+          <a class="nav-link" href="./index.html">Landing page</a>
+          <a class="nav-link" href="./install.html">Install guide</a>
+          <a class="nav-link" href="./mcp-coding-agents.html">MCP agents</a>
+          <a class="nav-link" href="./mcp-starter-kits.html">Starter kits</a>
+          <a class="nav-link" href="./supported-sites.html">Supported sites</a>
+          <a class="nav-link" href="./trust-boundary.html">Trust boundary</a>
+          <a class="nav-link" href="./faq.html">FAQ</a>
+          <a class="cta" href="https://github.com/xiaojiou176-open/multi-ai-sidepanel/releases/latest">Download latest build</a>
+        </div>
+      </nav>
+
+      <main class="card">
+        <span class="chip">First compare guide</span>
+        <h1>Reach one real compare run, then repair the exact blocker instead of guessing.</h1>
+        <p>
+          This page is the shortest public map from “the extension is installed”
+          to “the first compare turn really worked.” Think of it like a boarding
+          checklist before takeoff: one browser, one profile, supported tabs open,
+          then a clear repair ladder if a selected model is still blocked.
+        </p>
+        <p>
+          The supported install path today is the packaged GitHub Release zip.
+          Browser-store submission materials are being kept ready, but GitHub
+          Releases remains the supported install surface today.
+        </p>
+      </main>
+
+      <section class="card">
+        <h2>What success looks like</h2>
+        <div class="grid" style="margin-top: 18px;">
+          <section class="stack">
+            <h3>Before you press send</h3>
+            <ul>
+              <li>The extension is loaded in a Chromium-compatible browser.</li>
+              <li>The supported AI sites you want to compare are already open.</li>
+              <li>Those tabs are signed in inside the same browser profile.</li>
+              <li>The side panel can see the selected tabs as ready.</li>
+            </ul>
+          </section>
+          <section class="stack">
+            <h3>After the first good run</h3>
+            <ul>
+              <li>You see one compare board instead of bouncing between tabs.</li>
+              <li>You can copy a compare summary or export Markdown.</li>
+              <li>You can retry only failed models instead of replaying everything.</li>
+              <li>You can stay local-first without a hosted relay.</li>
+            </ul>
+          </section>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>First compare checklist</h2>
+        <ol>
+          <li>Install the packaged release from the <a href="https://github.com/xiaojiou176-open/multi-ai-sidepanel/releases/latest">latest GitHub Release</a>.</li>
+          <li>Open the AI tabs you want to compare in the same browser profile.</li>
+          <li>Open the Prompt Switchboard side panel.</li>
+          <li>Use the built-in readiness action before the first compare run.</li>
+          <li>Send one compare prompt and watch the answers line up in the same board.</li>
+        </ol>
+      </section>
+
+      <section class="card">
+        <h2>Repair ladder when the first turn is blocked</h2>
+        <div class="grid" style="margin-top: 18px;">
+          <section class="stack">
+            <h3>Tab not open yet</h3>
+            <p>Open the missing supported AI site in the same browser profile, then run readiness again.</p>
+          </section>
+          <section class="stack">
+            <h3>Still signing in</h3>
+            <p>If the site still shows sign-in or sign-up UI, treat that as a login-state blocker first. Fix the human login in that same tab, then rerun the compare turn.</p>
+          </section>
+          <section class="stack">
+            <h3>Readiness says blocked</h3>
+            <p>Use the side panel readiness details to see whether the tab is missing, loading, mismatched, or not exposing send controls yet. That tells you what to repair next.</p>
+          </section>
+          <section class="stack">
+            <h3>Builder lane confusion</h3>
+            <p>The MCP sidecar is optional. You do not need Codex, Claude Code, OpenCode, or OpenClaw just to get the first compare run working.</p>
+          </section>
+        </div>
+        <p class="callout">
+          A login-gated tab is not the same thing as a product bug. In plain English: if the site itself is still asking the human to sign in, Prompt Switchboard cannot honestly treat that tab as compare-ready yet.
+        </p>
+      </section>
+
+      <section class="card">
+        <h2>After the first compare works</h2>
+        <div class="grid" style="margin-top: 18px;">
+          <section class="stack">
+            <h3>Stay in the product lane</h3>
+            <p>Copy the compare summary, export Markdown, or seed the next compare turn from the strongest answer without leaving the side panel story.</p>
+          </section>
+          <section class="stack">
+            <h3>Optional builder lane</h3>
+            <p>If you already use a coding agent that speaks MCP, move next to the <a href="./mcp-coding-agents.html">MCP agents page</a> or the <a href="./mcp-starter-kits.html">starter kits</a>. That builder lane is secondary, not required for the first compare.</p>
+          </section>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>

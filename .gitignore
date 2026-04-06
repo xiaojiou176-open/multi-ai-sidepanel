@@ -1,0 +1,53 @@
+# Baseline ignore rules
+# Editor directories and files
+# Logs
+# Testing outputs
+
+node_modules/
+dist/
+build/
+out/
+.next/
+.turbo/
+.cache/
+.agents/
+.agent/
+.codex/
+.claude/
+.cursor/
+.serena/
+.runtime-cache/
+.runtime-cache/test_output/
+.runtime-cache/**
+mcp-dist/
+coverage/
+*.log
+data/
+tmp/
+artifacts/
+*.local
+.env
+.env.*
+*.njsproj
+*.ntvs*
+*.sln
+*.suo
+*.sw?
+.DS_Store
+.idea
+.vscode/*
+coverage
+dist-ssr
+lerna-debug.log*
+logs
+logs/
+log/
+node_modules
+npm-debug.log*
+playwright-report
+pnpm-debug.log*
+test-results
+yarn-debug.log*
+yarn-error.log*
+!.vscode/extensions.json
+!.env.example

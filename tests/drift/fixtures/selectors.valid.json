@@ -1,0 +1,32 @@
+{
+  "ChatGPT": {
+    "input": "#prompt-textarea",
+    "submit": "[data-testid=\"send-button\"], button.composer-submit-button-color, button[aria-label=\"启动语音功能\"], button[aria-label=\"Start voice mode\"]",
+    "message": "div[data-message-author-role=\"assistant\"]",
+    "stop": "button[aria-label=\"Stop generating\"]"
+  },
+  "Gemini": {
+    "input": "div.ql-editor.textarea",
+    "submit": "button[aria-label=\"Submit\"]",
+    "message": ".model-response-text",
+    "stop": "button[aria-label=\"Stop generating\"]"
+  },
+  "Perplexity": {
+    "input": "textarea, div[contenteditable=\"true\"]",
+    "submit": "button[aria-label=\"Submit\"]",
+    "message": ".prose",
+    "stop": "button[aria-label=\"Stop generating\"]"
+  },
+  "Qwen": {
+    "input": "textarea#chat-input",
+    "submit": "button.send-button",
+    "message": ".markdown-content-container",
+    "stop": "button[aria-label*=\"Stop\"]"
+  },
+  "Grok": {
+    "input": "div.tiptap.ProseMirror[contenteditable=\"true\"]",
+    "submit": "button[aria-label=\"Send\"]",
+    "message": ".message-bubble",
+    "stop": "button[aria-label*=\"Stop\"]"
+  }
+}

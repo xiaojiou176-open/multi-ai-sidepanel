@@ -1,0 +1,58 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 128 128"
+  role="img"
+  aria-labelledby="prompt-switchboard-icon-title"
+>
+  <title id="prompt-switchboard-icon-title">Prompt Switchboard Icon</title>
+  <defs>
+    <linearGradient id="switchboard-bg" x1="12" x2="116" y1="12" y2="116" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0f766e" />
+      <stop offset="55%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#2563eb" />
+    </linearGradient>
+    <linearGradient id="switchboard-wire" x1="28" x2="100" y1="24" y2="96" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#f8fafc" />
+      <stop offset="100%" stop-color="#cbd5e1" />
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" rx="28" fill="url(#switchboard-bg)" />
+  <path
+    d="M29 34h34c10.493 0 19 8.507 19 19v5h17"
+    fill="none"
+    stroke="url(#switchboard-wire)"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    stroke-width="10"
+  />
+  <path
+    d="M99 58L84 44m15 14L84 72"
+    fill="none"
+    stroke="url(#switchboard-wire)"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    stroke-width="10"
+  />
+  <path
+    d="M29 94h34c10.493 0 19-8.507 19-19v-5h17"
+    fill="none"
+    stroke="url(#switchboard-wire)"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    stroke-width="10"
+  />
+  <path
+    d="M99 70L84 56m15 14L84 84"
+    fill="none"
+    opacity="0"
+    stroke="url(#switchboard-wire)"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    stroke-width="10"
+  />
+  <circle cx="29" cy="34" r="10" fill="#f97316" />
+  <circle cx="29" cy="94" r="10" fill="#38bdf8" />
+  <circle cx="63" cy="64" r="11" fill="#f8fafc" />
+  <circle cx="99" cy="58" r="8" fill="#f8fafc" />
+  <circle cx="99" cy="70" r="8" fill="#f8fafc" />
+</svg>

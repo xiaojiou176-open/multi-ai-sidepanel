@@ -1,0 +1,577 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FAQ | Prompt Switchboard</title>
+    <meta
+      name="description"
+      content="Find fast answers about install prerequisites, supported sites, trust boundaries, and where to ask questions about Prompt Switchboard."
+    />
+    <link rel="canonical" href="https://xiaojiou176-open.github.io/multi-ai-sidepanel/faq.html" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="FAQ | Prompt Switchboard" />
+    <meta
+      property="og:description"
+      content="Prompt Switchboard FAQ: install path, supported sites, trust boundary, local-first scope, and where to get help."
+    />
+    <meta
+      property="og:image"
+      content="https://xiaojiou176-open.github.io/multi-ai-sidepanel/assets/prompt-switchboard-social-preview.png"
+    />
+    <meta
+      property="og:image:alt"
+      content="Prompt Switchboard social preview showing the compare-first browser extension."
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="FAQ | Prompt Switchboard" />
+    <meta
+      name="twitter:description"
+      content="Fast answers about the install path, trust boundary, supported sites, and support channels for Prompt Switchboard."
+    />
+    <meta
+      name="twitter:image"
+      content="https://xiaojiou176-open.github.io/multi-ai-sidepanel/assets/prompt-switchboard-social-preview.png"
+    />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Do I need to build Prompt Switchboard locally?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. The shortest evaluation path is the packaged release zip from GitHub Releases."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is there a browser-store install today?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Not yet. The supported install path today is the packaged GitHub Release zip while browser-store submission materials are kept ready inside the repository."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does Prompt Switchboard proxy prompts through a hosted backend?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. The compare flow stays inside your browser and reuses the sessions you already trust."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does the repository ship a public API or SDK today?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. The current builder-facing surface is the local MCP sidecar plus the shared bridge protocol, not a public HTTP API or general-purpose SDK."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Which coding agents are the main MCP bindings today?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The strongest repo-specific MCP bindings today are OpenAI Codex and Claude Code. This repo now also ships starter-kit generic MCP assets for OpenCode and OpenClaw, but those paths are still narrower and less verified than the Codex and Claude Code host lanes."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is there a faster setup path for Codex, Claude Code, OpenCode, or OpenClaw?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. Prompt Switchboard now ships repo-owned MCP starter kits for the strongest current host flows, plus generic setup examples for OpenCode and OpenClaw. Use the MCP starter kits page when you want the right config shape faster without guessing from scratch."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Where do the MCP starter files go for Codex, Claude Code, OpenCode, and OpenClaw?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Codex uses a config.toml MCP block, Claude Code uses a Claude MCP config such as .mcp.json, OpenCode uses a project-root opencode.jsonc, and OpenClaw uses openclaw mcp set or an mcp.servers entry. The starter-kits page and support-matrix resource now spell out the exact placement hints."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is Prompt Switchboard already listed on an official marketplace or registry for every documented host?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. Prompt Switchboard now ships public starter bundles for Codex, Claude Code, OpenCode, and OpenClaw, but that is not the same thing as an official marketplace or registry listing. Use the public distribution matrix to see which official surfaces exist and which listings still need an owner-controlled publish step."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does this release use Chrome Native Messaging?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. Chrome Native Messaging remains an optional future hardening path, not the active runtime transport in this release."
+            }
+          }
+        ]
+      }
+    </script>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #fffaf6;
+        --ink: #0f172a;
+        --muted: #475569;
+        --line: rgba(251, 113, 133, 0.16);
+        --panel: rgba(255, 255, 255, 0.9);
+        --shadow: 0 24px 64px rgba(15, 23, 42, 0.08);
+        --brand-a: #d946ef;
+        --brand-b: #f43f5e;
+        --brand-c: #f59e0b;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at top left, rgba(244, 114, 182, 0.22), transparent 24%),
+          radial-gradient(circle at bottom right, rgba(251, 191, 36, 0.18), transparent 20%),
+          linear-gradient(180deg, #fffaf6 0%, #ffffff 45%, #fff5e9 100%);
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .shell {
+        width: min(960px, calc(100vw - 32px));
+        margin: 0 auto;
+        padding: 28px 0 64px;
+      }
+
+      .nav,
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .nav {
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .wordmark {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 700;
+      }
+
+      .chip,
+      .nav-link,
+      .cta {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        padding: 12px 18px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.82);
+        font-size: 14px;
+        font-weight: 600;
+      }
+
+      .chip {
+        padding: 10px 14px;
+        background: #fff1f6;
+        border-color: #fbcfe8;
+        color: #be185d;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      .cta {
+        color: white;
+        border: none;
+        background: linear-gradient(135deg, var(--brand-a), var(--brand-b), var(--brand-c));
+        box-shadow: 0 16px 40px rgba(244, 114, 182, 0.24);
+      }
+
+      .card {
+        margin-top: 28px;
+        padding: 28px;
+        border-radius: 28px;
+        background: var(--panel);
+        box-shadow: var(--shadow);
+        border: 1px solid rgba(255, 255, 255, 0.88);
+      }
+
+      h1 {
+        margin: 18px 0 0;
+        font-size: clamp(38px, 6vw, 60px);
+        line-height: 1.02;
+        letter-spacing: -0.05em;
+      }
+
+      h2 {
+        margin: 0;
+        font-size: 28px;
+        letter-spacing: -0.03em;
+      }
+
+      h3 {
+        margin: 0;
+        font-size: 22px;
+      }
+
+      p {
+        color: var(--muted);
+        font-size: 18px;
+        line-height: 1.7;
+      }
+
+      .faq {
+        display: grid;
+        gap: 16px;
+        margin-top: 16px;
+      }
+
+      .item {
+        padding: 22px;
+        border-radius: 24px;
+        background: rgba(255, 255, 255, 0.88);
+        border: 1px solid var(--line);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <nav class="nav">
+        <div class="wordmark">
+          <img
+            src="./assets/prompt-switchboard-nav-icon.svg"
+            alt="Prompt Switchboard logo"
+            width="32"
+            height="32"
+          />
+          <span>Prompt Switchboard</span>
+        </div>
+        <div class="actions">
+          <a class="nav-link" href="./index.html">Landing page</a>
+          <a class="nav-link" href="./install.html">Install guide</a>
+          <a class="nav-link" href="./first-compare-guide.html">First compare guide</a>
+          <a class="nav-link" href="./supported-sites.html">Supported sites</a>
+          <a class="nav-link" href="./trust-boundary.html">Trust boundary</a>
+          <a class="nav-link" href="./public-distribution-matrix.html">Distribution</a>
+          <a
+            class="cta"
+            href="https://github.com/xiaojiou176-open/multi-ai-sidepanel/releases/latest"
+            >Install latest build</a
+          >
+        </div>
+      </nav>
+
+      <main class="card">
+        <span class="chip">FAQ</span>
+        <h1>Fast answers for first-time evaluators.</h1>
+        <p>
+          This page exists so the public front door can answer common install, trust, and support
+          questions without burying them inside the README.
+        </p>
+        <div class="faq">
+          <section class="item">
+            <h3>Do I need to build Prompt Switchboard locally?</h3>
+            <p>No. The shortest evaluation path is the packaged release zip from GitHub Releases.</p>
+          </section>
+          <section class="item">
+            <h3>Is there a browser-store install today?</h3>
+            <p>
+              Not yet. The supported install path today is the packaged GitHub Release zip.
+              Browser-store submission materials are being kept ready, but GitHub Releases remains
+              the supported install surface today.
+            </p>
+          </section>
+          <section class="item">
+            <h3>What do I need before the first compare run?</h3>
+            <p>
+              A Chromium-compatible browser with Developer Mode, plus at least one supported AI chat
+              tab already open and signed in inside the same browser profile where you load Prompt
+              Switchboard. The empty state inside the extension now walks you through opening tabs,
+              checking readiness, and seeding the first prompt.
+            </p>
+          </section>
+          <section class="item">
+            <h3>Which sites are supported today?</h3>
+            <p>
+              The public support surface currently targets ChatGPT, Gemini, Perplexity, Qwen, and
+              Grok. The supported-sites page is the canonical public list for this front door.
+            </p>
+          </section>
+          <section class="item">
+            <h3>Does Prompt Switchboard proxy prompts through a hosted backend?</h3>
+            <p>
+              No. The compare flow stays inside your browser and reuses the sessions you already
+              trust.
+            </p>
+          </section>
+          <section class="item">
+            <h3>Where should I go for support or onboarding?</h3>
+            <p>
+              Start with the install guide, first compare guide, supported sites page, and trust boundary page. For
+              follow-up questions, use GitHub Discussions.
+            </p>
+          </section>
+          <section class="item">
+            <h3>Can I export a compare result or share it outside the side panel?</h3>
+            <p>
+              Yes, but the current share surface is still local-first. Prompt Switchboard can copy a
+              compare summary, export Markdown, and keep a readable compare artifact without turning
+              the product into a hosted share-link service.
+            </p>
+          </section>
+          <section class="item">
+            <h3>What are prompt packs?</h3>
+            <p>
+              Prompt packs are reusable compare starters for writing, research, coding
+              explanations, and rewriting. They exist to get you to the first useful compare run
+              faster than a blank input box.
+            </p>
+          </section>
+          <section class="item">
+            <h3>Does the AI Compare Analyst change the trust boundary?</h3>
+            <p>
+              The core compare lane does not change: it still reuses the browser tabs and sessions
+              you already trust. The AI Compare Analyst is optional and runs one structured prompt
+              through a supported browser tab when you enable that lane.
+            </p>
+          </section>
+          <section class="item">
+            <h3>Does this build store an analysis API key?</h3>
+            <p>
+              No. The current repository build does not ship direct browser API-key execution for
+              the analyst lane. The shipped path uses a browser session you already trust, and the
+              direct BYOK path stays gated until there is a safer server-backed token flow.
+            </p>
+          </section>
+          <section class="item">
+            <h3>What does the AI Compare Analyst actually add?</h3>
+            <p>
+              It adds an optional decision-assist lane on top of the core compare board. The
+              analyst can summarize consensus, explain disagreement, recommend the best-fit answer
+              to continue from, and draft the next follow-up question, but it does not pretend to
+              be an absolute automatic judge.
+            </p>
+          </section>
+          <section class="item">
+            <h3>What does the MCP sidecar expose?</h3>
+            <p>
+              The MCP sidecar exposes Prompt Switchboard product actions, not arbitrary browser
+              automation. The current surface covers readiness checks, model-tab opening, compare
+              runs, failed-model retries, session reads, compare export, the browser-session
+              analysis lane, the optional local Switchyard runtime-backed analyst lane, and the
+              built-in next-step workflow tools including workflow run/list/get/resume actions.
+            </p>
+          </section>
+          <section class="item">
+            <h3>Is there a repo-local operator helper for Codex and Claude Code workflows?</h3>
+            <p>
+              Yes. Use <code>npm run mcp:operator -- doctor</code>,
+              <code>npm run mcp:operator -- server</code>, and
+              <code>npm run mcp:operator -- smoke</code> as the main maintainer path. The same
+              helper also keeps bridge status and workflow staging inside the governed MCP tool
+              contract instead of inventing a second public CLI protocol, while
+              <code>readiness</code> returns the cached readiness snapshot and
+              <code>workflow-get</code> reads the current workflow snapshot through the same local
+              sidecar story.
+            </p>
+          </section>
+          <section class="item">
+            <h3>Which coding agents are the main MCP bindings today?</h3>
+            <p>
+              The strongest repo-specific MCP bindings today are OpenAI Codex and Claude Code.
+              This repo now also ships starter-kit generic MCP assets for OpenCode and OpenClaw,
+              but those paths are still narrower and less verified than the Codex and Claude Code
+              host lanes.
+            </p>
+            <p>
+              If you want the actual copy-paste setup snippets, open
+              <a href="./mcp-starter-kits.html">the MCP starter kits guide</a>.
+            </p>
+            <p>
+              If you also need the public distribution truth, open
+              <a href="./public-distribution-matrix.html">the public distribution matrix</a>.
+            </p>
+            <p>
+              If you want the shortest one-host packet instead of the full matrix, open
+              <a href="./mcp-host-packets.html">the host packets page</a>.
+            </p>
+          </section>
+          <section class="item">
+            <h3>Where do the MCP starter files go for Codex, Claude Code, OpenCode, and OpenClaw?</h3>
+            <p>
+              Codex uses a <code>config.toml</code> MCP block, Claude Code uses a Claude MCP config
+              such as <code>.mcp.json</code>, OpenCode uses a project-root
+              <code>opencode.jsonc</code>, and OpenClaw uses <code>openclaw mcp set</code> or an
+              <code>mcp.servers</code> entry.
+            </p>
+            <p>
+              The <a href="./mcp-starter-kits.html">starter-kits guide</a> and the
+              <code>prompt-switchboard://builder/support-matrix</code> resource now spell out the
+              exact placement hints.
+            </p>
+          </section>
+          <section class="item">
+            <h3>Is Prompt Switchboard already listed on an official marketplace or registry for every documented host?</h3>
+            <p>
+              No. Prompt Switchboard now ships public starter bundles for Codex, Claude Code,
+              OpenCode, and OpenClaw, but that is not the same thing as an official marketplace or
+              registry listing.
+            </p>
+            <p>
+              Use <a href="./public-distribution-matrix.html">the public distribution matrix</a>
+              when you need to separate “official surface exists”, “repo-owned bundle ships now”,
+              and “Prompt Switchboard is actually published there already.”
+            </p>
+            <p>
+              Use <a href="./mcp-host-packets.html">the host packets page</a> when you want the
+              fastest exact packet for one host instead of the full matrix.
+            </p>
+          </section>
+          <section class="item">
+            <h3>Is there a public API or SDK today?</h3>
+            <p>
+              Not yet. The current builder-facing surface is the local MCP sidecar plus the shared
+              bridge protocol inside this repository. Prompt Switchboard does not ship a public HTTP
+              API or a general-purpose SDK in this release.
+            </p>
+          </section>
+          <section class="item">
+            <h3>Does the MCP sidecar need a hosted relay?</h3>
+            <p>
+              No. MCP clients connect to a local stdio sidecar, and that sidecar reaches the
+              extension through a localhost bridge on the same machine.
+            </p>
+          </section>
+          <section class="item">
+            <h3>Are workflow runs durable after the browser session ends?</h3>
+            <p>
+              No. Workflow run snapshots are session-scoped runtime cache. They are useful for the
+              current browser session and current compare turn, but they are not a durable
+              cold-start ledger that survives every restart. Use the workflow list/get/resume tools
+              only while the current browser session still owns that snapshot.
+            </p>
+          </section>
+          <section class="item">
+            <h3>Does the Switchyard runtime replace the browser-tab compare lane?</h3>
+            <p>
+              No. The optional local Switchyard runtime lane only powers the analyst execution
+              path. Prompt Switchboard still keeps the compare-first side panel, tab readiness,
+              compare fan-out, and workflow shell inside the browser.
+            </p>
+          </section>
+          <section class="item">
+            <h3>Does “Seed composer only” run the next compare automatically?</h3>
+            <p>
+              No. Seed-only actions only stage the next prompt in the composer. Use the workflow
+              panel&apos;s <code>Run next compare now</code> action when you want Prompt Switchboard
+              to execute another compare turn through the compare-first lane.
+            </p>
+          </section>
+          <section class="item">
+            <h3>Does this release use Chrome Native Messaging?</h3>
+            <p>
+              No. The shipped transport is the local stdio sidecar plus the localhost bridge.
+              Native Messaging remains an optional future hardening path, not the active runtime
+              transport in this build.
+            </p>
+          </section>
+          <section class="item">
+            <h3>What belongs in Discussions, what belongs in Issues, and where do security reports go?</h3>
+            <p>
+              Use Discussions for onboarding, workflow ideas, and open-ended product questions. Use
+              Issues for reproducible bugs on the supported surfaces. Use SECURITY.md for
+              security-sensitive reports instead of posting details in public.
+            </p>
+          </section>
+          <section class="item">
+            <h3>What if a supported site stops working after a UI change?</h3>
+            <p>
+              That is usually selector drift: the site changed its DOM and the extension needs an
+              update. Check the latest packaged build and search Issues or Discussions before filing
+              a new bug report.
+            </p>
+          </section>
+          <section class="item">
+            <h3>Can Prompt Switchboard tell me when a model tab is not ready?</h3>
+            <p>
+              Yes. The compare workspace now surfaces model readiness so you can see whether a
+              selected tab is ready, still loading, missing, or likely affected by selector drift
+              before you send the next run, and the repair center points to the next action instead
+              of leaving you with a dead status pill.
+            </p>
+          </section>
+          <section class="item">
+            <h3>Do I have to rerun every model when only one site fails?</h3>
+            <p>
+              No. Prompt Switchboard now supports targeted recovery so you can retry the failed
+              model cards instead of replaying the entire comparison board.
+            </p>
+          </section>
+          <section class="item">
+            <h3>Is this a provider SDK or automation framework for any website?</h3>
+            <p>
+              No. Prompt Switchboard is a compare-first browser extension for a defined set of AI
+              chat surfaces. It is intentionally narrower than a generic automation stack, and the
+              MCP sidecar keeps that same product boundary instead of exposing raw browser control.
+            </p>
+          </section>
+        </div>
+      </main>
+
+      <section class="card">
+        <h2>Public onboarding links</h2>
+        <div class="faq">
+          <section class="item">
+            <h3>Install guide</h3>
+            <p>Use this when you want the shortest path from download to first compare run.</p>
+            <p><a class="nav-link" href="./install.html">Open install guide</a></p>
+          </section>
+          <section class="item">
+            <h3>Supported sites</h3>
+            <p>Use this when you want the current support list and selector-drift expectations.</p>
+            <p><a class="nav-link" href="./supported-sites.html">Open supported sites</a></p>
+          </section>
+          <section class="item">
+            <h3>Trust boundary</h3>
+            <p>Use this when you want the local-first and no-hosted-relay explanation.</p>
+            <p><a class="nav-link" href="./trust-boundary.html">Read trust boundary</a></p>
+          </section>
+          <section class="item">
+            <h3>Discussions</h3>
+            <p>Use this when you want onboarding help, product discussion, or compare-first feedback.</p>
+            <p>
+              <a
+                class="nav-link"
+                href="https://github.com/xiaojiou176-open/multi-ai-sidepanel/discussions"
+                >Open Discussions</a
+              >
+            </p>
+          </section>
+          <section class="item">
+            <h3>MCP-capable coding agents</h3>
+            <p>
+              Use this when you want the shortest explanation of how Prompt Switchboard fits
+              OpenAI Codex and Claude Code through the governed MCP sidecar, while keeping other
+              MCP-capable local coding agents in the compatibility-note layer instead of turning
+              Prompt Switchboard into generic browser automation.
+            </p>
+            <p><a class="nav-link" href="./mcp-coding-agents.html">Open MCP agents guide</a></p>
+          </section>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,9 @@
+{
+  "name": "com.prompt_switchboard.host",
+  "description": "Prompt Switchboard Native Messaging host scaffold",
+  "path": "__ABSOLUTE_HOST_PATH__",
+  "type": "stdio",
+  "allowed_origins": [
+    "chrome-extension://__EXTENSION_ID__/"
+  ]
+}

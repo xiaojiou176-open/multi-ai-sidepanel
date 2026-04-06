@@ -1,0 +1,62 @@
+<svg width="1280" height="780" viewBox="0 0 1280 780" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="88" y1="72" x2="1192" y2="708" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF8FC"/>
+      <stop offset="1" stop-color="#FFF5E8"/>
+    </linearGradient>
+    <linearGradient id="leftAccent" x1="60" y1="120" x2="620" y2="660" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF1F6"/>
+      <stop offset="1" stop-color="#FFF8FC"/>
+    </linearGradient>
+    <linearGradient id="rightAccent" x1="660" y1="120" x2="1220" y2="660" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF7ED"/>
+      <stop offset="1" stop-color="#FFFDF8"/>
+    </linearGradient>
+    <filter id="shadow" x="0" y="0" width="1280" height="780" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="24" stdDeviation="24" flood-color="#0F172A" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+  <rect width="1280" height="780" rx="36" fill="url(#bg)"/>
+  <text x="80" y="74" fill="#BE185D" font-family="Arial, sans-serif" font-size="18" font-weight="700" letter-spacing="2.8">PROMPT SWITCHBOARD</text>
+  <text x="80" y="126" fill="#0F172A" font-family="Arial, sans-serif" font-size="46" font-weight="700">Why Prompt Switchboard beats tab juggling</text>
+  <text x="80" y="162" fill="#475569" font-family="Arial, sans-serif" font-size="22">The payoff is not “more tabs.” It is less comparison overhead and one place to review the run.</text>
+
+  <g filter="url(#shadow)">
+    <rect x="60" y="212" width="540" height="500" rx="34" fill="url(#leftAccent)" stroke="#FBCFE8" stroke-width="2"/>
+    <rect x="680" y="212" width="540" height="500" rx="34" fill="url(#rightAccent)" stroke="#FDE68A" stroke-width="2"/>
+  </g>
+
+  <rect x="92" y="244" width="156" height="32" rx="16" fill="#FFFFFF" stroke="#FBCFE8"/>
+  <text x="118" y="265" fill="#BE185D" font-family="Arial, sans-serif" font-size="13" font-weight="700" letter-spacing="1.8">BEFORE</text>
+  <text x="92" y="314" fill="#9F1239" font-family="Arial, sans-serif" font-size="36" font-weight="700">5 separate tabs</text>
+
+  <rect x="712" y="244" width="156" height="32" rx="16" fill="#FFFFFF" stroke="#FDE68A"/>
+  <text x="738" y="265" fill="#B45309" font-family="Arial, sans-serif" font-size="13" font-weight="700" letter-spacing="1.8">AFTER</text>
+  <text x="712" y="314" fill="#92400E" font-family="Arial, sans-serif" font-size="36" font-weight="700">1 compare-first side panel</text>
+
+  <g fill="#0F172A" font-family="Arial, sans-serif" font-size="22" font-weight="600">
+    <text x="92" y="372">1. Paste the same prompt into every site.</text>
+    <text x="92" y="418">2. Wait across different tabs and windows.</text>
+    <text x="92" y="464">3. Rebuild which answer came from where.</text>
+    <text x="92" y="510">4. Copy results back into your own notes.</text>
+    <text x="92" y="556">5. Lose the useful comparison context.</text>
+  </g>
+
+  <g fill="#0F172A" font-family="Arial, sans-serif" font-size="22" font-weight="600">
+    <text x="712" y="372">1. Ask once from the side panel.</text>
+    <text x="712" y="418">2. Watch status chips update in one place.</text>
+    <text x="712" y="464">3. Compare aligned answers side by side.</text>
+    <text x="712" y="510">4. Copy the best-fit answer or reopen the source tab.</text>
+    <text x="712" y="556">5. Keep the whole run saved locally.</text>
+  </g>
+
+  <rect x="92" y="596" width="476" height="100" rx="22" fill="#FFFFFF" stroke="#FBCFE8"/>
+  <text x="120" y="628" fill="#9F1239" font-family="Arial, sans-serif" font-size="22" font-weight="700">Manual compare cost</text>
+  <text x="120" y="654" fill="#475569" font-family="Arial, sans-serif" font-size="16">Duplicate prompts, scattered answers,</text>
+  <text x="120" y="678" fill="#475569" font-family="Arial, sans-serif" font-size="16">and no single review board.</text>
+
+  <rect x="712" y="596" width="476" height="100" rx="22" fill="#FFFFFF" stroke="#FDE68A"/>
+  <text x="740" y="628" fill="#92400E" font-family="Arial, sans-serif" font-size="22" font-weight="700">Prompt Switchboard payoff</text>
+  <text x="740" y="654" fill="#475569" font-family="Arial, sans-serif" font-size="16">One prompt in, aligned answers out,</text>
+  <text x="740" y="678" fill="#475569" font-family="Arial, sans-serif" font-size="16">and one local review board.</text>
+</svg>

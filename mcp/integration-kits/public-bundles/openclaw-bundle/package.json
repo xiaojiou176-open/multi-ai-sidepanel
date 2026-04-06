@@ -1,0 +1,15 @@
+{
+  "name": "prompt-switchboard-openclaw-bundle",
+  "version": "0.2.2",
+  "license": "MIT",
+  "description": "Prompt Switchboard OpenClaw MCP bundle packet with registry snippets, placement hints, and compare-first smoke notes.",
+  "files": [
+    ".codex-plugin",
+    "openclaw.prompt-switchboard.json",
+    "mcp.servers.json",
+    "openclaw.mcp.set.sh",
+    "skills",
+    "README.md",
+    "SMOKE.md"
+  ]
+}

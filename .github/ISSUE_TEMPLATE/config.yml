@@ -1,0 +1,14 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Discussions
+    url: https://github.com/xiaojiou176-open/multi-ai-sidepanel/discussions
+    about: Use Discussions for product ideas, workflow questions, and open-ended conversation.
+  - name: Landing page
+    url: https://xiaojiou176-open.github.io/multi-ai-sidepanel/
+    about: See the public front door, screenshots, and quick value summary.
+  - name: Latest build
+    url: https://github.com/xiaojiou176-open/multi-ai-sidepanel/releases/latest
+    about: Download the newest packaged extension bundle when a tagged release is live.
+  - name: Security report
+    url: https://github.com/xiaojiou176-open/multi-ai-sidepanel/security
+    about: Use GitHub private vulnerability reporting when available. If you cannot use it, open a minimal public issue and ask for a private handoff.

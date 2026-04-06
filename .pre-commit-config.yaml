@@ -1,0 +1,69 @@
+repos:
+  - repo: local
+    hooks:
+      - id: runtime-clean
+        name: runtime-clean
+        entry: node scripts/quality/clean-runtime-artifacts.mjs
+        language: system
+        pass_filenames: false
+        stages: [pre-commit, manual]
+      - id: gitleaks-staged
+        name: gitleaks-staged
+        entry: node scripts/quality/run-gitleaks.mjs staged
+        language: system
+        pass_filenames: false
+        stages: [pre-commit]
+      - id: git-secrets-staged
+        name: git-secrets-staged
+        entry: node scripts/quality/run-git-secrets-scan.mjs staged
+        language: system
+        pass_filenames: false
+        stages: [pre-commit]
+      - id: root-allowlist
+        name: root-allowlist
+        entry: node scripts/quality/check-root-allowlist.mjs
+        language: system
+        pass_filenames: false
+        stages: [pre-commit, manual]
+      - id: host-safety-guard
+        name: host-safety-guard
+        entry: node scripts/quality/verify-host-safety.mjs
+        language: system
+        pass_filenames: false
+        stages: [pre-commit, manual]
+      - id: sensitive-surface-guard
+        name: sensitive-surface-guard
+        entry: node scripts/quality/verify-sensitive-surface.mjs
+        language: system
+        pass_filenames: false
+        stages: [pre-commit, manual]
+      - id: anti-placebo
+        name: anti-placebo
+        entry: node scripts/quality/anti-placebo-scan.mjs
+        language: system
+        pass_filenames: false
+        stages: [pre-commit, manual]
+      - id: brand-guard
+        name: brand-guard
+        entry: node scripts/quality/check-branding.mjs
+        language: system
+        pass_filenames: false
+        stages: [pre-commit, manual]
+      - id: gitleaks-current
+        name: gitleaks-current
+        entry: node scripts/quality/run-gitleaks.mjs current
+        language: system
+        pass_filenames: false
+        stages: [manual]
+      - id: git-secrets-current
+        name: git-secrets-current
+        entry: node scripts/quality/run-git-secrets-scan.mjs current
+        language: system
+        pass_filenames: false
+        stages: [manual]
+      - id: push-gate
+        name: push-gate
+        entry: npm run test:push-gate
+        language: system
+        pass_filenames: false
+        stages: [pre-push]

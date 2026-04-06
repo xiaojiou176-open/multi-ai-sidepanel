@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Install Prompt Switchboard | Load the latest packaged build</title>
+    <meta
+      name="description"
+      content="Install Prompt Switchboard from the latest packaged GitHub Release, load it as an unpacked extension, and send your first compare prompt."
+    />
+    <link
+      rel="canonical"
+      href="https://xiaojiou176-open.github.io/multi-ai-sidepanel/install.html"
+    />
+    <meta property="og:type" content="article" />
+    <meta
+      property="og:title"
+      content="Install Prompt Switchboard | Load the latest packaged build"
+    />
+    <meta
+      property="og:description"
+      content="The shortest path from download to first answer: unpack the latest release, load the extension, keep a supported AI tab open, and ask once from the side panel."
+    />
+    <meta
+      property="og:image"
+      content="https://xiaojiou176-open.github.io/multi-ai-sidepanel/assets/prompt-switchboard-social-preview.png"
+    />
+    <meta
+      property="og:image:alt"
+      content="Prompt Switchboard social preview showing the compare-first browser extension."
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Install Prompt Switchboard | Load the latest packaged build"
+    />
+    <meta
+      name="twitter:description"
+      content="Install the packaged GitHub Release, load the extension, and reach the first compare flow with the fewest possible steps."
+    />
+    <meta
+      name="twitter:image"
+      content="https://xiaojiou176-open.github.io/multi-ai-sidepanel/assets/prompt-switchboard-social-preview.png"
+    />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "HowTo",
+        "name": "Install Prompt Switchboard from the latest packaged build",
+        "description": "Download the latest Prompt Switchboard GitHub Release zip, load it as an unpacked Chromium extension, and reach the first local compare run.",
+        "image": "https://xiaojiou176-open.github.io/multi-ai-sidepanel/assets/prompt-switchboard-social-preview.png",
+        "tool": [
+          {
+            "@type": "HowToTool",
+            "name": "Chromium-compatible browser with Developer Mode"
+          },
+          {
+            "@type": "HowToTool",
+            "name": "Prompt Switchboard packaged GitHub Release zip"
+          }
+        ],
+        "step": [
+          {
+            "@type": "HowToStep",
+            "name": "Download the latest packaged build",
+            "text": "Open the latest Prompt Switchboard GitHub Release and download the packaged extension zip."
+          },
+          {
+            "@type": "HowToStep",
+            "name": "Load the unpacked extension",
+            "text": "Unzip the release locally and load the extracted folder from chrome://extensions with Developer Mode enabled."
+          },
+          {
+            "@type": "HowToStep",
+            "name": "Open supported AI tabs in the same browser profile",
+            "text": "Keep at least one supported AI chat tab open and signed in before opening the Prompt Switchboard side panel."
+          },
+          {
+            "@type": "HowToStep",
+            "name": "Run the first compare prompt",
+            "text": "Use the first-run checklist, refresh readiness, and send one prompt from the side panel."
+          }
+        ]
+      }
+    </script>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #fffaf6;
+        --ink: #0f172a;
+        --muted: #475569;
+        --line: rgba(251, 113, 133, 0.16);
+        --panel: rgba(255, 255, 255, 0.9);
+        --shadow: 0 24px 64px rgba(15, 23, 42, 0.08);
+        --brand-a: #d946ef;
+        --brand-b: #f43f5e;
+        --brand-c: #f59e0b;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at top left, rgba(244, 114, 182, 0.22), transparent 24%),
+          radial-gradient(circle at bottom right, rgba(251, 191, 36, 0.18), transparent 20%),
+          linear-gradient(180deg, #fffaf6 0%, #ffffff 45%, #fff5e9 100%);
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .shell {
+        width: min(920px, calc(100vw - 32px));
+        margin: 0 auto;
+        padding: 28px 0 64px;
+      }
+
+      .nav,
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .nav {
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .wordmark {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 700;
+      }
+
+      .chip,
+      .nav-link,
+      .ghost,
+      .cta {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        padding: 12px 18px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.82);
+        font-size: 14px;
+        font-weight: 600;
+      }
+
+      .chip {
+        padding: 10px 14px;
+        background: #fff1f6;
+        border-color: #fbcfe8;
+        color: #be185d;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      .cta {
+        color: white;
+        border: none;
+        background: linear-gradient(135deg, var(--brand-a), var(--brand-b), var(--brand-c));
+        box-shadow: 0 16px 40px rgba(244, 114, 182, 0.24);
+      }
+
+      .card {
+        margin-top: 28px;
+        padding: 28px;
+        border-radius: 28px;
+        background: var(--panel);
+        box-shadow: var(--shadow);
+        border: 1px solid rgba(255, 255, 255, 0.88);
+      }
+
+      h1 {
+        margin: 18px 0 0;
+        font-size: clamp(40px, 6vw, 64px);
+        line-height: 1.02;
+        letter-spacing: -0.05em;
+      }
+
+      h2 {
+        margin: 0;
+        font-size: 28px;
+        letter-spacing: -0.03em;
+      }
+
+      p,
+      li {
+        color: var(--muted);
+        font-size: 18px;
+        line-height: 1.7;
+      }
+
+      ol,
+      ul {
+        margin: 16px 0 0;
+        padding-left: 24px;
+      }
+
+      .grid {
+        display: grid;
+        gap: 16px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        margin-top: 16px;
+      }
+
+      .subcard {
+        padding: 22px;
+        border-radius: 24px;
+        background: rgba(255, 255, 255, 0.88);
+        border: 1px solid var(--line);
+      }
+
+      @media (max-width: 820px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <nav class="nav">
+        <div class="wordmark">
+          <img
+            src="./assets/prompt-switchboard-nav-icon.svg"
+            alt="Prompt Switchboard logo"
+            width="32"
+            height="32"
+          />
+          <span>Prompt Switchboard</span>
+        </div>
+        <div class="actions">
+          <a class="nav-link" href="./index.html">Landing page</a>
+          <a class="nav-link" href="./first-compare-guide.html">First compare guide</a>
+          <a class="nav-link" href="./supported-sites.html">Supported sites</a>
+          <a class="nav-link" href="./trust-boundary.html">Trust boundary</a>
+          <a class="nav-link" href="./faq.html">FAQ</a>
+          <a class="nav-link" href="https://github.com/xiaojiou176-open/multi-ai-sidepanel#readme"
+            >README</a
+          >
+          <a
+            class="cta"
+            href="https://github.com/xiaojiou176-open/multi-ai-sidepanel/releases/latest"
+            >Download latest build</a
+          >
+        </div>
+      </nav>
+
+      <main class="card">
+        <span class="chip">Install guide</span>
+        <h1>Install the latest build and send your first compare prompt.</h1>
+        <p>
+          This is the shortest path to a real product trial. You do not need to build the project
+          locally to evaluate Prompt Switchboard.
+        </p>
+        <p>
+          Before you start, keep the supported AI tabs you want to compare already open and signed
+          in inside the same browser profile where you load the extension.
+        </p>
+        <p>
+          Once the side panel opens, use the built-in first-run checklist to open tabs, refresh
+          readiness, and seed the first compare prompt without bouncing back into the docs.
+        </p>
+        <p>
+          If you want the shortest operator-style map from “extension installed”
+          to “first compare run really succeeded,” use the
+          <a href="./first-compare-guide.html">first compare guide</a>. It keeps
+          the first-run checklist, repair ladder, and login-gated explanation in
+          one place.
+        </p>
+        <p>
+          When a compare turn finishes, the built-in next-step workflow can either stage the next
+          prompt or run the next compare again. Seed-only actions stay explicit so the product does
+          not pretend a prepared prompt has already executed.
+        </p>
+        <p>
+          When the first compare run is done, you can keep moving inside the same workflow: copy a
+          compare summary, export Markdown, or load one of the built-in prompt packs without
+          rebuilding the task from scratch.
+        </p>
+        <p>
+          Optional AI analysis is now available too, but it runs through a browser tab you already
+          keep signed in. The default compare workflow still works without any separate provider or
+          hosted relay.
+        </p>
+        <p>
+          There is also an optional local MCP sidecar for agent integrations. It is not required
+          for the first compare run, and it does not replace the default compare workflow. If your
+          local coding agent speaks MCP, Prompt Switchboard can expose compare, retry, export,
+          analysis, and built-in next-step workflow actions there without turning into generic
+          browser automation. In practice the main documented builder bindings are OpenAI Codex and
+          Claude Code, while the MCP agents page covers the fuller repo-local operator helper path.
+        </p>
+        <p>
+          The supported install path today is the packaged GitHub Release zip. Browser-store
+          submission materials are being kept ready, but GitHub Releases remains the supported
+          install surface today.
+        </p>
+        <div class="grid">
+          <section class="subcard">
+            <h2>What you need first</h2>
+            <ul>
+              <li>A Chromium-compatible browser with Developer Mode available</li>
+              <li>At least one supported AI chat tab already open and signed in</li>
+              <li>A local folder where you can unzip the packaged release</li>
+            </ul>
+          </section>
+          <section class="subcard">
+            <h2>Quick install path</h2>
+            <ol>
+              <li>Download the latest packaged release zip and unzip it locally.</li>
+              <li>
+                Load the extracted folder in <code>chrome://extensions</code> as an unpacked
+                extension.
+              </li>
+              <li>Open your supported AI tabs, then ask once from the side panel.</li>
+            </ol>
+          </section>
+          <section class="subcard">
+            <h2>Current distribution surface</h2>
+            <p>
+              Today the supported path is the packaged release zip from GitHub Releases. A
+              lower-friction browser-store path is being prepared, but it is not live yet.
+            </p>
+          </section>
+          <section class="subcard">
+            <h2>Permission footprint</h2>
+            <ul>
+              <li><code>sidePanel</code> keeps the compare workspace inside the browser</li>
+              <li><code>activeTab</code>, <code>scripting</code>, and <code>tabs</code> let the extension drive supported AI tabs</li>
+              <li><code>storage</code> keeps sessions, settings, and selector cache local-first</li>
+              <li><code>http://127.0.0.1:48123/*</code> is reserved for the optional local MCP bridge</li>
+              <li>Host access is limited to supported AI chat surfaces and optional selector updates</li>
+            </ul>
+          </section>
+        </div>
+      </main>
+
+      <section class="card">
+        <h2>Need the maintainer workflow instead?</h2>
+        <p>
+          Local builds, release bundles, front-door checks, asset refresh steps, and the repo-local
+          <code>mcp:operator</code> helper live in
+          <a href="https://github.com/xiaojiou176-open/multi-ai-sidepanel/blob/main/CONTRIBUTING.md"
+            >CONTRIBUTING.md</a
+          >
+          so the public front door can stay focused on first-run evaluation.
+        </p>
+        <p>
+          Need more public-facing context before you install? Read the
+          <a href="./supported-sites.html">supported sites</a>,
+          <a href="./mcp-coding-agents.html">MCP agents</a>,
+          <a href="./trust-boundary.html">trust boundary</a>, and
+          <a href="./faq.html">FAQ</a> pages.
+        </p>
+      </section>
+    </div>
+  </body>
+</html>

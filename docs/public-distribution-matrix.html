@@ -1,0 +1,544 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prompt Switchboard public distribution matrix</title>
+    <meta
+      name="description"
+      content="See the current public distribution truth for Prompt Switchboard across Codex, Claude Code, OpenCode, and OpenClaw: what is publicly installable today, which official surfaces exist, and what still requires external publish control."
+    />
+    <link
+      rel="canonical"
+      href="https://xiaojiou176-open.github.io/multi-ai-sidepanel/public-distribution-matrix.html"
+    />
+    <meta property="og:type" content="article" />
+    <meta
+      property="og:title"
+      content="Prompt Switchboard public distribution matrix"
+    />
+    <meta
+      property="og:description"
+      content="Public install, bundle, marketplace, and registry truth for Codex, Claude Code, OpenCode, and OpenClaw without overclaiming official listings."
+    />
+    <meta
+      property="og:image"
+      content="https://xiaojiou176-open.github.io/multi-ai-sidepanel/assets/prompt-switchboard-social-preview.png"
+    />
+    <meta
+      property="og:image:alt"
+      content="Prompt Switchboard social preview showing the compare-first browser extension."
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Prompt Switchboard public distribution matrix"
+    />
+    <meta
+      name="twitter:description"
+      content="Current public distribution truth for Prompt Switchboard host bundles, install surfaces, and official marketplace or registry status."
+    />
+    <meta
+      name="twitter:image"
+      content="https://xiaojiou176-open.github.io/multi-ai-sidepanel/assets/prompt-switchboard-social-preview.png"
+    />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Prompt Switchboard public distribution matrix",
+        "description": "Current public install, bundle, marketplace, and registry truth for Prompt Switchboard across Codex, Claude Code, OpenCode, and OpenClaw.",
+        "url": "https://xiaojiou176-open.github.io/multi-ai-sidepanel/public-distribution-matrix.html",
+        "image": "https://xiaojiou176-open.github.io/multi-ai-sidepanel/assets/prompt-switchboard-social-preview.png",
+        "author": {
+          "@type": "Organization",
+          "name": "Prompt Switchboard"
+        }
+      }
+    </script>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #fffaf6;
+        --ink: #0f172a;
+        --muted: #475569;
+        --line: rgba(251, 113, 133, 0.16);
+        --panel: rgba(255, 255, 255, 0.9);
+        --shadow: 0 24px 64px rgba(15, 23, 42, 0.08);
+        --brand-a: #d946ef;
+        --brand-b: #f43f5e;
+        --brand-c: #f59e0b;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at top left, rgba(244, 114, 182, 0.22), transparent 24%),
+          radial-gradient(circle at bottom right, rgba(251, 191, 36, 0.18), transparent 20%),
+          linear-gradient(180deg, #fffaf6 0%, #ffffff 45%, #fff5e9 100%);
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      code {
+        font-family: ui-monospace, SFMono-Regular, monospace;
+        background: #fff1f6;
+        border-radius: 10px;
+        padding: 3px 7px;
+      }
+
+      .shell {
+        width: min(1080px, calc(100vw - 32px));
+        margin: 0 auto;
+        padding: 28px 0 64px;
+      }
+
+      .nav,
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .nav {
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .wordmark {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 700;
+      }
+
+      .chip,
+      .nav-link,
+      .cta {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        padding: 12px 18px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.82);
+        font-size: 14px;
+        font-weight: 600;
+      }
+
+      .chip {
+        padding: 10px 14px;
+        background: #fff1f6;
+        border-color: #fbcfe8;
+        color: #be185d;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      .cta {
+        color: white;
+        border: none;
+        background: linear-gradient(135deg, var(--brand-a), var(--brand-b), var(--brand-c));
+        box-shadow: 0 16px 40px rgba(244, 114, 182, 0.24);
+      }
+
+      .card {
+        margin-top: 28px;
+        padding: 28px;
+        border-radius: 28px;
+        background: var(--panel);
+        box-shadow: var(--shadow);
+        border: 1px solid rgba(255, 255, 255, 0.88);
+      }
+
+      h1 {
+        margin: 18px 0 0;
+        font-size: clamp(38px, 6vw, 60px);
+        line-height: 1.02;
+        letter-spacing: -0.05em;
+      }
+
+      h2 {
+        margin: 0;
+        font-size: 28px;
+        letter-spacing: -0.03em;
+      }
+
+      h3 {
+        margin: 0;
+        font-size: 22px;
+      }
+
+      p,
+      li {
+        color: var(--muted);
+        font-size: 18px;
+        line-height: 1.7;
+      }
+
+      ul,
+      ol {
+        margin: 16px 0 0;
+        padding-left: 24px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 18px;
+      }
+
+      th,
+      td {
+        text-align: left;
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--line);
+        vertical-align: top;
+      }
+
+      th {
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #be185d;
+      }
+
+      .grid {
+        display: grid;
+        gap: 16px;
+      }
+
+      .grid-two {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .subcard {
+        padding: 22px;
+        border-radius: 24px;
+        background: rgba(255, 255, 255, 0.88);
+        border: 1px solid var(--line);
+      }
+
+      @media (max-width: 820px) {
+        .grid-two {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <nav class="nav">
+        <div class="wordmark">
+          <img
+            src="./assets/prompt-switchboard-nav-icon.svg"
+            alt="Prompt Switchboard logo"
+            width="32"
+            height="32"
+          />
+          <span>Prompt Switchboard</span>
+        </div>
+        <div class="actions">
+          <a class="nav-link" href="./index.html">Landing page</a>
+          <a class="nav-link" href="./mcp-coding-agents.html">MCP agents</a>
+          <a class="nav-link" href="./mcp-starter-kits.html">Starter kits</a>
+          <a class="nav-link" href="./mcp-host-packets.html">Host packets</a>
+          <a class="nav-link" href="./faq.html">FAQ</a>
+          <a
+            class="cta"
+            href="https://github.com/xiaojiou176-open/multi-ai-sidepanel/tree/main/mcp/integration-kits/public-bundles"
+            >Open public bundles</a
+          >
+        </div>
+      </nav>
+
+      <main class="grid">
+        <section class="card">
+          <span class="chip">Public distribution</span>
+          <h1>See exactly what Prompt Switchboard ships publicly today, and what still needs an external publish step.</h1>
+          <p>
+            This page is the public truth ledger for Prompt Switchboard distribution. It separates
+            three ideas that are easy to mix up:
+          </p>
+          <ul>
+            <li><strong>Public bundle</strong>: repo-owned assets you can copy today.</li>
+            <li><strong>Official surface exists</strong>: the host ecosystem has a real public marketplace, registry, or plugin channel.</li>
+            <li><strong>Prompt Switchboard is officially listed there</strong>: an actual owner-controlled publish step already happened.</li>
+          </ul>
+          <p>
+            The supported install surface for Prompt Switchboard itself remains the packaged GitHub
+            Release zip. Browser-store submission materials are being kept ready, but store listing
+            is still not the current public install surface.
+          </p>
+          <p>
+            <strong>The supported install path today is the packaged GitHub Release zip.</strong>
+            Browser-store submission materials are being kept ready, but GitHub Releases remains
+            the supported install surface today.
+          </p>
+          <p>
+            When you want the shortest packet for one host instead of the whole truth ledger, open
+            <a href="./mcp-host-packets.html">the host packets page</a>.
+          </p>
+          <p>Official docs inspected for this page: 2026-04-06.</p>
+        </section>
+
+        <section class="card">
+          <h2>Current public distribution matrix</h2>
+          <table aria-label="Prompt Switchboard public distribution matrix">
+            <thead>
+              <tr>
+                <th>Host</th>
+                <th>Official public surface</th>
+                <th>What Prompt Switchboard ships now</th>
+                <th>Truthful public claim</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Codex</td>
+                <td>
+                  Official MCP configuration docs are verified.<br />
+                  No official Prompt Switchboard marketplace or registry listing surface was
+                  verified from current official Codex docs.
+                </td>
+                <td>
+                  Repo-owned public bundle: the Codex starter files plus a bundle-ready archive
+                  directory, support matrix, public setup docs, placement hints, and smoke flow.
+                </td>
+                <td>
+                  Public bundle available now. No official marketplace listing claim.
+                </td>
+              </tr>
+              <tr>
+                <td>Claude Code</td>
+                <td>
+                  Official MCP configuration docs are verified.<br />
+                  No official Prompt Switchboard marketplace or registry listing surface was
+                  verified from current official Claude Code MCP docs.
+                </td>
+                <td>
+                  Repo-owned public bundle: the Claude starter files plus a bundle-ready archive
+                  directory, support matrix, public setup docs, placement hints, and smoke flow.
+                </td>
+                <td>
+                  Public bundle available now. No official marketplace listing claim.
+                </td>
+              </tr>
+              <tr>
+                <td>OpenCode</td>
+                <td>
+                  Official config docs are verified, and official plugin docs expose a public
+                  plugin surface.<br />
+                  Prompt Switchboard does not yet ship a published OpenCode plugin package.
+                </td>
+                <td>
+                  Repo-owned public MCP starter bundle: the OpenCode config example, starter skill,
+                  plugin package scaffold, support matrix, public setup docs, placement hints, and
+                  compare-first proof loop.
+                </td>
+                <td>
+                  Public starter bundle available now. Official OpenCode plugin listing not shipped
+                  yet.
+                </td>
+              </tr>
+              <tr>
+                <td>OpenClaw</td>
+                <td>
+                  Official OpenClaw MCP, plugin, and bundle docs are verified through
+                  <code>openclaw mcp set</code> plus the bundle install docs.<br />
+                  The official docs inspected for this page do not prove a published Prompt
+                  Switchboard listing.
+                </td>
+                <td>
+                  Repo-owned public packet: the OpenClaw bundle archive, registry JSON, shell helper,
+                  compare-first skill content, support matrix, public setup docs, placement hints,
+                  and compare-first proof loop.
+                </td>
+                <td>
+                  Public starter bundle available now. No published OpenClaw listing claimed.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="grid grid-two">
+          <article class="card">
+            <h2>What the public bundle always includes</h2>
+            <ul>
+              <li>Repo-owned MCP config or registry snippets.</li>
+              <li>Starter skills or prompt instructions for the compare-first flow.</li>
+              <li>Placement hints so the last step is not hidden in prose.</li>
+              <li>The smallest useful proof loop: <code>bridge_status</code>, <code>check_readiness</code>, <code>compare</code>.</li>
+              <li>The preferred follow-through flow: <code>analyze_compare</code>, <code>run_workflow</code>, <code>get_workflow_run</code>, <code>list_workflow_runs</code>, <code>resume_workflow</code>.</li>
+              <li>README, FAQ, MCP docs, and the machine-readable support matrix kept in sync.</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h2>What this page does not overclaim</h2>
+            <ul>
+              <li>It does not say Prompt Switchboard is already on an official marketplace unless a real listing happened.</li>
+              <li>It does not turn Prompt Switchboard into a hosted relay, public API, or SDK.</li>
+              <li>It does not promote OpenCode or OpenClaw above the repo evidence bar.</li>
+              <li>It does not merge “official surface exists” with “we published there already.”</li>
+            </ul>
+          </article>
+        </section>
+
+        <section class="card">
+          <h2>Release-ready host packets</h2>
+          <p>
+            Prompt Switchboard can prepare downloadable per-host packet zips without cutting a new
+            public release yet. That repo-owned packaging step is separate from any future
+            marketplace or registry publication claim.
+          </p>
+          <p>
+            Run <code>npm run release:host-kits</code> to build release-ready public bundles under
+            <code>dist/public-bundles</code>. The packet composition is driven by
+            <code>mcp/integration-kits/public-distribution-matrix.json</code>.
+          </p>
+          <p>
+            The same public-bundle truth is also exposed through the MCP resource
+            <code>prompt-switchboard://builder/public-distribution</code>.
+          </p>
+        </section>
+
+        <section class="card">
+          <h2>Per-host bundle contents</h2>
+          <p>
+            Replace <code>/absolute/path/to/multi-ai-sidepanel</code> with the real path to your
+            own Prompt Switchboard clone. The public bundle is meant to be directly copyable, not a
+            prose-only packet.
+          </p>
+          <table aria-label="Prompt Switchboard bundle contents by host">
+            <thead>
+              <tr>
+                <th>Host</th>
+                <th>Bundle assets</th>
+                <th>Placement</th>
+                <th>Proof loop</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Codex</td>
+                <td><a href="https://github.com/xiaojiou176-open/multi-ai-sidepanel/tree/main/mcp/integration-kits/public-bundles/codex-bundle"><code>codex-bundle/</code></a>, <a href="./codex-mcp-setup.html">Codex packet page</a>, support matrix</td>
+                <td>Paste the MCP block into <code>config.toml</code>.</td>
+                <td>Start with <code>bridge_status</code> -> <code>check_readiness</code> -> <code>compare</code>.</td>
+              </tr>
+              <tr>
+                <td>Claude Code</td>
+                <td><a href="https://github.com/xiaojiou176-open/multi-ai-sidepanel/tree/main/mcp/integration-kits/public-bundles/claude-code-bundle"><code>claude-code-bundle/</code></a>, <a href="./claude-code-mcp-setup.html">Claude Code packet page</a>, support matrix</td>
+                <td>Paste the MCP block into a Claude MCP config such as <code>.mcp.json</code>.</td>
+                <td>Start with <code>bridge_status</code> -> <code>check_readiness</code> -> <code>compare</code>.</td>
+              </tr>
+              <tr>
+                <td>OpenCode</td>
+                <td><a href="https://github.com/xiaojiou176-open/multi-ai-sidepanel/tree/main/mcp/integration-kits/public-bundles/opencode-plugin"><code>opencode-plugin/</code></a>, <a href="./opencode-mcp-setup.html">OpenCode packet page</a>, support matrix</td>
+                <td>Save it as project-root <code>opencode.jsonc</code> inside your Prompt Switchboard clone.</td>
+                <td>Use the same compare-first MCP flow, then expand into workflow follow-through.</td>
+              </tr>
+              <tr>
+                <td>OpenClaw</td>
+                <td><a href="./openclaw-mcp-setup.html">OpenClaw packet page</a>, <a href="https://github.com/xiaojiou176-open/multi-ai-sidepanel/tree/main/mcp/integration-kits/public-bundles/openclaw-bundle"><code>openclaw-bundle/</code></a>, Codex and Claude bundle archives, support matrix</td>
+                <td>Register with <code>openclaw mcp set</code> or place the server entry under <code>mcp.servers</code>.</td>
+                <td>Use the same compare-first MCP flow, then expand into workflow follow-through.</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="card">
+          <h2>Official docs inspected for this page</h2>
+          <ul>
+            <li><a href="https://developers.openai.com/codex/mcp">OpenAI Codex MCP setup</a></li>
+            <li><a href="https://docs.anthropic.com/en/docs/claude-code/mcp">Claude Code MCP docs</a></li>
+            <li><a href="https://opencode.ai/docs/config">OpenCode config docs</a></li>
+            <li><a href="https://opencode.ai/docs/plugins">OpenCode plugin docs</a></li>
+            <li><a href="https://docs.openclaw.ai/cli/mcp">OpenClaw MCP CLI docs</a></li>
+            <li><a href="https://docs.openclaw.ai/plugins">OpenClaw plugin docs</a></li>
+            <li><a href="https://docs.openclaw.ai/plugins/bundles">OpenClaw bundle docs</a></li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <h2>Marketplace and registry proof ledger</h2>
+          <div class="grid grid-two">
+            <section class="subcard">
+              <h3>Already true now</h3>
+              <ul>
+                <li>Prompt Switchboard itself is publicly installable through GitHub Releases.</li>
+                <li>Codex, Claude Code, OpenCode, and OpenClaw each have repo-owned public starter bundles.</li>
+                <li>Host packets now exist for Codex, Claude Code, OpenCode, and OpenClaw.</li>
+                <li>The builder support matrix is public in docs, JSON, and the MCP resource surface.</li>
+                <li>The builder proof loop is public and machine-readable.</li>
+              </ul>
+            </section>
+            <section class="subcard">
+              <h3>Still external-only</h3>
+              <ul>
+                <li>Browser-store submission and listing state.</li>
+                <li>Any future official Codex or Claude Code marketplace listing, if such a surface appears.</li>
+                <li>OpenCode plugin publication under an owner-controlled npm namespace.</li>
+                <li>Any future OpenClaw publication beyond the saved MCP registry flow already documented here.</li>
+              </ul>
+            </section>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>Exact external publish packets</h2>
+          <table aria-label="Prompt Switchboard external publish packets">
+            <thead>
+              <tr>
+                <th>Surface</th>
+                <th>What is missing</th>
+                <th>Who must act</th>
+                <th>What to verify after</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Browser store</td>
+                <td>Dashboard access, listing submission, review-state proof</td>
+                <td>Owner with store console permissions</td>
+                <td>Rerun repo release and store readiness checks, then record listing status</td>
+              </tr>
+              <tr>
+                <td>OpenCode plugin listing</td>
+                <td>Repo-owned plugin package plus npm namespace and publish permission</td>
+                <td>Owner with package namespace control</td>
+                <td>Verify package URL, docs link, and install flow</td>
+              </tr>
+              <tr>
+                <td>OpenClaw official listing or registry publication</td>
+                <td>Any future package or listing beyond the saved MCP registry flow already documented here</td>
+                <td>Owner with package or registry control</td>
+                <td>Verify package URL, registry or listing URL, and install flow</td>
+              </tr>
+              <tr>
+                <td>.ai or domain alias</td>
+                <td>DNS and registrar control</td>
+                <td>Owner with domain access</td>
+                <td>Rerun host frontdoor verification after redirect or alias setup</td>
+              </tr>
+            </tbody>
+          </table>
+          <p>
+            For the current repo truth, the strongest public distribution surface is the combination
+            of GitHub Releases, the public docs front door, and the repo-owned starter bundles under
+            <code>mcp/integration-kits/</code>.
+          </p>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

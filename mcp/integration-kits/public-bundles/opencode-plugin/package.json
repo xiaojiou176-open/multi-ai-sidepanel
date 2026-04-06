@@ -1,0 +1,16 @@
+{
+  "name": "prompt-switchboard-opencode-plugin",
+  "version": "0.2.2",
+  "type": "module",
+  "license": "MIT",
+  "description": "Prompt Switchboard bootstrap plugin for OpenCode plus a compare-first MCP packet.",
+  "dependencies": {
+    "@opencode-ai/plugin": "*"
+  },
+  "files": [
+    "plugin.js",
+    "opencode.jsonc",
+    "README.md",
+    "SMOKE.md"
+  ]
+}

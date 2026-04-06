@@ -1,0 +1,17 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "plugin": ["prompt-switchboard-opencode-plugin"],
+  "mcp": {
+    "prompt_switchboard": {
+      "type": "local",
+      "command": [
+        "npm",
+        "--prefix",
+        "/absolute/path/to/multi-ai-sidepanel",
+        "run",
+        "mcp:server"
+      ],
+      "enabled": true
+    }
+  }
+}

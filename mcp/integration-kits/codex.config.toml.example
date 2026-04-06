@@ -1,0 +1,15 @@
+# Prompt Switchboard starter kit for Codex MCP configuration.
+# Copy the block you need into your own Codex config.toml and adjust the
+# absolute repository path if your clone lives elsewhere.
+
+[mcp_servers.prompt_switchboard]
+command = "npm"
+args = ["run", "mcp:server"]
+cwd = "/absolute/path/to/multi-ai-sidepanel"
+
+# Suggested first calls after the server is attached:
+# 1. prompt_switchboard.bridge_status
+# 2. prompt_switchboard.check_readiness
+# 3. prompt_switchboard.compare
+# 4. prompt_switchboard.analyze_compare
+# 5. prompt_switchboard.run_workflow

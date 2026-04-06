@@ -1,0 +1,35 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 128 128"
+  role="img"
+  aria-labelledby="prompt-switchboard-nav-icon-title"
+>
+  <title id="prompt-switchboard-nav-icon-title">Prompt Switchboard logo</title>
+  <defs>
+    <linearGradient id="nav-bg" x1="12" x2="116" y1="12" y2="116" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#d946ef" />
+      <stop offset="55%" stop-color="#f43f5e" />
+      <stop offset="100%" stop-color="#f59e0b" />
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" rx="28" fill="url(#nav-bg)" />
+  <circle cx="32" cy="40" r="12" fill="#fffaf6" />
+  <circle cx="96" cy="64" r="10" fill="#fffaf6" />
+  <circle cx="56" cy="92" r="11" fill="#fffaf6" />
+  <path
+    d="M40 44h24c10.493 0 19 8.507 19 19v2"
+    fill="none"
+    stroke="#fffaf6"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    stroke-width="10"
+  />
+  <path
+    d="M42 84l10-10c5.523-5.523 14.477-5.523 20 0l6 6"
+    fill="none"
+    stroke="#fffaf6"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    stroke-width="10"
+  />
+</svg>

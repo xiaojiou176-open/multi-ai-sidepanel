@@ -1,0 +1,13 @@
+{
+  "name": "prompt-switchboard-codex-bundle",
+  "version": "0.2.2",
+  "license": "MIT",
+  "description": "Compare-first Prompt Switchboard MCP bundle for Codex and compatible bundle consumers such as OpenClaw.",
+  "files": [
+    ".codex-plugin",
+    ".mcp.json",
+    "skills",
+    "README.md",
+    "SMOKE.md"
+  ]
+}

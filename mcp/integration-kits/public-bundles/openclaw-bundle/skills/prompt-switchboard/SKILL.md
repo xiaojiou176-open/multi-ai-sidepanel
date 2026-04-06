@@ -1,0 +1,32 @@
+---
+name: prompt-switchboard
+description: Use Prompt Switchboard as a compare-first local MCP workspace during OpenClaw sessions.
+---
+
+# Prompt Switchboard
+
+Use this skill when OpenClaw should compare one prompt across multiple
+supported AI chat tabs through the local Prompt Switchboard MCP surface.
+
+## Smallest useful flow
+
+1. `prompt_switchboard.bridge_status`
+2. `prompt_switchboard.check_readiness`
+3. `prompt_switchboard.compare`
+
+## Preferred full flow
+
+1. `prompt_switchboard.bridge_status`
+2. `prompt_switchboard.check_readiness`
+3. `prompt_switchboard.compare`
+4. `prompt_switchboard.analyze_compare`
+5. `prompt_switchboard.run_workflow`
+6. `prompt_switchboard.get_workflow_run`
+7. `prompt_switchboard.list_workflow_runs`
+8. `prompt_switchboard.resume_workflow`
+
+## Boundary
+
+- Prompt Switchboard remains the compare-first browser workspace.
+- OpenClaw remains the outer shell.
+- This bundle assumes OpenClaw already knows how to launch the local Prompt Switchboard MCP server.

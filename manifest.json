@@ -1,0 +1,50 @@
+{
+  "manifest_version": 3,
+  "name": "Prompt Switchboard",
+  "version": "0.2.2",
+  "minimum_chrome_version": "116",
+  "description": "Local-first AI compare workspace for ChatGPT, Gemini, Perplexity, Qwen, and Grok in one browser side panel.",
+  "permissions": ["sidePanel", "activeTab", "scripting", "tabs", "storage"],
+  "host_permissions": [
+    "https://raw.githubusercontent.com/*",
+    "http://127.0.0.1:4317/*",
+    "http://127.0.0.1:48123/*"
+  ],
+  "side_panel": {
+    "default_path": "index.html"
+  },
+  "background": {
+    "service_worker": "src/background/service-worker.ts",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://chatgpt.com/*",
+        "https://chat.openai.com/*",
+        "https://gemini.google.com/*",
+        "https://*.perplexity.ai/*",
+        "https://*.qwen.ai/*",
+        "https://grok.com/*",
+        "https://x.ai/*"
+      ],
+      "js": ["src/content/content-script.ts"],
+      "run_at": "document_end"
+    }
+  ],
+  "action": {
+    "default_title": "Open Prompt Switchboard"
+  },
+  "options_page": "settings.html",
+  "web_accessible_resources": [
+    {
+      "resources": ["settings.html", "assets/*"],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "icons": {
+    "16": "public/prompt-switchboard-icon-16.png",
+    "48": "public/prompt-switchboard-icon-48.png",
+    "128": "public/prompt-switchboard-icon-128.png"
+  }
+}

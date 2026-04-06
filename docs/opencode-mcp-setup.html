@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prompt Switchboard for OpenCode</title>
+    <meta
+      name="description"
+      content="Use Prompt Switchboard with OpenCode through a public MCP packet, honest support boundaries, and a publish-ready OpenCode plugin scaffold."
+    />
+    <link
+      rel="canonical"
+      href="https://xiaojiou176-open.github.io/multi-ai-sidepanel/opencode-mcp-setup.html"
+    />
+    <style>
+      :root { color-scheme: light; --bg:#fffaf6; --ink:#0f172a; --muted:#475569; --line:rgba(251,113,133,.16); --panel:rgba(255,255,255,.9); --shadow:0 24px 64px rgba(15,23,42,.08); --brand-a:#d946ef; --brand-b:#f43f5e; --brand-c:#f59e0b; }
+      * { box-sizing: border-box; }
+      body { margin:0; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; color:var(--ink); background:radial-gradient(circle at top left, rgba(244,114,182,.22), transparent 24%), radial-gradient(circle at bottom right, rgba(251,191,36,.18), transparent 20%), linear-gradient(180deg,#fffaf6 0%,#ffffff 45%,#fff5e9 100%); }
+      a { color:inherit; text-decoration:none; }
+      code, pre { font-family:ui-monospace,SFMono-Regular,monospace; }
+      code { background:#fff1f6; border-radius:10px; padding:3px 7px; }
+      pre { margin:0; overflow-x:auto; background:#0f172a; color:#f8fafc; padding:18px; border-radius:22px; line-height:1.6; }
+      .shell { width:min(980px, calc(100vw - 32px)); margin:0 auto; padding:28px 0 64px; }
+      .nav,.actions,.cta-row { display:flex; flex-wrap:wrap; gap:12px; }
+      .nav { align-items:center; justify-content:space-between; }
+      .wordmark { display:flex; align-items:center; gap:12px; font-weight:700; }
+      .chip,.nav-link,.cta { display:inline-flex; align-items:center; border-radius:999px; padding:12px 18px; border:1px solid var(--line); background:rgba(255,255,255,.82); font-size:14px; font-weight:600; }
+      .chip { padding:10px 14px; background:#fff1f6; border-color:#fbcfe8; color:#be185d; letter-spacing:.1em; text-transform:uppercase; }
+      .cta { color:white; border:none; background:linear-gradient(135deg, var(--brand-a), var(--brand-b), var(--brand-c)); box-shadow:0 16px 40px rgba(244,114,182,.24); }
+      .card { margin-top:28px; padding:28px; border-radius:28px; background:var(--panel); box-shadow:var(--shadow); border:1px solid rgba(255,255,255,.88); }
+      h1 { margin:18px 0 0; font-size:clamp(38px,6vw,60px); line-height:1.02; letter-spacing:-.05em; }
+      h2 { margin:0; font-size:28px; letter-spacing:-.03em; }
+      p,li { color:var(--muted); font-size:18px; line-height:1.7; }
+      ul,ol { margin:16px 0 0; padding-left:24px; }
+      .grid { display:grid; gap:16px; grid-template-columns:repeat(2, minmax(0, 1fr)); }
+      .subcard { padding:22px; border-radius:24px; background:rgba(255,255,255,.88); border:1px solid var(--line); }
+      @media (max-width:820px) { .grid { grid-template-columns:1fr; } }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <nav class="nav">
+        <div class="wordmark">
+          <img src="./assets/prompt-switchboard-nav-icon.svg" alt="Prompt Switchboard logo" width="32" height="32" />
+          <span>Prompt Switchboard</span>
+        </div>
+        <div class="actions">
+          <a class="nav-link" href="./mcp-host-packets.html">Host packets</a>
+          <a class="nav-link" href="./mcp-starter-kits.html">Starter kits</a>
+          <a class="nav-link" href="./public-distribution-matrix.html">Distribution matrix</a>
+          <a class="cta" href="https://github.com/xiaojiou176-open/multi-ai-sidepanel/tree/main/mcp/integration-kits/public-bundles/opencode-plugin">Open OpenCode bundle</a>
+        </div>
+      </nav>
+      <main class="card">
+        <span class="chip">OpenCode packet</span>
+        <h1>Use Prompt Switchboard with OpenCode through a public packet without overclaiming a published plugin.</h1>
+        <p>
+          OpenCode already ships an official plugin surface and project-root config model. Prompt
+          Switchboard now adds a publish-ready OpenCode packet in this repo: MCP config, a smoke
+          loop, and a plugin scaffold you can publish later without pretending it is already live.
+        </p>
+        <div class="cta-row">
+          <a class="cta" href="https://opencode.ai/docs/plugins/">Read official OpenCode plugin docs</a>
+          <a class="nav-link" href="https://opencode.ai/docs/config">Read official OpenCode config docs</a>
+          <a class="nav-link" href="./trust-boundary.html">Trust boundary</a>
+        </div>
+      </main>
+      <section class="card">
+        <h2>Current truth</h2>
+        <div class="grid" style="margin-top: 16px;">
+          <div class="subcard">
+            <h2>Support class</h2>
+            <ul>
+              <li>Starter-kit and generic MCP path today, not a verified repo-owned host lane yet</li>
+              <li>Official surface verified: project config plus npm or local plugins</li>
+              <li>Current repo claim: public packet shipped, published plugin listing not yet live</li>
+            </ul>
+          </div>
+          <div class="subcard">
+            <h2>Public packet contents</h2>
+            <ul>
+              <li>Project-root <code>opencode.jsonc</code> example</li>
+              <li>Publish-ready plugin package scaffold</li>
+              <li>Compare-first smoke loop and follow-through map</li>
+              <li>Truthful install and publication notes</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+      <section class="card">
+        <h2>Placement and config</h2>
+        <p>
+          Save the MCP example as a project-root <code>opencode.jsonc</code> in your Prompt
+          Switchboard clone. If you later publish the plugin package, add it to the OpenCode
+          <code>plugin</code> array using the official npm plugin flow.
+        </p>
+        <pre>{
+  "$schema": "https://opencode.ai/config.json",
+  "plugin": ["prompt-switchboard-opencode-plugin"],
+  "mcp": {
+    "prompt_switchboard": {
+      "type": "local",
+      "command": [
+        "npm",
+        "--prefix",
+        "/absolute/path/to/multi-ai-sidepanel",
+        "run",
+        "mcp:server"
+      ],
+      "enabled": true
+    }
+  }
+}</pre>
+      </section>
+      <section class="card">
+        <h2>Smallest useful smoke</h2>
+        <ol>
+          <li><code>prompt_switchboard.bridge_status</code></li>
+          <li><code>prompt_switchboard.check_readiness</code></li>
+          <li><code>prompt_switchboard.compare</code></li>
+        </ol>
+        <p>
+          If you install the plugin scaffold locally, use the bundled helper tool to print the same
+          bootstrap and smoke steps from inside OpenCode.
+        </p>
+      </section>
+      <section class="card">
+        <h2>Public distribution truth</h2>
+        <ul>
+          <li>Public packet shipped now: <code>mcp/integration-kits/public-bundles/opencode-plugin/</code></li>
+          <li>Packable artifact path: run <code>npm run release:host-kits</code></li>
+          <li>Official surface exists: OpenCode npm plugin flow</li>
+          <li>Current repo truth: package scaffold present, npm publish still external</li>
+          <li>Prompt Switchboard still stays local-first, compare-first, and browser-native. This packet does not turn it into a hosted relay, SDK, or generic automation platform.</li>
+        </ul>
+      </section>
+    </div>
+  </body>
+</html>
