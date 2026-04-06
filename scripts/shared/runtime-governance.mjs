@@ -542,8 +542,8 @@ export const resolveBrowserProfile = (env = process.env) => {
     explicitProfileDirectory,
     missingRootMessage: () =>
       'Persistent browser root is missing. Run npm run test:live:bootstrap-profile first.',
-    missingLocalStateMessage: () =>
-      'Persistent browser Local State is missing. Run npm run test:live:bootstrap-profile first.',
+    missingLocalStateMessage: (localStatePath) =>
+      `Persistent browser Local State is missing at: ${localStatePath}. Run npm run test:live:bootstrap-profile first.`,
     missingProfileMessage: (value) =>
       `PROMPT_SWITCHBOARD_BROWSER_PROFILE_NAME could not be resolved from the persistent browser Local State: ${value}. Run npm run test:live:bootstrap-profile first or set PROMPT_SWITCHBOARD_BROWSER_PROFILE_DIRECTORY explicitly.`,
   });

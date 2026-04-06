@@ -80,6 +80,29 @@ const createSourceChromeFixture = ({
   return { userDataDir, profileDirectory, profileName };
 };
 
+const createPlaywrightChromiumFixture = () => {
+  const browsersRoot = makeTempRoot();
+  const executablePath =
+    process.platform === 'darwin'
+      ? path.join(
+          browsersRoot,
+          'chromium-1217',
+          'chrome-mac-arm64',
+          'Google Chrome for Testing.app',
+          'Contents',
+          'MacOS',
+          'Google Chrome for Testing'
+        )
+      : process.platform === 'win32'
+        ? path.join(browsersRoot, 'chromium-1217', 'chrome-win', 'chrome.exe')
+        : path.join(browsersRoot, 'chromium-1217', 'chrome-linux', 'chrome');
+
+  fs.mkdirSync(path.dirname(executablePath), { recursive: true });
+  fs.writeFileSync(executablePath, '');
+
+  return { browsersRoot, executablePath };
+};
+
 const createLiveClone = ({
   root,
   name,
@@ -175,18 +198,7 @@ describe('runtime-governance', () => {
   });
 
   it('prefers Playwright Chromium when the live browser channel is chromium', () => {
-    const browsersRoot = makeTempRoot();
-    const executablePath = path.join(
-      browsersRoot,
-      'chromium-1217',
-      'chrome-mac-arm64',
-      'Google Chrome for Testing.app',
-      'Contents',
-      'MacOS',
-      'Google Chrome for Testing'
-    );
-    fs.mkdirSync(path.dirname(executablePath), { recursive: true });
-    fs.writeFileSync(executablePath, '');
+    const { browsersRoot, executablePath } = createPlaywrightChromiumFixture();
 
     const resolved = resolveBrowserExecutablePath({
       PLAYWRIGHT_BROWSERS_PATH: browsersRoot,
