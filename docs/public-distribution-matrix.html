@@ -537,6 +537,48 @@
             of GitHub Releases, the public docs front door, and the repo-owned starter bundles under
             <code>mcp/integration-kits/</code>.
           </p>
+          <div class="grid grid-two">
+            <section class="subcard">
+              <h3>OpenCode owner packet</h3>
+              <ol>
+                <li>Run <code>npm run release:host-kits</code> and verify the OpenCode packet archive under <code>dist/public-bundles/</code>.</li>
+                <li>Choose the owner-controlled npm package name and namespace for the OpenCode plugin package.</li>
+                <li>Publish <code>mcp/integration-kits/public-bundles/opencode-plugin/</code> to npm.</li>
+                <li>Install it through the official OpenCode plugin flow and verify one compare-first smoke path.</li>
+                <li>Only then update docs to claim Prompt Switchboard is publicly published for OpenCode.</li>
+              </ol>
+            </section>
+            <section class="subcard">
+              <h3>OpenClaw owner packet</h3>
+              <ol>
+                <li>Run <code>npm run release:host-kits</code> and verify the OpenClaw packet archive under <code>dist/public-bundles/</code>.</li>
+                <li>Choose the official OpenClaw public surface you will really use: bundle install, plugin listing, or another official listing surface backed by OpenClaw docs.</li>
+                <li>Publish the repo-owned OpenClaw packet and keep the MCP registry JSON, shell helper, and install docs aligned to that exact surface.</li>
+                <li>Verify the listing URL or bundle URL and one compare-first smoke path after publish.</li>
+                <li>Only then update docs to claim Prompt Switchboard is publicly published for OpenClaw.</li>
+              </ol>
+            </section>
+          </div>
+          <div class="grid grid-two" style="margin-top: 16px">
+            <section class="subcard">
+              <h3>Browser store owner packet</h3>
+              <ol>
+                <li>Keep the repo-side packet green with <code>npm run verify:store-readiness</code> and the current release bundle assets.</li>
+                <li>Open the browser-store dashboard, create or update the listing, and upload the release assets.</li>
+                <li>Complete screenshots, metadata, and policy acknowledgements in the dashboard.</li>
+                <li>Submit for review, then record the listing URL and review state.</li>
+              </ol>
+            </section>
+            <section class="subcard">
+              <h3>What stays external-only</h3>
+              <ul>
+                <li>Namespace ownership, package publication, and registry listing creation.</li>
+                <li>Browser-store console access, listing submission, and review-state proof.</li>
+                <li><code>.ai</code> / DNS / registrar control.</li>
+                <li>GitHub social preview final manual confirmation after front-door visuals change.</li>
+              </ul>
+            </section>
+          </div>
         </section>
       </main>
     </div>

@@ -8,6 +8,7 @@ import {
   type CDPSession,
   type ConsoleMessage,
   type Page,
+  type Worker as PlaywrightWorker,
 } from '@playwright/test';
 import { getModelConfig } from '../../src/utils/modelConfig';
 import { getSiteCapability } from '../../src/utils/siteCapabilityMatrix';
@@ -40,11 +41,9 @@ const DEFAULT_ATTACH_CONNECT_TIMEOUT_MS = 30_000;
 const CLONE_RETRY_CODES = new Set(['ENOENT', 'EBUSY', 'EPERM']);
 const CLONE_RETRY_ATTEMPTS = 4;
 const CLONE_RETRY_DELAY_MS = 80;
-const EXTENSION_ID_CACHE_PATH = path.resolve(
-  process.cwd(),
-  '.runtime-cache',
-  'live-extension-id.txt'
-);
+const PROMPT_SWITCHBOARD_EXTENSION_NAME = 'Prompt Switchboard';
+const PROMPT_SWITCHBOARD_OPTIONS_PAGE = 'settings.html';
+const PROMPT_SWITCHBOARD_SIDE_PANEL_PATH = 'index.html';
 
 type AttachMode = 'browser' | 'persistent';
 type AttachModeResolved = 'browser' | 'persistent';
@@ -52,6 +51,7 @@ type AttachModeResolved = 'browser' | 'persistent';
 export interface LiveProbeConfig {
   liveFlag: boolean;
   userDataDir: string;
+  isPersistentBrowserRoot: boolean;
   profileDirectory: string;
   profileName: string | null;
   profileResolutionSource: string | null;
@@ -157,6 +157,34 @@ interface LiveSiteCandidateSnapshot {
   hasStopControl: boolean;
 }
 
+interface PromptSwitchboardExtensionIdentitySnapshot {
+  runtimeId: string | null;
+  manifestName: string | null;
+  optionsPage: string | null;
+  sidePanelDefaultPath: string | null;
+}
+
+interface PromptSwitchboardExtensionPageSnapshot extends PromptSwitchboardExtensionIdentitySnapshot {
+  href: string;
+  localType: string;
+}
+
+type BrowserExtensionRuntime = {
+  chrome?: {
+    runtime?: {
+      id?: string;
+      getManifest?: () => {
+        name?: string;
+        options_page?: string;
+        side_panel?: { default_path?: string };
+      };
+    };
+    storage?: {
+      local?: unknown;
+    };
+  };
+};
+
 const probeCdpReady = (targetUrl: string) =>
   new Promise<boolean>((resolve) => {
     try {
@@ -202,10 +230,17 @@ export const scoreLiveSiteCandidateSnapshot = (snapshot: LiveSiteCandidateSnapsh
   return score;
 };
 
+const resolveDefaultBrowserChannel = (attachModeRequested: AttachMode) =>
+  attachModeRequested === 'browser' ? 'chrome' : 'chromium';
+
 export const resolveLiveProbeConfig = (): LiveProbeConfig => ({
   ...(() => {
     const browserProfile = resolveBrowserProfile();
-    const browserChannel = process.env.PROMPT_SWITCHBOARD_LIVE_BROWSER_CHANNEL || 'chromium';
+    const attachModeRequested =
+      (process.env.PROMPT_SWITCHBOARD_LIVE_ATTACH_MODE as AttachMode | undefined) || 'browser';
+    const browserChannel =
+      process.env.PROMPT_SWITCHBOARD_LIVE_BROWSER_CHANNEL ||
+      resolveDefaultBrowserChannel(attachModeRequested);
     const browserExecutable = resolveBrowserExecutablePath({
       ...process.env,
       PROMPT_SWITCHBOARD_LIVE_BROWSER_CHANNEL: browserChannel,
@@ -213,6 +248,7 @@ export const resolveLiveProbeConfig = (): LiveProbeConfig => ({
     return {
       liveFlag: process.env.PROMPT_SWITCHBOARD_LIVE === '1',
       userDataDir: browserProfile.userDataDir,
+      isPersistentBrowserRoot: browserProfile.isPersistentBrowserRoot,
       profileDirectory: browserProfile.profileDirectory || '',
       profileName: browserProfile.profileName,
       profileResolutionSource: browserProfile.resolutionSource,
@@ -221,14 +257,15 @@ export const resolveLiveProbeConfig = (): LiveProbeConfig => ({
       browserExecutablePath: browserExecutable.executablePath,
       browserExecutableResolutionSource: browserExecutable.resolutionSource,
       browserExecutableBlockers: browserExecutable.blockers,
-      attachModeRequested:
-        (process.env.PROMPT_SWITCHBOARD_LIVE_ATTACH_MODE as AttachMode | undefined) || 'browser',
+      attachModeRequested,
       cdpUrl: process.env.PROMPT_SWITCHBOARD_LIVE_CDP_URL || DEFAULT_CDP_URL,
       extensionPath: resolveExtensionPath(),
       cloneProfile: process.env.PROMPT_SWITCHBOARD_CLONE_PROFILE === '1',
       keepLiveClone: process.env.PROMPT_SWITCHBOARD_KEEP_LIVE_CLONE === '1',
       openMissingTabs: process.env.PROMPT_SWITCHBOARD_LIVE_OPEN_MISSING_TABS === '1',
-      probeWaitMs: Number(process.env.PROMPT_SWITCHBOARD_LIVE_PROBE_WAIT_MS || DEFAULT_PROBE_WAIT_MS),
+      probeWaitMs: Number(
+        process.env.PROMPT_SWITCHBOARD_LIVE_PROBE_WAIT_MS || DEFAULT_PROBE_WAIT_MS
+      ),
       targetModels: parseTargetModels(),
     };
   })(),
@@ -241,9 +278,7 @@ export const resolveLiveProbeBlockers = async (config: LiveProbeConfig) => {
     config.attachModeRequested === 'persistent' ? false : await probeCdpReady(config.cdpUrl);
 
   const attachModeResolved: AttachModeResolved =
-    config.attachModeRequested === 'browser'
-      ? 'browser'
-      : 'persistent';
+    config.attachModeRequested === 'browser' ? 'browser' : 'persistent';
 
   if (!config.liveFlag) {
     blockers.push('PROMPT_SWITCHBOARD_LIVE=1 is required.');
@@ -251,11 +286,22 @@ export const resolveLiveProbeBlockers = async (config: LiveProbeConfig) => {
   blockers.push(...config.profileBlockers);
   blockers.push(...config.browserExecutableBlockers);
   if (!extensionPathExists) {
-    blockers.push(`Extension build path is missing: ${sanitizePathForReport(config.extensionPath)}`);
+    blockers.push(
+      `Extension build path is missing: ${sanitizePathForReport(config.extensionPath)}`
+    );
   }
   if (attachModeResolved === 'persistent' && config.browserChannel === 'chrome') {
     blockers.push(
       'PROMPT_SWITCHBOARD_LIVE_BROWSER_CHANNEL=chrome is not supported for extension side-loading in Playwright persistent contexts. Use chromium or the attachable browser helper.'
+    );
+  }
+  if (
+    attachModeResolved === 'persistent' &&
+    !config.cloneProfile &&
+    config.isPersistentBrowserRoot
+  ) {
+    blockers.push(
+      'Persistent live probe paths must not launch Playwright directly against the canonical repo-owned browser root. Use PROMPT_SWITCHBOARD_CLONE_PROFILE=1 or the real Chrome attach lane instead.'
     );
   }
   if (config.attachModeRequested === 'browser' && !cdpReachable) {
@@ -282,12 +328,119 @@ export const resolveLiveProbeBlockers = async (config: LiveProbeConfig) => {
   };
 };
 
-const readCachedExtensionId = () => {
-  if (!fs.existsSync(EXTENSION_ID_CACHE_PATH)) {
+export const isPromptSwitchboardManifestIdentity = (
+  snapshot: PromptSwitchboardExtensionIdentitySnapshot | null | undefined
+): snapshot is PromptSwitchboardExtensionIdentitySnapshot & { runtimeId: string } =>
+  typeof snapshot?.runtimeId === 'string' &&
+  snapshot.runtimeId.length > 0 &&
+  snapshot.manifestName === PROMPT_SWITCHBOARD_EXTENSION_NAME &&
+  snapshot.optionsPage === PROMPT_SWITCHBOARD_OPTIONS_PAGE &&
+  snapshot.sidePanelDefaultPath === PROMPT_SWITCHBOARD_SIDE_PANEL_PATH;
+
+const inspectPromptSwitchboardWorkerIdentity = async (worker: PlaywrightWorker) => {
+  if (!worker.url().startsWith('chrome-extension://')) {
     return null;
   }
-  const value = fs.readFileSync(EXTENSION_ID_CACHE_PATH, 'utf8').trim();
-  return value.length > 0 ? value : null;
+
+  try {
+    const snapshot = await worker.evaluate<PromptSwitchboardExtensionIdentitySnapshot>(() => ({
+      ...(() => {
+        const extensionRuntime = globalThis as typeof globalThis & BrowserExtensionRuntime;
+        return {
+          runtimeId: extensionRuntime.chrome?.runtime?.id ?? null,
+          manifestName: extensionRuntime.chrome?.runtime?.getManifest?.().name ?? null,
+          optionsPage: extensionRuntime.chrome?.runtime?.getManifest?.().options_page ?? null,
+          sidePanelDefaultPath:
+            extensionRuntime.chrome?.runtime?.getManifest?.().side_panel?.default_path ?? null,
+        };
+      })(),
+    }));
+
+    if (!isPromptSwitchboardManifestIdentity(snapshot)) {
+      return null;
+    }
+
+    return {
+      runtimeId: snapshot.runtimeId,
+      workerUrl: worker.url(),
+    };
+  } catch {
+    return null;
+  }
+};
+
+const inspectPromptSwitchboardPageIdentity = async (page: Page) => {
+  if (!page.url().startsWith('chrome-extension://')) {
+    return null;
+  }
+
+  try {
+    const snapshot = await page.evaluate<PromptSwitchboardExtensionPageSnapshot>(() => ({
+      ...(() => {
+        const extensionRuntime = globalThis as typeof globalThis & BrowserExtensionRuntime;
+        return {
+          runtimeId: extensionRuntime.chrome?.runtime?.id ?? null,
+          manifestName: extensionRuntime.chrome?.runtime?.getManifest?.().name ?? null,
+          optionsPage: extensionRuntime.chrome?.runtime?.getManifest?.().options_page ?? null,
+          sidePanelDefaultPath:
+            extensionRuntime.chrome?.runtime?.getManifest?.().side_panel?.default_path ?? null,
+          href: location.href,
+          localType: typeof extensionRuntime.chrome?.storage?.local,
+        };
+      })(),
+    }));
+
+    if (
+      !isPromptSwitchboardManifestIdentity(snapshot) ||
+      snapshot.localType !== 'object' ||
+      !snapshot.href.startsWith(`chrome-extension://${snapshot.runtimeId}/`)
+    ) {
+      return null;
+    }
+
+    return {
+      runtimeId: snapshot.runtimeId,
+      href: snapshot.href,
+    };
+  } catch {
+    return null;
+  }
+};
+
+export const findPromptSwitchboardExtensionId = async (context: BrowserContext) => {
+  for (const worker of context.serviceWorkers()) {
+    const identity = await inspectPromptSwitchboardWorkerIdentity(worker);
+    if (identity) {
+      return identity.runtimeId;
+    }
+  }
+
+  for (const page of context.pages()) {
+    const identity = await inspectPromptSwitchboardPageIdentity(page);
+    if (identity) {
+      return identity.runtimeId;
+    }
+  }
+
+  return null;
+};
+
+export const waitForPromptSwitchboardExtensionId = async (
+  context: BrowserContext,
+  timeoutMs = 30_000,
+  intervalMs = 250
+) => {
+  const startedAt = Date.now();
+
+  while (Date.now() - startedAt < timeoutMs) {
+    const runtimeId = await findPromptSwitchboardExtensionId(context);
+    if (runtimeId) {
+      return runtimeId;
+    }
+    await new Promise((resolve) => setTimeout(resolve, intervalMs));
+  }
+
+  return null;
 };
 
 export const classifyExtensionSurfaceProbeFailure = (error: unknown): string => {
@@ -308,25 +461,8 @@ const resolveExtensionId = async (
   context: BrowserContext,
   attachModeResolved: AttachModeResolved
 ) => {
-  const currentWorker = context
-    .serviceWorkers()
-    .find((worker) => worker.url().startsWith('chrome-extension://'));
-  if (currentWorker) {
-    return new URL(currentWorker.url()).host;
-  }
-
-  const existingExtensionPage = context
-    .pages()
-    .find((page) => page.url().startsWith('chrome-extension://'));
-  if (existingExtensionPage) {
-    return new URL(existingExtensionPage.url()).host;
-  }
-
-  if (attachModeResolved === 'browser') {
-    return readCachedExtensionId();
-  }
-
-  return null;
+  void attachModeResolved;
+  return await findPromptSwitchboardExtensionId(context);
 };
 
 const classifyProbeLaunchFailure = (error: unknown, effectiveRun: LiveProbeEffectiveRun) => {
@@ -424,7 +560,10 @@ const collectTransientSignals = async (page: Page, waitMs: number) => {
   const onPageError = (error: Error) => {
     pageErrors.push(error.message);
   };
-  const onRequestFailed = (request: { url: () => string; failure: () => { errorText?: string } | null }) => {
+  const onRequestFailed = (request: {
+    url: () => string;
+    failure: () => { errorText?: string } | null;
+  }) => {
     requestFailures.push(`${request.url()} :: ${request.failure()?.errorText || 'requestfailed'}`);
   };
 
@@ -457,33 +596,37 @@ const inspectSitePage = async (
   }
 
   const transientSignals = await collectTransientSignals(page, waitMs);
-  const snapshot = await page.evaluate(({
-    selectorHints,
-    responseSelectorHints,
-    stopSelectorHints,
-    loginSignalSource,
-  }) => {
-    const loginSignalPattern = new RegExp(loginSignalSource, 'i');
-    const loginButtons = Array.from(document.querySelectorAll('a,button'))
-      .map((element) => (element.textContent || '').trim())
-      .filter((text) => loginSignalPattern.test(text))
-      .slice(0, 8);
+  const snapshot = await page.evaluate(
+    ({ selectorHints, responseSelectorHints, stopSelectorHints, loginSignalSource }) => {
+      const loginSignalPattern = new RegExp(loginSignalSource, 'i');
+      const loginButtons = Array.from(document.querySelectorAll('a,button'))
+        .map((element) => (element.textContent || '').trim())
+        .filter((text) => loginSignalPattern.test(text))
+        .slice(0, 8);
 
-    return {
-      url: location.href,
-      title: document.title,
-      loginButtons,
-      hasPromptSurface: selectorHints.some((selector) => Boolean(document.querySelector(selector))),
-      hasResponseSurface: responseSelectorHints.some((selector) => Boolean(document.querySelector(selector))),
-      hasStopControl: stopSelectorHints.some((selector) => Boolean(document.querySelector(selector))),
-      bodyPreview: (document.body?.innerText || '').replace(/\s+/g, ' ').slice(0, 1000),
-    };
-  }, {
-    selectorHints: capability.promptSurfaceSelectors,
-    responseSelectorHints: capability.responseSelectors,
-    stopSelectorHints: capability.stopSelectors,
-    loginSignalSource: capability.loginSignalPatternSource,
-  });
+      return {
+        url: location.href,
+        title: document.title,
+        loginButtons,
+        hasPromptSurface: selectorHints.some((selector) =>
+          Boolean(document.querySelector(selector))
+        ),
+        hasResponseSurface: responseSelectorHints.some((selector) =>
+          Boolean(document.querySelector(selector))
+        ),
+        hasStopControl: stopSelectorHints.some((selector) =>
+          Boolean(document.querySelector(selector))
+        ),
+        bodyPreview: (document.body?.innerText || '').replace(/\s+/g, ' ').slice(0, 1000),
+      };
+    },
+    {
+      selectorHints: capability.promptSurfaceSelectors,
+      responseSelectorHints: capability.responseSelectors,
+      stopSelectorHints: capability.stopSelectors,
+      loginSignalSource: capability.loginSignalPatternSource,
+    }
+  );
 
   const state = classifyLiveSiteState(snapshot);
   const readinessStatus = toCanonicalReadinessStatus(state);
@@ -519,7 +662,8 @@ const inspectContentScriptContexts = async (
       session.on('Runtime.executionContextCreated', (event: unknown) => {
         const contextPayload =
           event && typeof event === 'object' && 'context' in event
-            ? (event as { context: { id: number; name?: string; auxData?: { type?: string } } }).context
+            ? (event as { context: { id: number; name?: string; auxData?: { type?: string } } })
+                .context
             : null;
         if (!contextPayload) {
           return;
@@ -546,8 +690,11 @@ const inspectContentScriptContexts = async (
           });
           const value =
             result && typeof result === 'object' && 'result' in result
-              ? (result as { result?: { value?: { runtimeId?: string | null; localType?: string } } })
-                  .result?.value ?? null
+              ? ((
+                  result as {
+                    result?: { value?: { runtimeId?: string | null; localType?: string } };
+                  }
+                ).result?.value ?? null)
               : null;
 
           if (value && value.runtimeId && value.localType === 'object') {
@@ -575,21 +722,15 @@ const inspectExtensionRuntimeEvidence = async (
   context: BrowserContext,
   modelPages: Array<{ model: ModelName; page: Page }>
 ) => {
-  const serviceWorkerUrls = context
-    .serviceWorkers()
-    .map((worker) => worker.url())
-    .filter((url) => url.startsWith('chrome-extension://'));
+  const serviceWorkerIdentities = (
+    await Promise.all(context.serviceWorkers().map((worker) => inspectPromptSwitchboardWorkerIdentity(worker)))
+  ).filter((identity): identity is NonNullable<typeof identity> => Boolean(identity));
+  const serviceWorkerUrls = serviceWorkerIdentities.map((identity) => identity.workerUrl);
   const contentScriptContexts = await inspectContentScriptContexts(context, modelPages);
   const detectedRuntimeIds = Array.from(
     new Set(
       [
-        ...serviceWorkerUrls.map((url) => {
-          try {
-            return new URL(url).host;
-          } catch {
-            return '';
-          }
-        }),
+        ...serviceWorkerIdentities.map((identity) => identity.runtimeId),
         ...contentScriptContexts.map((entry) => entry.runtimeId),
       ].filter(Boolean)
     )
@@ -626,12 +767,7 @@ const findOrOpenModelPage = async (
       existingPages.map(async (page) => {
         try {
           const snapshot = await page.evaluate(
-            ({
-              selectorHints,
-              responseSelectorHints,
-              stopSelectorHints,
-              loginSignalSource,
-            }) => {
+            ({ selectorHints, responseSelectorHints, stopSelectorHints, loginSignalSource }) => {
               const loginSignalPattern = new RegExp(loginSignalSource, 'i');
               const loginButtons = Array.from(document.querySelectorAll('a,button'))
                 .map((element) => (element.textContent || '').trim())
@@ -863,7 +999,8 @@ export const withLiveProbeContext = async <T>(
   pruneExternalRepoCache();
   const { blockers, effectiveRun } = await resolveLiveProbeBlockers(config);
   const attachConnectTimeoutMs = Number(
-    process.env.PROMPT_SWITCHBOARD_LIVE_ATTACH_CONNECT_TIMEOUT_MS || DEFAULT_ATTACH_CONNECT_TIMEOUT_MS
+    process.env.PROMPT_SWITCHBOARD_LIVE_ATTACH_CONNECT_TIMEOUT_MS ||
+      DEFAULT_ATTACH_CONNECT_TIMEOUT_MS
   );
   if (blockers.length > 0) {
     return {
@@ -1028,8 +1165,7 @@ export const buildLiveDiagnosis = (probe: LiveProbeResult): LiveDiagnosisResult 
     blockers.push({
       surface: 'extension',
       kind: probe.extension.state,
-      message:
-        'The extension surface already has compare cards, but none reached Complete yet.',
+      message: 'The extension surface already has compare cards, but none reached Complete yet.',
     });
     nextActions.add(
       'Capture a support bundle and inspect the current compare card states before retrying.'

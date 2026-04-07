@@ -10,7 +10,7 @@
   "releases_url": "https://github.com/xiaojiou176-open/multi-ai-sidepanel/releases",
   "landing_title": "Prompt Switchboard | Compare-first local AI workspace",
   "landing_description": "Prompt Switchboard is a compare-first, local-first, browser-native AI compare workspace for ChatGPT, Gemini, Perplexity, Qwen, and Grok in one browser side panel, with a governed MCP sidecar for Codex and Claude Code browser workflows.",
-  "landing_og_description": "Ask once, compare ChatGPT, Gemini, Perplexity, Qwen, and Grok side by side, keep the trust boundary in your browser, and connect the governed MCP sidecar for Codex or Claude Code browser workflows when you need the builder lane.",
+  "landing_og_description": "Ask once, compare ChatGPT, Gemini, Perplexity, Qwen, and Grok side by side, keep the trust boundary in your browser, and move from install to first compare without tab juggling. The governed MCP sidecar stays optional after the product path is already clear.",
   "current_install_surface": "The supported install path today is the packaged GitHub Release zip.",
   "store_ready_note": "Browser-store submission materials are being kept ready, but GitHub Releases remains the supported install surface today.",
   "install_guide_path": "./install.html",

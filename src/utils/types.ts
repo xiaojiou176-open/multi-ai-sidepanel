@@ -8,11 +8,6 @@ export const MESSAGE_ROLES = {
 
 export type MessageRole = (typeof MESSAGE_ROLES)[keyof typeof MESSAGE_ROLES];
 
-export interface MessagePayload {
-  type: string;
-  payload?: unknown;
-}
-
 export const MSG_TYPES = {
   BROADCAST_PROMPT: 'BROADCAST_PROMPT',
   CHECK_MODELS_READY: 'CHECK_MODELS_READY',
@@ -169,6 +164,75 @@ export interface StreamResponsePayload {
   completedAt?: number;
   data?: DeliveryDiagnostics;
 }
+
+interface MessageEnvelope<TType extends string, TPayload = undefined> {
+  type: TType;
+  payload: TPayload;
+}
+
+export interface ExecuteSubstrateActionPayload {
+  action?: string;
+  args?: unknown;
+}
+
+export type BroadcastPromptMessage = MessageEnvelope<
+  typeof MSG_TYPES.BROADCAST_PROMPT,
+  BroadcastPromptPayload
+>;
+export type CheckModelsReadyMessage = MessageEnvelope<
+  typeof MSG_TYPES.CHECK_MODELS_READY,
+  CheckModelsReadyPayload
+>;
+export type ExecuteSubstrateActionMessage = MessageEnvelope<
+  typeof MSG_TYPES.EXECUTE_SUBSTRATE_ACTION,
+  ExecuteSubstrateActionPayload
+>;
+export type RunCompareAnalysisMessage = MessageEnvelope<
+  typeof MSG_TYPES.RUN_COMPARE_ANALYSIS,
+  RunCompareAnalysisPayload
+>;
+export type ExecutePromptMessage = MessageEnvelope<
+  typeof MSG_TYPES.EXECUTE_PROMPT,
+  ExecutePromptPayload
+>;
+export type ExecuteCompareAnalysisMessage = MessageEnvelope<
+  typeof MSG_TYPES.EXECUTE_COMPARE_ANALYSIS,
+  ExecuteCompareAnalysisPayload
+>;
+export type StreamResponseMessage = MessageEnvelope<
+  typeof MSG_TYPES.STREAM_RESPONSE,
+  StreamResponsePayload
+>;
+export type OnResponseUpdateMessage = MessageEnvelope<
+  typeof MSG_TYPES.ON_RESPONSE_UPDATE,
+  StreamResponsePayload
+>;
+export type GetBufferedUpdatesMessage = {
+  type: typeof MSG_TYPES.GET_BUFFERED_UPDATES;
+  payload?: undefined;
+};
+export type PingMessage = MessageEnvelope<typeof MSG_TYPES.PING, PingPayload>;
+export type PongMessage = MessageEnvelope<typeof MSG_TYPES.PONG, PongPayload>;
+
+export type KnownMessagePayload =
+  | BroadcastPromptMessage
+  | CheckModelsReadyMessage
+  | ExecuteSubstrateActionMessage
+  | RunCompareAnalysisMessage
+  | ExecutePromptMessage
+  | ExecuteCompareAnalysisMessage
+  | StreamResponseMessage
+  | OnResponseUpdateMessage
+  | GetBufferedUpdatesMessage
+  | PingMessage
+  | PongMessage;
+
+export type MessagePayload = KnownMessagePayload | { type: string; payload?: unknown };
+
+export const hasMessageType = <TType extends KnownMessagePayload['type']>(
+  message: MessagePayload,
+  type: TType
+): message is Extract<KnownMessagePayload, { type: TType }> => message.type === type;
 
 export interface Message {
   id: string;

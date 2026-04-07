@@ -10,6 +10,7 @@ import { CompareView } from './components/CompareView';
 import { ReadinessPanel } from './components/ReadinessPanel';
 import { useStore } from './store';
 import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts';
+import { useMessageListener } from './hooks/useMessageListener';
 import {
   SETTINGS_OPEN_EVENT,
   SETTINGS_VISIBILITY_HOOK,
@@ -17,13 +18,7 @@ import {
   shouldOpenSettingsFromUrl,
 } from './utils/shouldOpenSettingsFromUrl';
 import { getModelOpenUrls } from '../utils/modelConfig';
-import {
-  MESSAGE_ROLES,
-  MSG_TYPES,
-  type Session,
-  type MessagePayload,
-  type StreamResponsePayload,
-} from '../utils/types';
+import { MESSAGE_ROLES, MSG_TYPES, type Session, type StreamResponsePayload } from '../utils/types';
 
 type DiagnosticPresentationState = {
   analysisByTurn?: ReturnType<typeof useStore.getState>['analysisByTurn'];
@@ -48,6 +43,7 @@ function App() {
   const [viewMode, setViewMode] = useState<'compare' | 'transcript'>('compare');
 
   useKeyboardShortcuts({ createNewSession });
+  useMessageListener({ updateLastMessage });
 
   const currentMessages = useMemo(
     () => sessions.find((session) => session.id === currentSessionId)?.messages || [],
@@ -127,20 +123,6 @@ function App() {
         showSettings;
     }
   }, [showSettings]);
-
-  useEffect(() => {
-    if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.onMessage) {
-      const listener = (message: MessagePayload) => {
-        if (message.type === MSG_TYPES.ON_RESPONSE_UPDATE) {
-          const payload = message.payload as StreamResponsePayload;
-          updateLastMessage(payload);
-        }
-      };
-
-      chrome.runtime.onMessage.addListener(listener);
-      return () => chrome.runtime.onMessage.removeListener(listener);
-    }
-  }, [updateLastMessage]);
 
   useEffect(() => {
     const restoreBufferedUpdates = async () => {

@@ -9,6 +9,7 @@ import {
 import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
+import { waitForPromptSwitchboardExtensionId } from '../../scripts/verify/live-probe-shared';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const extensionPathCandidates = ['../../dist'];
@@ -65,21 +66,6 @@ const ensurePlaywrightArtifactRoots = (testInfo: TestInfo) => {
 let context: BrowserContext | null = null;
 let page: Page | null = null;
 
-const resolveExtensionId = async (targetContext: BrowserContext) => {
-  const currentWorker = targetContext
-    .serviceWorkers()
-    .find((worker) => worker.url().startsWith('chrome-extension://'));
-  if (currentWorker) {
-    return new URL(currentWorker.url()).host;
-  }
-
-  const extensionWorker = await targetContext.waitForEvent('serviceworker', {
-    predicate: (worker) => worker.url().startsWith('chrome-extension://'),
-    timeout: 30_000,
-  });
-  return new URL(extensionWorker.url()).host;
-};
-
 const attachDomSnapshot = async (target: Page, testInfo: TestInfo) => {
   try {
     const html = await target.content();
@@ -131,7 +117,12 @@ test('sidepanel renders and handles core flow', async ({ page: basePage }, testI
   fs.mkdirSync(path.dirname(userDataDir), { recursive: true });
   context = await launchContext();
 
-  const extensionId = await resolveExtensionId(context);
+  const extensionId = await waitForPromptSwitchboardExtensionId(context);
+  if (!extensionId) {
+    throw new Error(
+      'Prompt Switchboard shell E2E could not detect a repo-owned extension runtime in the launched persistent context.'
+    );
+  }
   fs.mkdirSync(path.dirname(extensionIdCachePath), { recursive: true });
   fs.writeFileSync(extensionIdCachePath, extensionId, 'utf8');
   const extensionPrefix = `chrome-extension://${extensionId}`;

@@ -20,7 +20,6 @@ import { tabManager } from './tabManager';
 import { SelectorService } from '../services/selectorService';
 import { StorageService } from '../services/storage';
 import { Logger, toErrorMessage } from '../utils/logger';
-import { applyStreamResponsePayloadToSessions } from '../services/sessionRuntime';
 
 const CONTENT_READY_TIMEOUT_MS = 1500;
 const ANALYSIS_TIMEOUT_MS = 90_000;
@@ -83,8 +82,8 @@ const toReadinessFailureReport = (
   remoteConfigConfigured: boolean,
   lastCheckedAt: number,
   error: Error & {
-    failureClass?: typeof FAILURE_CLASSES[keyof typeof FAILURE_CLASSES];
-    readinessStatus?: typeof READINESS_STATUSES[keyof typeof READINESS_STATUSES];
+    failureClass?: (typeof FAILURE_CLASSES)[keyof typeof FAILURE_CLASSES];
+    readinessStatus?: (typeof READINESS_STATUSES)[keyof typeof READINESS_STATUSES];
     hostname?: string;
     selectorSource?: 'default' | 'cached';
     remoteConfigConfigured?: boolean;
@@ -108,13 +107,17 @@ const toReadinessFailureReport = (
 
 const getCandidateTabIdsForModel = async (model: ModelName): Promise<number[]> => {
   if (
-    typeof (tabManager as typeof tabManager & {
-      getCandidateTabIds?: (model: ModelName) => Promise<number[]>;
-    }).getCandidateTabIds === 'function'
+    typeof (
+      tabManager as typeof tabManager & {
+        getCandidateTabIds?: (model: ModelName) => Promise<number[]>;
+      }
+    ).getCandidateTabIds === 'function'
   ) {
-    return (tabManager as typeof tabManager & {
-      getCandidateTabIds: (model: ModelName) => Promise<number[]>;
-    }).getCandidateTabIds(model);
+    return (
+      tabManager as typeof tabManager & {
+        getCandidateTabIds: (model: ModelName) => Promise<number[]>;
+      }
+    ).getCandidateTabIds(model);
   }
 
   const existingTabId = await tabManager.getExistingTabId(model);
@@ -122,20 +125,7 @@ const getCandidateTabIdsForModel = async (model: ModelName): Promise<number[]> =
 };
 
 export const forwardResponseUpdate = (payload: StreamResponsePayload) => {
-  void Promise.all([StorageService.getSessions(), StorageService.getCurrentSessionId()])
-    .then(async ([sessions, currentSessionId]) => {
-      const { updatedSessions, didUpdateAnySession } = applyStreamResponsePayloadToSessions({
-        sessions,
-        currentSessionId,
-        payload,
-      });
-
-      if (didUpdateAnySession) {
-        await StorageService.saveSessions(updatedSessions);
-      }
-    })
-    .catch(() => undefined);
-  void StorageService.saveBufferedStreamUpdate(payload).catch(() => undefined);
+  void StorageService.applyStreamResponseUpdate(payload).catch(() => undefined);
   void chrome.runtime
     .sendMessage({
       type: MSG_TYPES.ON_RESPONSE_UPDATE,
@@ -272,13 +262,17 @@ async function checkModelReadiness(model: ModelName): Promise<ModelReadinessRepo
     try {
       const pong = await ensureContentReady(tabId, model);
       if (
-        typeof (tabManager as typeof tabManager & {
-          rememberTabId?: (model: ModelName, tabId: number) => Promise<void>;
-        }).rememberTabId === 'function'
+        typeof (
+          tabManager as typeof tabManager & {
+            rememberTabId?: (model: ModelName, tabId: number) => Promise<void>;
+          }
+        ).rememberTabId === 'function'
       ) {
-        await (tabManager as typeof tabManager & {
-          rememberTabId: (model: ModelName, tabId: number) => Promise<void>;
-        }).rememberTabId(model, tabId);
+        await (
+          tabManager as typeof tabManager & {
+            rememberTabId: (model: ModelName, tabId: number) => Promise<void>;
+          }
+        ).rememberTabId(model, tabId);
       }
       return toReadinessReport(model, tabId, pong);
     } catch (error) {
@@ -291,8 +285,8 @@ async function checkModelReadiness(model: ModelName): Promise<ModelReadinessRepo
           remoteConfigConfigured,
           lastCheckedAt,
           error as Error & {
-            failureClass?: typeof FAILURE_CLASSES[keyof typeof FAILURE_CLASSES];
-            readinessStatus?: typeof READINESS_STATUSES[keyof typeof READINESS_STATUSES];
+            failureClass?: (typeof FAILURE_CLASSES)[keyof typeof FAILURE_CLASSES];
+            readinessStatus?: (typeof READINESS_STATUSES)[keyof typeof READINESS_STATUSES];
             hostname?: string;
             selectorSource?: 'default' | 'cached';
             remoteConfigConfigured?: boolean;
@@ -382,16 +376,17 @@ export async function broadcastPrompt(payload: BroadcastPromptPayload) {
         errorCode,
         completedAt: Date.now(),
         data: {
-          stage:
-            errorCode === SEND_ERROR_CODES.HANDSHAKE ? 'content_ready_handshake' : 'delivery',
+          stage: errorCode === SEND_ERROR_CODES.HANDSHAKE ? 'content_ready_handshake' : 'delivery',
           failureClass:
-            ((error as { failureClass?: typeof FAILURE_CLASSES[keyof typeof FAILURE_CLASSES] })
+            (error as { failureClass?: (typeof FAILURE_CLASSES)[keyof typeof FAILURE_CLASSES] })
               .failureClass ??
-              (errorCode === SEND_ERROR_CODES.HANDSHAKE
-                ? FAILURE_CLASSES.HANDSHAKE_MISMATCH
-                : FAILURE_CLASSES.TRANSIENT_DELIVERY_OR_RUNTIME)),
+            (errorCode === SEND_ERROR_CODES.HANDSHAKE
+              ? FAILURE_CLASSES.HANDSHAKE_MISMATCH
+              : FAILURE_CLASSES.TRANSIENT_DELIVERY_OR_RUNTIME),
           readinessStatus: (
-            error as { readinessStatus?: typeof READINESS_STATUSES[keyof typeof READINESS_STATUSES] }
+            error as {
+              readinessStatus?: (typeof READINESS_STATUSES)[keyof typeof READINESS_STATUSES];
+            }
           ).readinessStatus,
           hostname: (error as { hostname?: string }).hostname,
           selectorSource: (error as { selectorSource?: 'default' | 'cached' }).selectorSource,
@@ -491,15 +486,20 @@ export async function runCompareAnalysis(
           ? `Prompt Switchboard could not confirm that ${model} was ready for AI analysis.`
           : `Prompt Switchboard could not start AI analysis in ${model}.`,
       data: {
-        stage: errorCode === SEND_ERROR_CODES.HANDSHAKE ? 'content_ready_handshake' : 'analysis_delivery',
+        stage:
+          errorCode === SEND_ERROR_CODES.HANDSHAKE
+            ? 'content_ready_handshake'
+            : 'analysis_delivery',
         failureClass:
-          ((error as { failureClass?: typeof FAILURE_CLASSES[keyof typeof FAILURE_CLASSES] })
+          (error as { failureClass?: (typeof FAILURE_CLASSES)[keyof typeof FAILURE_CLASSES] })
             .failureClass ??
-            (errorCode === SEND_ERROR_CODES.HANDSHAKE
-              ? FAILURE_CLASSES.HANDSHAKE_MISMATCH
-              : FAILURE_CLASSES.TRANSIENT_DELIVERY_OR_RUNTIME)),
+          (errorCode === SEND_ERROR_CODES.HANDSHAKE
+            ? FAILURE_CLASSES.HANDSHAKE_MISMATCH
+            : FAILURE_CLASSES.TRANSIENT_DELIVERY_OR_RUNTIME),
         readinessStatus: (
-          error as { readinessStatus?: typeof READINESS_STATUSES[keyof typeof READINESS_STATUSES] }
+          error as {
+            readinessStatus?: (typeof READINESS_STATUSES)[keyof typeof READINESS_STATUSES];
+          }
         ).readinessStatus,
         hostname: (error as { hostname?: string }).hostname,
         selectorSource: (error as { selectorSource?: 'default' | 'cached' }).selectorSource,

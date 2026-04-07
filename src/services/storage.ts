@@ -9,6 +9,7 @@ import {
   LEGACY_ANALYSIS_PROVIDER_IDS,
   type AnalysisProviderId,
 } from './analysis/types';
+import { applyStreamResponsePayloadToSessions } from './sessionRuntime';
 
 interface WorkflowRunRecord {
   runId: string;
@@ -712,9 +713,7 @@ export const StorageService = {
       const existing = await this.getBufferedStreamUpdates();
       const updates = Object.fromEntries(
         existing
-          .filter(
-            (entry) => !(entry.turnId === payload.turnId && entry.model === payload.model)
-          )
+          .filter((entry) => !(entry.turnId === payload.turnId && entry.model === payload.model))
           .concat(payload)
           .map((entry) => [`${entry.turnId ?? 'unknown'}:${entry.model}`, entry])
       );
@@ -725,6 +724,32 @@ export const StorageService = {
         code: 'storage_save_buffered_update_failed',
         error: toErrorMessage(error),
       });
+    }
+  },
+
+  async applyStreamResponseUpdate(payload: StreamResponsePayload): Promise<void> {
+    try {
+      const [sessions, currentSessionId] = await Promise.all([
+        this.getSessions(),
+        this.getCurrentSessionId(),
+      ]);
+      const { updatedSessions, didUpdateAnySession } = applyStreamResponsePayloadToSessions({
+        sessions,
+        currentSessionId,
+        payload,
+      });
+
+      await Promise.all([
+        didUpdateAnySession ? this.saveSessions(updatedSessions) : Promise.resolve(),
+        this.saveBufferedStreamUpdate(payload),
+      ]);
+    } catch (error) {
+      Logger.error('storage_apply_stream_response_update_failed', {
+        surface: 'storage',
+        code: 'storage_apply_stream_response_update_failed',
+        error: toErrorMessage(error),
+      });
+      throw error;
     }
   },
 

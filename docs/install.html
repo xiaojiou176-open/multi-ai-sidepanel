@@ -86,15 +86,18 @@
     <style>
       :root {
         color-scheme: light;
-        --bg: #fffaf6;
-        --ink: #0f172a;
-        --muted: #475569;
-        --line: rgba(251, 113, 133, 0.16);
-        --panel: rgba(255, 255, 255, 0.9);
+        --bg: #fcf6ef;
+        --ink: #18181b;
+        --muted: #57534e;
+        --line: rgba(148, 98, 68, 0.14);
+        --panel: rgba(255, 252, 249, 0.9);
         --shadow: 0 24px 64px rgba(15, 23, 42, 0.08);
-        --brand-a: #d946ef;
-        --brand-b: #f43f5e;
-        --brand-c: #f59e0b;
+        --brand-a: #b45309;
+        --brand-b: #ea580c;
+        --brand-c: #d97706;
+        --display-font:
+          'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', 'Baskerville', Georgia, serif;
+        --body-font: 'Avenir Next', 'Segoe UI', sans-serif;
       }
 
       * {
@@ -103,12 +106,12 @@
 
       body {
         margin: 0;
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        font-family: var(--body-font);
         color: var(--ink);
         background:
-          radial-gradient(circle at top left, rgba(244, 114, 182, 0.22), transparent 24%),
-          radial-gradient(circle at bottom right, rgba(251, 191, 36, 0.18), transparent 20%),
-          linear-gradient(180deg, #fffaf6 0%, #ffffff 45%, #fff5e9 100%);
+          radial-gradient(circle at top left, rgba(234, 88, 12, 0.14), transparent 24%),
+          radial-gradient(circle at bottom right, rgba(217, 119, 6, 0.12), transparent 20%),
+          linear-gradient(180deg, #fcf6ef 0%, #ffffff 45%, #f9efe4 100%);
       }
 
       a {
@@ -139,6 +142,7 @@
         align-items: center;
         gap: 12px;
         font-weight: 700;
+        font-family: var(--body-font);
       }
 
       .chip,
@@ -157,9 +161,9 @@
 
       .chip {
         padding: 10px 14px;
-        background: #fff1f6;
-        border-color: #fbcfe8;
-        color: #be185d;
+        background: #fff3e6;
+        border-color: #fed7aa;
+        color: #9a3412;
         letter-spacing: 0.1em;
         text-transform: uppercase;
       }
@@ -168,7 +172,7 @@
         color: white;
         border: none;
         background: linear-gradient(135deg, var(--brand-a), var(--brand-b), var(--brand-c));
-        box-shadow: 0 16px 40px rgba(244, 114, 182, 0.24);
+        box-shadow: 0 16px 40px rgba(180, 83, 9, 0.22);
       }
 
       .card {
@@ -182,6 +186,7 @@
 
       h1 {
         margin: 18px 0 0;
+        font-family: var(--display-font);
         font-size: clamp(40px, 6vw, 64px);
         line-height: 1.02;
         letter-spacing: -0.05em;
@@ -189,6 +194,7 @@
 
       h2 {
         margin: 0;
+        font-family: var(--display-font);
         font-size: 28px;
         letter-spacing: -0.03em;
       }
@@ -220,8 +226,43 @@
         border: 1px solid var(--line);
       }
 
+      .step-grid {
+        display: grid;
+        gap: 14px;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        margin-top: 18px;
+      }
+
+      .step-card {
+        padding: 18px;
+        border-radius: 24px;
+        background: rgba(255, 255, 255, 0.88);
+        border: 1px solid var(--line);
+      }
+
+      .step-number {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 34px;
+        border-radius: 999px;
+        background: linear-gradient(135deg, #fff7ed, #ffedd5);
+        border: 1px solid rgba(180, 83, 9, 0.16);
+        color: #9a3412;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .step-card h2 {
+        margin-top: 16px;
+      }
+
       @media (max-width: 820px) {
         .grid {
+          grid-template-columns: 1fr;
+        }
+        .step-grid {
           grid-template-columns: 1fr;
         }
       }
@@ -245,6 +286,7 @@
           <a class="nav-link" href="./supported-sites.html">Supported sites</a>
           <a class="nav-link" href="./trust-boundary.html">Trust boundary</a>
           <a class="nav-link" href="./faq.html">FAQ</a>
+          <a class="nav-link" href="./prompt-packs.html">Prompt packs</a>
           <a class="nav-link" href="https://github.com/xiaojiou176-open/multi-ai-sidepanel#readme"
             >README</a
           >
@@ -272,40 +314,39 @@
           readiness, and seed the first compare prompt without bouncing back into the docs.
         </p>
         <p>
-          If you want the shortest operator-style map from “extension installed”
-          to “first compare run really succeeded,” use the
-          <a href="./first-compare-guide.html">first compare guide</a>. It keeps
-          the first-run checklist, repair ladder, and login-gated explanation in
-          one place.
-        </p>
-        <p>
-          When a compare turn finishes, the built-in next-step workflow can either stage the next
-          prompt or run the next compare again. Seed-only actions stay explicit so the product does
-          not pretend a prepared prompt has already executed.
-        </p>
-        <p>
-          When the first compare run is done, you can keep moving inside the same workflow: copy a
-          compare summary, export Markdown, or load one of the built-in prompt packs without
-          rebuilding the task from scratch.
-        </p>
-        <p>
-          Optional AI analysis is now available too, but it runs through a browser tab you already
-          keep signed in. The default compare workflow still works without any separate provider or
-          hosted relay.
-        </p>
-        <p>
-          There is also an optional local MCP sidecar for agent integrations. It is not required
-          for the first compare run, and it does not replace the default compare workflow. If your
-          local coding agent speaks MCP, Prompt Switchboard can expose compare, retry, export,
-          analysis, and built-in next-step workflow actions there without turning into generic
-          browser automation. In practice the main documented builder bindings are OpenAI Codex and
-          Claude Code, while the MCP agents page covers the fuller repo-local operator helper path.
+          If you want the shortest operator-style map from “extension installed” to “first compare
+          run really succeeded,” use the
+          <a href="./first-compare-guide.html">first compare guide</a>. It keeps the first-run
+          checklist, repair ladder, and login-gated explanation in one place.
         </p>
         <p>
           The supported install path today is the packaged GitHub Release zip. Browser-store
           submission materials are being kept ready, but GitHub Releases remains the supported
           install surface today.
         </p>
+        <div class="step-grid">
+          <section class="step-card">
+            <span class="step-number">01</span>
+            <h2>Load the extension</h2>
+            <p>Use the packaged release zip and skip local source setup on the first pass.</p>
+          </section>
+          <section class="step-card">
+            <span class="step-number">02</span>
+            <h2>Run one compare</h2>
+            <p>
+              Keep your trusted AI tabs signed in, open the side panel, and use the built-in
+              checklist before sending.
+            </p>
+          </section>
+          <section class="step-card">
+            <span class="step-number">03</span>
+            <h2>Keep the turn alive</h2>
+            <p>
+              Retry only the failures, export a readable artifact, or move to prompt packs before
+              touching builder docs.
+            </p>
+          </section>
+        </div>
         <div class="grid">
           <section class="subcard">
             <h2>What you need first</h2>
@@ -320,8 +361,12 @@
             <ol>
               <li>Download the latest packaged release zip and unzip it locally.</li>
               <li>
-                Load the extracted folder in <code>chrome://extensions</code> as an unpacked
-                extension.
+                Open <code>chrome://extensions</code>, enable Developer Mode, and use
+                <strong>Load unpacked</strong> on the extracted folder.
+              </li>
+              <li>
+                If the Prompt Switchboard icon is hidden, open the browser Extensions menu, pin it,
+                then click the toolbar icon to open the side panel.
               </li>
               <li>Open your supported AI tabs, then ask once from the side panel.</li>
             </ol>
@@ -334,17 +379,49 @@
             </p>
           </section>
           <section class="subcard">
-            <h2>Permission footprint</h2>
+            <h2>What you do next</h2>
             <ul>
-              <li><code>sidePanel</code> keeps the compare workspace inside the browser</li>
-              <li><code>activeTab</code>, <code>scripting</code>, and <code>tabs</code> let the extension drive supported AI tabs</li>
-              <li><code>storage</code> keeps sessions, settings, and selector cache local-first</li>
-              <li><code>http://127.0.0.1:48123/*</code> is reserved for the optional local MCP bridge</li>
-              <li>Host access is limited to supported AI chat surfaces and optional selector updates</li>
+              <li>Run one real compare turn from the side panel.</li>
+              <li>Retry only the failed models instead of replaying everything.</li>
+              <li>Export a readable compare summary or Markdown artifact.</li>
+              <li>Reuse prompt packs for the second run instead of starting blank.</li>
             </ul>
           </section>
         </div>
       </main>
+
+      <section class="card">
+        <h2>Real Chrome proof note</h2>
+        <p>
+          For day-to-day automated runtime proof, prefer Chromium or Chrome for Testing. Official
+          Google Chrome branded builds 137+ / 139+ no longer reliably auto-load unpacked
+          extensions from command-line flags.
+        </p>
+        <p>
+          If you are validating Prompt Switchboard in a real signed-in Chrome profile, keep that
+          profile open, go to <code>chrome://extensions</code>, enable Developer Mode, and use
+          <strong>Load unpacked</strong> on the extracted release folder. The real Chrome lane is a
+          manual proof lane, not the default automated runtime path.
+        </p>
+      </section>
+
+      <section class="card">
+        <h2>After the first compare works</h2>
+        <p>
+          Stay in the product lane first: copy a compare summary, export Markdown, retry only the
+          failed cards, or open <a href="./prompt-packs.html">prompt packs</a> for the next run.
+        </p>
+        <p>
+          Optional AI analysis is available too, but it still runs through a browser tab you already
+          trust. The default compare workflow does not require any hosted relay or separate account
+          layer.
+        </p>
+        <p>
+          If you are here for the builder lane, open the
+          <a href="./mcp-coding-agents.html">MCP agents page</a> only after the product path is
+          clear. The local MCP sidecar is secondary, not required for the first compare.
+        </p>
+      </section>
 
       <section class="card">
         <h2>Need the maintainer workflow instead?</h2>
@@ -359,7 +436,6 @@
         <p>
           Need more public-facing context before you install? Read the
           <a href="./supported-sites.html">supported sites</a>,
-          <a href="./mcp-coding-agents.html">MCP agents</a>,
           <a href="./trust-boundary.html">trust boundary</a>, and
           <a href="./faq.html">FAQ</a> pages.
         </p>
