@@ -22,7 +22,21 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
+      - name: Detect dependency graph support
+        id: dependency-graph
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          repo_json="$(gh api repos/${{ github.repository }})"
+          if echo "$repo_json" | jq -e '.security_and_analysis.dependency_graph.status == "enabled"' >/dev/null; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::Dependency graph is not enabled for this repository, so dependency review is being skipped instead of failing the pull request."
+          fi
+
       - name: Dependency review
+        if: steps.dependency-graph.outputs.enabled == 'true'
         uses: actions/dependency-review-action@2031cfc080254a8a887f58cffee85186f0e49e48 # v4.9.0
         with:
           fail-on-severity: high
