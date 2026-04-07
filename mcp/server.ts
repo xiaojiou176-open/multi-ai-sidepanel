@@ -194,7 +194,7 @@ export const registerPromptSwitchboardMcpSurface = (
     {
       title: 'Prompt Switchboard builder support matrix',
       description:
-        'Machine-readable truth for current supported, partial, starter-kit-only, and planned Prompt Switchboard builder and consumer bindings.',
+        'Machine-readable truth for current supported, partial, public-bundle-ready, and planned Prompt Switchboard builder and consumer bindings.',
       mimeType: 'application/json',
     },
     async () => ({

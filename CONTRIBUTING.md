@@ -81,7 +81,7 @@ these as the primary entrypoints:
 - `mcp/server.ts` for the public MCP tool/resource surface
 - `src/bridge/protocol.ts` for the shared command and payload contract
 - `src/substrate/api/contracts.ts` for the typed action/result contract
-- `mcp/integration-kits/` for the repo-shipped Codex / Claude Code strongest host kits plus the OpenCode / OpenClaw starter-kit generic MCP assets
+- `mcp/integration-kits/` for the repo-shipped Codex / Claude Code strongest host kits plus the OpenCode / OpenClaw public-bundle-ready packets and generic MCP starter assets
 - `docs/mcp-coding-agents.html` for the public-facing explanation of the MCP
   builder surface
 
@@ -207,24 +207,32 @@ npm run secrets:setup
 Husky is the Git hook entrypoint. The versioned `.pre-commit-config.yaml`
 remains the documented hook contract.
 
-## Required Verification Before a Pull Request
+## Verification Layers
 
-Run the repo-side machine gate:
+Treat Prompt Switchboard as a five-layer verification repo:
+
+| Layer | What it owns | Default command |
+| --- | --- | --- |
+| `pre-commit` | fast hygiene, root allowlist, host safety, sensitive-surface, placebo guard, brand guard | `git commit` runs the hook automatically, or use `npm run test:pre-commit` / `npm run precommit:run` to replay it |
+| `pre-push` | deterministic fast repo gate before sharing work; heavier packet/docs drift checks stay off this local default lane | `npm run test:pre-push` |
+| `hosted` | GitHub-hosted reproduction of the default repo verification pack | `npm run test:hosted` |
+| `nightly` | heavier deterministic audits that should stay off the normal local push path | `npm run test:nightly` |
+| `manual` | login-state-sensitive live proof, host-side GitHub truth, release closure, marketing captures, and store packets | see the manual wrapper commands below |
+
+The fast local contract before a pull request is:
 
 ```bash
-npm run verify:host-safety
+npm run test:pre-commit
 npm run verify:sensitive-surface
-npm run precommit:run
-npm run secrets:scan
-npm run test:ci
-npm run clean:runtime && npm run test:e2e:shell
+npm run test:pre-push
 ```
 
 ## CI Boundary
 
 Official CI for this repository runs on GitHub Hosted runners
-(`ubuntu-latest`). Local `npm run test:ci` is only a developer-side
-reproduction path for that hosted workflow.
+(`ubuntu-latest`). Local `npm run test:hosted` is the developer-side
+reproduction path for that hosted workflow. `npm run test:ci` is a compatibility
+alias of the same hosted lane.
 
 Keep deterministic shell E2E isolated from the real Chrome login-state lane:
 
@@ -235,7 +243,18 @@ Keep deterministic shell E2E isolated from the real Chrome login-state lane:
 - login-state-sensitive live flows stay outside default CI because they require
   a human-seeded browser profile
 
-Run these when relevant:
+Keep the manual lane separate from the default local and hosted paths. Use the
+wrapper commands first, then drop to the narrower single-purpose commands only
+when you need one specific manual proof:
+
+```bash
+npm run test:manual:host
+npm run test:manual:live
+npm run test:manual:release
+npm run test:manual:assets
+```
+
+If you need a narrower manual packet instead of the wrapper, use:
 
 ```bash
 npm run verify:host:doctor
@@ -285,6 +304,17 @@ Use `verify:release-baseline` before a public release, and refresh
 `marketing:assets` when the public-facing product visuals change.
 Use `verify:release-closure` after the release is published to confirm the live
 GitHub surface still matches the repo contract.
+
+Nightly repo audits should be deterministic but heavier than the default local
+push path. The current nightly pack is:
+
+```bash
+npm run test:nightly
+```
+
+That nightly lane keeps shell E2E, full history secret scans, integration-kit
+packet packing, store-readiness, and release-ready host packets off the normal
+pre-push path without deleting the checks.
 
 Treat `npm run test:live` as a maintainer-local Tier C proof path. It is
 intentionally not part of the public GitHub workflow surface because it depends
@@ -510,7 +540,7 @@ Before a public release or store submission:
   - `public/prompt-switchboard-icon-48.png`
   - `public/prompt-switchboard-icon-128.png`
 - keep `public/prompt-switchboard-icon.svg` for repo/web surfaces only; Chrome extension manifest icons must stay on PNG assets
-- keep `npm run secrets:scan:history`, `npm run test:ci`, and `npm run clean:runtime && npm run test:e2e:shell` green
+- keep `npm run test:pre-push` and `npm run test:nightly` green
 - run `npm run verify:release-baseline`
 - run `npm run verify:store-readiness`
 - publish the GitHub release before treating release-proof as closed

@@ -33,9 +33,11 @@ supported AI chat websites and shows the replies in one side panel.
 For release-sensitive work, keep the repo-side baseline green:
 
 ```bash
+npm run test:pre-commit
+npm run test:pre-push
+npm run test:hosted
 npm run secrets:scan:history
-npm run test:ci
-npm run clean:runtime && npm run test:e2e:shell
+npm run test:nightly
 ```
 
 Treat host-side verification as a separate live-repository check:

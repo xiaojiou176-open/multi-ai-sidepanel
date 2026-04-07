@@ -51,3 +51,11 @@ npm run release:host-kits
 
 That command writes packable artifacts and a local manifest under
 `dist/public-bundles/`.
+
+Treat `dist/public-bundles/` as the only canonical local artifact output for
+these packets.
+
+- root-level `prompt-switchboard-*.tgz` files are disposable leftovers, not the
+  supported artifact surface
+- regenerate packets with `npm run release:host-kits` instead of carrying loose
+  tarballs in the repo root

@@ -287,7 +287,7 @@
             When you want the shortest packet for one host instead of the whole truth ledger, open
             <a href="./mcp-host-packets.html">the host packets page</a>.
           </p>
-          <p>Official docs inspected for this page: 2026-04-06.</p>
+          <p>Official docs inspected for this page: 2026-04-07.</p>
         </section>
 
         <section class="card">
@@ -340,13 +340,13 @@
                   Prompt Switchboard does not yet ship a published OpenCode plugin package.
                 </td>
                 <td>
-                  Repo-owned public MCP starter bundle: the OpenCode config example, starter skill,
+                  Repo-owned public-bundle-ready packet: the OpenCode config example, starter skill,
                   plugin package scaffold, support matrix, public setup docs, placement hints, and
                   compare-first proof loop.
                 </td>
                 <td>
-                  Public starter bundle available now. Official OpenCode plugin listing not shipped
-                  yet.
+                  Public-bundle-ready packet available now. Official OpenCode plugin listing not
+                  shipped yet.
                 </td>
               </tr>
               <tr>
@@ -363,7 +363,7 @@
                   and compare-first proof loop.
                 </td>
                 <td>
-                  Public starter bundle available now. No published OpenClaw listing claimed.
+                  Public-bundle-ready packet available now. No published OpenClaw listing claimed.
                 </td>
               </tr>
             </tbody>
@@ -466,6 +466,7 @@
             <li><a href="https://docs.openclaw.ai/cli/mcp">OpenClaw MCP CLI docs</a></li>
             <li><a href="https://docs.openclaw.ai/plugins">OpenClaw plugin docs</a></li>
             <li><a href="https://docs.openclaw.ai/plugins/bundles">OpenClaw bundle docs</a></li>
+            <li><a href="https://modelcontextprotocol.io/registry">Official MCP Registry docs</a></li>
           </ul>
         </section>
 
@@ -476,7 +477,7 @@
               <h3>Already true now</h3>
               <ul>
                 <li>Prompt Switchboard itself is publicly installable through GitHub Releases.</li>
-                <li>Codex, Claude Code, OpenCode, and OpenClaw each have repo-owned public starter bundles.</li>
+                <li>Codex, Claude Code, OpenCode, and OpenClaw each have repo-owned public bundles.</li>
                 <li>Host packets now exist for Codex, Claude Code, OpenCode, and OpenClaw.</li>
                 <li>The builder support matrix is public in docs, JSON, and the MCP resource surface.</li>
                 <li>The builder proof loop is public and machine-readable.</li>
@@ -489,6 +490,7 @@
                 <li>Any future official Codex or Claude Code marketplace listing, if such a surface appears.</li>
                 <li>OpenCode plugin publication under an owner-controlled npm namespace.</li>
                 <li>Any future OpenClaw publication beyond the saved MCP registry flow already documented here.</li>
+                <li>Any official MCP Registry publication or listing submission.</li>
               </ul>
             </section>
           </div>
@@ -525,6 +527,12 @@
                 <td>Verify package URL, registry or listing URL, and install flow</td>
               </tr>
               <tr>
+                <td>Official MCP Registry</td>
+                <td>Registry submission, namespace authentication, and listing proof</td>
+                <td>Owner with namespace or domain authentication control</td>
+                <td>Verify registry URL, namespace proof, and the listed install surface</td>
+              </tr>
+              <tr>
                 <td>.ai or domain alias</td>
                 <td>DNS and registrar control</td>
                 <td>Owner with domain access</td>
@@ -534,7 +542,7 @@
           </table>
           <p>
             For the current repo truth, the strongest public distribution surface is the combination
-            of GitHub Releases, the public docs front door, and the repo-owned starter bundles under
+            of GitHub Releases, the public docs front door, and the repo-owned public bundles under
             <code>mcp/integration-kits/</code>.
           </p>
           <div class="grid grid-two">
@@ -561,6 +569,15 @@
           </div>
           <div class="grid grid-two" style="margin-top: 16px">
             <section class="subcard">
+              <h3>MCP Registry owner packet</h3>
+              <ol>
+                <li>Choose the exact registry surface the repo will claim and keep it aligned with the public distribution matrix.</li>
+                <li>Complete the official namespace authentication flow for the chosen registry entry.</li>
+                <li>Submit the Prompt Switchboard listing with the same install path this repo already documents.</li>
+                <li>Verify the public registry URL, namespace proof, and one install read-back path before changing public claims.</li>
+              </ol>
+            </section>
+            <section class="subcard">
               <h3>Browser store owner packet</h3>
               <ol>
                 <li>Keep the repo-side packet green with <code>npm run verify:store-readiness</code> and the current release bundle assets.</li>
@@ -574,6 +591,7 @@
               <ul>
                 <li>Namespace ownership, package publication, and registry listing creation.</li>
                 <li>Browser-store console access, listing submission, and review-state proof.</li>
+                <li>Official MCP Registry namespace authentication and listing publication.</li>
                 <li><code>.ai</code> / DNS / registrar control.</li>
                 <li>GitHub social preview final manual confirmation after front-door visuals change.</li>
               </ul>

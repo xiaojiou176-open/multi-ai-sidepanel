@@ -75,10 +75,6 @@ if (permissions.allowed_actions === 'selected') {
     findings.push('GitHub-owned actions are not allowed under selected-actions policy');
   }
 
-  if (!patterns.has('release-drafter/release-drafter@*')) {
-    findings.push('selected-actions policy is missing release-drafter/release-drafter@*');
-  }
-
   if (!patterns.has('softprops/action-gh-release@*')) {
     findings.push('selected-actions policy is missing softprops/action-gh-release@*');
   }

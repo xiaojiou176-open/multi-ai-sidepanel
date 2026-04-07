@@ -26,6 +26,7 @@ data/
 tmp/
 artifacts/
 *.local
+/prompt-switchboard-*.tgz
 .env
 .env.*
 *.njsproj

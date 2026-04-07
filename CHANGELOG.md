@@ -8,6 +8,24 @@ different version story.
 
 ## [Unreleased]
 
+### Changed
+
+- Slimmed the tracked README so the public front door links to the builder and
+  distribution ledgers instead of duplicating the full MCP support matrix, FAQ,
+  and workflow contract in two places.
+- Clarified the five-layer verification contract in `AGENTS.md` and
+  `CONTRIBUTING.md`, added an explicit `test:pre-commit` command, and kept the
+  hosted / nightly / manual lanes mapped to the existing script surface.
+- Updated the public distribution matrix to the latest official-docs check and
+  added the official MCP Registry as an external-only publication surface.
+- Removed automatic release-draft generation so the public release surface no
+  longer grows truth-ambiguous draft noise during closeout.
+
+### Fixed
+
+- Hardened repo-root hygiene so accidental host-kit `.tgz` artifacts are
+  cleaned automatically and do not linger outside `dist/public-bundles/`.
+
 ## [0.2.2] - 2026-04-05
 
 ### Added

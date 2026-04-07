@@ -1,4 +1,4 @@
-import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 
@@ -40,6 +40,15 @@ const manifest = {
   source_matrix: path.relative(repoRoot, matrixPath),
   artifacts: [],
 };
+
+const rootArtifactPattern =
+  /^prompt-switchboard-(codex-bundle|claude-code-bundle|opencode-plugin|openclaw-bundle)-.+\.tgz$/;
+for (const entry of readdirSync(repoRoot)) {
+  if (!rootArtifactPattern.test(entry)) {
+    continue;
+  }
+  rmSync(path.join(repoRoot, entry), { force: true });
+}
 
 for (const packet of packets) {
   const pack = spawnSync('npm', ['pack', packet.dir, '--pack-destination', distDir], {

@@ -38,6 +38,7 @@ const PROMPT =
   'Summarize the value of deterministic testing in one sentence.';
 const TERMINAL_TIMEOUT_MS = Number(process.env.PROMPT_SWITCHBOARD_LIVE_TIMEOUT_MS || '90000');
 const CHATGPT_HOSTNAMES = getModelConfig('ChatGPT').hostnames;
+const CHATGPT_CHALLENGE_PATTERN = /cloudflare|verifying|cdn-cgi\/challenge-platform/i;
 
 const inspectChatGptSessionState = async (context: BrowserContext) => {
   const chatGptPages = context.pages().filter((page) => {
@@ -274,6 +275,11 @@ test.describe('live smoke', () => {
       },
       async (context, effectiveRun) => {
         const chatGptSessionState = await inspectChatGptSessionState(context);
+        if (CHATGPT_CHALLENGE_PATTERN.test(chatGptSessionState.bodyPreview)) {
+          throw new Error(
+            `Prompt Switchboard live smoke found ChatGPT challenge-gated in the active browser profile: ${JSON.stringify(chatGptSessionState)}`
+          );
+        }
         if (chatGptSessionState.loginButtons.length > 0) {
           throw new Error(
             `Prompt Switchboard live smoke found ChatGPT still login-gated in the active real browser profile: ${JSON.stringify(chatGptSessionState)}`
@@ -410,9 +416,16 @@ test.describe('live smoke', () => {
           return true;
         }
 
-        const extensionPage = context.pages().find((page) =>
+        let extensionPage = context.pages().find((page) =>
           page.url().startsWith(`chrome-extension://${extensionId}/index.html`)
         );
+
+        if (!extensionPage) {
+          extensionPage = await context.newPage();
+          await extensionPage.goto(`chrome-extension://${extensionId}/index.html`, {
+            waitUntil: 'domcontentloaded',
+          });
+        }
 
         if (!extensionPage) {
           throw new Error(

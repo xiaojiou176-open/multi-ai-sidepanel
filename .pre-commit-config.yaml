@@ -63,7 +63,7 @@ repos:
         stages: [manual]
       - id: push-gate
         name: push-gate
-        entry: npm run test:push-gate
+        entry: npm run test:pre-push
         language: system
         pass_filenames: false
         stages: [pre-push]

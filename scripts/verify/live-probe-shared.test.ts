@@ -1,10 +1,11 @@
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import {
   buildLiveDiagnosis,
   classifyExtensionSurfaceProbeFailure,
+  findPromptSwitchboardExtensionId,
   isPromptSwitchboardManifestIdentity,
   resolveLiveProbeConfig,
   resolveLiveProbeBlockers,
@@ -66,6 +67,86 @@ describe('live-probe-shared', () => {
         sidePanelDefaultPath: null,
       })
     ).toBe(false);
+  });
+
+  it('prefers a live extension page before waiting on service workers', async () => {
+    const runtimeId = 'abcdefghijklmnopabcdefghijklmnop';
+    const context = {
+      pages: () =>
+        [
+          {
+            url: () => `chrome-extension://${runtimeId}/index.html`,
+            evaluate: async () => ({
+              runtimeId,
+              manifestName: 'Prompt Switchboard',
+              optionsPage: 'settings.html',
+              sidePanelDefaultPath: 'index.html',
+              href: `chrome-extension://${runtimeId}/index.html`,
+              localType: 'object',
+            }),
+          },
+        ],
+      serviceWorkers: () =>
+        [
+          {
+            url: () => `chrome-extension://${runtimeId}/background.js`,
+            evaluate: () => new Promise(() => {}),
+          },
+        ],
+    } as const;
+
+    await expect(findPromptSwitchboardExtensionId(context as never)).resolves.toBe(runtimeId);
+  });
+
+  it('times out a stalled extension page probe and falls back to the service worker identity', async () => {
+    vi.useFakeTimers();
+    const runtimeId = 'abcdefghijklmnopabcdefghijklmnop';
+    const context = {
+      pages: () =>
+        [
+          {
+            url: () => `chrome-extension://${runtimeId}/index.html`,
+            evaluate: () => new Promise(() => {}),
+          },
+        ],
+      serviceWorkers: () =>
+        [
+          {
+            url: () => `chrome-extension://${runtimeId}/background.js`,
+            evaluate: async () => ({
+              runtimeId,
+              manifestName: 'Prompt Switchboard',
+              optionsPage: 'settings.html',
+              sidePanelDefaultPath: 'index.html',
+            }),
+          },
+        ],
+    } as const;
+
+    const pendingIdentity = findPromptSwitchboardExtensionId(context as never);
+    await vi.advanceTimersByTimeAsync(1_600);
+    await expect(pendingIdentity).resolves.toBe(runtimeId);
+    vi.useRealTimers();
+  });
+
+  it('falls back to the repo-owned worker loader url when service-worker evaluation stalls', async () => {
+    vi.useFakeTimers();
+    const runtimeId = 'abcdefghijklmnopabcdefghijklmnop';
+    const context = {
+      pages: () => [],
+      serviceWorkers: () =>
+        [
+          {
+            url: () => `chrome-extension://${runtimeId}/service-worker-loader.js`,
+            evaluate: () => new Promise(() => {}),
+          },
+        ],
+    } as const;
+
+    const pendingIdentity = findPromptSwitchboardExtensionId(context as never);
+    await vi.advanceTimersByTimeAsync(1_600);
+    await expect(pendingIdentity).resolves.toBe(runtimeId);
+    vi.useRealTimers();
   });
 
   it('surfaces unavailable extension inspection as a probe blocker without hiding site readiness', () => {
