@@ -18,6 +18,7 @@ const extensionIdCachePath = path.resolve(
   '.runtime-cache',
   'live-extension-id.txt'
 );
+const E2E_HEADED = process.env.PROMPT_SWITCHBOARD_E2E_HEADED === '1';
 
 const resolveExtensionPath = (): string => {
   const fromEnv = process.env.EXTENSION_PATH;
@@ -82,8 +83,8 @@ const attachDomSnapshot = async (target: Page, testInfo: TestInfo) => {
   }
 };
 
-test.afterEach(async ({ page: basePage }, testInfo) => {
-  void basePage;
+test.afterEach(async ({ browserName: _browserName }, testInfo) => {
+  void _browserName;
   if (page && testInfo.status !== testInfo.expectedStatus) {
     await attachDomSnapshot(page, testInfo);
   }
@@ -94,10 +95,10 @@ test.afterEach(async ({ page: basePage }, testInfo) => {
   context = null;
 });
 
-test('sidepanel renders and handles core flow', async ({ page: basePage }, testInfo) => {
+test('sidepanel renders and handles core flow', async ({ browserName: _browserName }, testInfo) => {
+  void _browserName;
   // This scenario exercises sidepanel, settings, storage migration, and a full persistent-context restart.
   test.setTimeout(180_000);
-  await basePage.close();
   const extensionPath = resolveExtensionPath();
   expect(fs.existsSync(extensionPath)).toBe(true);
 
@@ -105,7 +106,8 @@ test('sidepanel renders and handles core flow', async ({ page: basePage }, testI
   const userDataDir = createPersistentUserDataDir(testInfo);
   const launchContext = async () =>
     chromium.launchPersistentContext(userDataDir, {
-      headless: false,
+      channel: 'chromium',
+      headless: !E2E_HEADED,
       args: [`--disable-extensions-except=${extensionPath}`, `--load-extension=${extensionPath}`],
     });
 

@@ -28,7 +28,7 @@ const runShellE2E = () => {
 const steps = [
   () => runNpm('clean:runtime'),
   () => runNpm('secrets:scan:history'),
-  () => runNpm('test:ci'),
+  () => runNpm('test:hosted'),
   () => runNpm('verify:store-readiness'),
   () => runShellE2E(),
 ];

@@ -71,6 +71,13 @@ const autoCleanupEntries = [
   { entry: 'coverage-tmp', reason: 'repo-owned root coverage scratch' },
   { entry: 'coverage-split', reason: 'repo-owned root coverage scratch' },
 ];
+const autoCleanupPatterns = [
+  {
+    pattern:
+      /^prompt-switchboard-(codex-bundle|claude-code-bundle|opencode-plugin|openclaw-bundle)-.+\.tgz$/,
+    reason: 'repo-owned host-kit artifact should live under dist/public-bundles',
+  },
+];
 
 for (const { entry, reason } of autoCleanupEntries) {
   const fullPath = path.join(repoRoot, entry);
@@ -79,6 +86,15 @@ for (const { entry, reason } of autoCleanupEntries) {
   }
   rmSync(fullPath, { recursive: true, force: true });
   console.log(`[root-allowlist] removed ${reason}: ${entry}`);
+}
+
+for (const entry of readdirSync(repoRoot)) {
+  const matchedPattern = autoCleanupPatterns.find(({ pattern }) => pattern.test(entry));
+  if (!matchedPattern) {
+    continue;
+  }
+  rmSync(path.join(repoRoot, entry), { recursive: true, force: true });
+  console.log(`[root-allowlist] removed ${matchedPattern.reason}: ${entry}`);
 }
 
 for (const entry of readdirSync(repoRoot)) {

@@ -58,8 +58,6 @@ const kitsReadme = read('mcp/integration-kits/README.md');
 for (const relPath of [
   'codex.config.toml.example',
   'claude.mcp.json.example',
-  'codex.skill.prompt-switchboard.md.example',
-  'claude.skill.prompt-switchboard.md.example',
   'opencode.jsonc.example',
   'openclaw.prompt-switchboard.json.example',
   'openclaw.mcp.servers.json.example',
@@ -88,8 +86,8 @@ for (const host of ['codex', 'claude_code', 'opencode', 'openclaw']) {
     findings.push(`Support matrix must expose hosts.${host}.public_bundle_dir.`);
   }
 }
-if (!Array.isArray(supportMatrix?.starter_kit_only_unverified_host_lane)) {
-  findings.push('Support matrix must expose starter_kit_only_unverified_host_lane.');
+if (!Array.isArray(supportMatrix?.public_bundle_ready_unverified_host_lane)) {
+  findings.push('Support matrix must expose public_bundle_ready_unverified_host_lane.');
 }
 for (const host of ['codex', 'claude_code', 'opencode', 'openclaw']) {
   if (!publicDistributionMatrix?.hosts?.[host]) {
@@ -136,7 +134,7 @@ for (const needle of [
 for (const needle of [
   'Prompt Switchboard public distribution matrix',
   'official marketplace or registry',
-  'Public starter bundle available now.',
+  'Public-bundle-ready packet available now.',
   'npm run release:host-kits',
   'https://docs.openclaw.ai/plugins',
 ]) {

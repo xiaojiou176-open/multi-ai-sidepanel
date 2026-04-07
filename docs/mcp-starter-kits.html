@@ -176,11 +176,11 @@
             <tbody>
               <tr><td>Codex</td><td>Strongest repo-specific host path today</td><td><code>codex.config.toml.example</code></td><td>Paste it into the Codex MCP server section in your <code>config.toml</code>.</td></tr>
               <tr><td>Claude Code</td><td>Strongest repo-specific host path today</td><td><code>claude.mcp.json.example</code></td><td>Paste it into your Claude Code MCP config such as <code>.mcp.json</code>.</td></tr>
-              <tr><td>OpenCode</td><td>Compatibility-note setup through its generic MCP client flow</td><td><code>opencode.jsonc.example</code>, <code>opencode.skill.prompt-switchboard.md.example</code></td><td>Save it as a project-root <code>opencode.jsonc</code> inside your Prompt Switchboard clone.</td></tr>
-              <tr><td>OpenClaw</td><td>Starter-kit setup through generic MCP config or registry usage, not a verified repo-owned host lane</td><td><code>openclaw.mcp.servers.json.example</code>, <code>openclaw.mcp.set.example.sh</code>, <code>openclaw.skill.prompt-switchboard.md.example</code></td><td>Use <code>openclaw mcp set</code> or place the server definition under <code>mcp.servers</code>.</td></tr>
+              <tr><td>OpenCode</td><td>Compatibility-note setup plus a public-ready bundle packet through its generic MCP client flow</td><td><code>opencode.jsonc.example</code>, <code>opencode.skill.prompt-switchboard.md.example</code>, <code>public-bundles/opencode-plugin/</code></td><td>Save it as a project-root <code>opencode.jsonc</code> inside your Prompt Switchboard clone or publish the packet later.</td></tr>
+              <tr><td>OpenClaw</td><td>Starter-kit setup plus a public-ready bundle packet through generic MCP config or registry usage, not a verified repo-owned host lane</td><td><code>openclaw.mcp.servers.json.example</code>, <code>openclaw.mcp.set.example.sh</code>, <code>openclaw.skill.prompt-switchboard.md.example</code>, <code>public-bundles/openclaw-bundle/</code></td><td>Use <code>openclaw mcp set</code> or place the server definition under <code>mcp.servers</code>, or publish the packet later.</td></tr>
             </tbody>
           </table>
-          <p>Codex and Claude Code remain the repo's strongest documented host bindings. OpenCode and OpenClaw are real MCP-capable ecosystem surfaces, but in this repo they still live below the “verified host lane” bar.</p>
+          <p>Codex and Claude Code remain the repo's strongest documented host bindings. OpenCode and OpenClaw are real MCP-capable ecosystem surfaces, and this repo now ships public-ready packets for them, but they still live below the “verified host lane” bar.</p>
           <p>The machine-readable version of this matrix lives in <code>mcp/integration-kits/support-matrix.json</code> and is also exposed by the MCP resource <code>prompt-switchboard://builder/support-matrix</code>.</p>
           <p>The public-facing bundle and listing truth now also lives on <a href="./public-distribution-matrix.html">the public distribution matrix</a> and the MCP resource <code>prompt-switchboard://builder/public-distribution</code>, so you can quickly tell the difference between “copyable now” and “officially listed already”.</p>
           <p>When you want a one-host install packet instead of the whole matrix, use <a href="./mcp-host-packets.html">the host packets page</a>.</p>
@@ -268,7 +268,7 @@ cwd = "/absolute/path/to/multi-ai-sidepanel"</pre>
     }
   }
 }</pre>
-          <p>OpenCode's official docs support local MCP server configuration under <code>mcp</code>. OpenClaw's official docs support both <code>openclaw mcp serve</code> and an OpenClaw-managed MCP registry under <code>mcp.servers</code>. These examples cover only the generic config path. The same folder also carries companion skill templates for all four documented hosts. None of these files claim a verified Prompt Switchboard host lane, plugin package, or deeper workflow proof.</p>
+          <p>OpenCode's official docs support local MCP server configuration under <code>mcp</code>. OpenClaw's official docs support both <code>openclaw mcp serve</code> and an OpenClaw-managed MCP registry under <code>mcp.servers</code>. These examples cover the generic config path, and the same folder also carries public-ready bundle packets plus companion skill templates for all four documented hosts. None of these files claim a verified Prompt Switchboard host lane, published plugin package, or deeper workflow proof.</p>
           <p>If you want the quickest honest reading of current support, use the starter-kits README for prose and the support-matrix JSON or MCP resource for automation-friendly truth, including per-host asset paths, placement hints, and the first MCP calls to make after setup.</p>
         </section>
         <section class="card">
@@ -278,7 +278,7 @@ cwd = "/absolute/path/to/multi-ai-sidepanel"</pre>
               <tr><th>Asset</th><th>Why it exists</th></tr>
             </thead>
             <tbody>
-              <tr><td><code>support-matrix.json</code></td><td>Machine-readable truth split for supported, partial, starter-kit-only, and planned host surfaces.</td></tr>
+              <tr><td><code>support-matrix.json</code></td><td>Machine-readable truth split for supported, partial, public-bundle-ready, and planned host surfaces.</td></tr>
               <tr><td><code>codex.skill.prompt-switchboard.md.example</code></td><td>Starter skill prompt for Codex sessions that want the standard compare-first MCP loop.</td></tr>
               <tr><td><code>claude.skill.prompt-switchboard.md.example</code></td><td>Starter skill prompt for Claude Code sessions that want the same compare-first flow.</td></tr>
               <tr><td><code>opencode.skill.prompt-switchboard.md.example</code></td><td>Starter skill prompt for OpenCode sessions that want a compare-first MCP loop.</td></tr>

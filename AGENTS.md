@@ -57,18 +57,20 @@ Root `AGENTS.md` and `CLAUDE.md` are intentionally tracked.
 
 ## Verification Baseline
 
-Use these repo-side commands before release-sensitive changes:
+Keep verification split by layer before release-sensitive changes:
 
 ```bash
-npm run verify:host-safety
-npm run verify:sensitive-surface
-npm run secrets:scan:history
-npm run test:ci
-npm run clean:runtime && npm run test:e2e:shell
+npm run test:pre-commit
+npm run test:pre-push
+npm run test:hosted
+npm run test:nightly
+npm run test:manual:host
+npm run test:manual:release
 ```
 
 Official CI for this repository stays on GitHub Hosted runners (`ubuntu-latest`).
-Local `npm run test:ci` is a developer-side reproduction command, not a
+Local `npm run test:hosted` is the developer-side reproduction command for the
+default hosted lane. `npm run test:ci` remains a compatibility alias, not a
 self-hosted runner contract.
 
 Treat host-side checks as a separate verification class for the live GitHub

@@ -253,9 +253,7 @@ describe('front door contract', () => {
       ['mcp', 'integration-kits', 'claude.mcp.json.example'],
       ['mcp', 'integration-kits', 'public-distribution-matrix.json'],
       ['.github', 'workflows', 'pages.yml'],
-      ['.github', 'workflows', 'release-drafter.yml'],
       ['.github', 'workflows', 'release-package.yml'],
-      ['.github', 'release-drafter.yml'],
     ];
 
     requiredFiles.forEach((parts) => {

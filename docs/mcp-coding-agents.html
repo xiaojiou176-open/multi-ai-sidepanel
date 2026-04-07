@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Prompt Switchboard MCP setup for Codex and Claude Code, plus OpenCode / OpenClaw starter kits</title>
+    <title>Prompt Switchboard MCP setup for Codex and Claude Code, plus OpenCode / OpenClaw public packets</title>
     <meta
       name="description"
-      content="See how Prompt Switchboard works with Codex and Claude Code through a governed MCP compare, retry, export, analysis, and next-step workflow surface, plus starter-kit generic MCP paths for OpenCode and OpenClaw."
+      content="See how Prompt Switchboard works with Codex and Claude Code through a governed MCP compare, retry, export, analysis, and next-step workflow surface, plus public-bundle-ready MCP paths for OpenCode and OpenClaw."
     />
     <link
       rel="canonical"
@@ -19,7 +19,7 @@
     />
     <meta
       property="og:description"
-      content="Prompt Switchboard exposes a local MCP sidecar so Codex and Claude Code can compare answers, retry failed models, export results, run AI Compare Analyst, and inspect the built-in next-step workflow inside browser workflows, while OpenCode and OpenClaw now get starter-kit generic MCP paths without being overclaimed as verified host lanes."
+      content="Prompt Switchboard exposes a local MCP sidecar so Codex and Claude Code can compare answers, retry failed models, export results, run AI Compare Analyst, and inspect the built-in next-step workflow inside browser workflows, while OpenCode and OpenClaw now get public-bundle-ready MCP paths without being overclaimed as verified host lanes."
     />
     <meta
       property="og:image"
@@ -32,11 +32,11 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta
       name="twitter:title"
-      content="Prompt Switchboard MCP setup for Codex and Claude Code, plus OpenCode / OpenClaw starter kits"
+      content="Prompt Switchboard MCP setup for Codex and Claude Code, plus OpenCode / OpenClaw public packets"
     />
     <meta
       name="twitter:description"
-      content="A governed MCP compare and next-step workflow surface for Codex and Claude Code browser workflows, plus starter-kit generic MCP paths for OpenCode and OpenClaw."
+      content="A governed MCP compare and next-step workflow surface for Codex and Claude Code browser workflows, plus public-bundle-ready MCP paths for OpenCode and OpenClaw."
     />
     <meta
       name="twitter:image"
@@ -46,8 +46,8 @@
       {
         "@context": "https://schema.org",
         "@type": "TechArticle",
-        "headline": "Prompt Switchboard MCP setup for Codex and Claude Code, plus OpenCode / OpenClaw starter kits",
-        "description": "Prompt Switchboard exposes a local MCP sidecar so Codex and Claude Code can run compare, retry, export, analysis, and next-step workflow actions without turning the product into generic browser automation, and now ships starter-kit generic MCP paths for OpenCode and OpenClaw.",
+        "headline": "Prompt Switchboard MCP setup for Codex and Claude Code, plus OpenCode / OpenClaw public packets",
+        "description": "Prompt Switchboard exposes a local MCP sidecar so Codex and Claude Code can run compare, retry, export, analysis, and next-step workflow actions without turning the product into generic browser automation, and now ships public-bundle-ready MCP paths for OpenCode and OpenClaw.",
         "author": {
           "@type": "Organization",
           "name": "Prompt Switchboard"
@@ -276,7 +276,7 @@
       <main>
 	      <section class="card">
 	        <span class="chip">Builder surface</span>
-	        <h1>Use Prompt Switchboard with Codex and Claude Code MCP workflows, plus OpenCode / OpenClaw starter kits.</h1>
+	        <h1>Use Prompt Switchboard with Codex and Claude Code MCP workflows, plus OpenCode / OpenClaw public packets.</h1>
 	        <p>
           Prompt Switchboard is not a generic AI assistant and not a raw browser
           automation port. It is a local-first compare workspace that exposes a
@@ -286,14 +286,14 @@
         </p>
         <p>
           Codex and Claude Code are the strongest repo-specific bindings in this
-          release. OpenCode and OpenClaw can now use repo-shipped starter kits
+          release. OpenCode and OpenClaw can now use repo-shipped public-ready packets
           through their generic MCP client surfaces, but they still stay
           outside the main verified-host story.
         </p>
         <p>
           The public distribution matrix now separates public bundle truth from
           official marketplace or registry truth, so this page does not have to
-          blur "starter bundle shipped" with "official listing shipped."
+          blur "public packet shipped" with "official listing shipped."
         </p>
         <p>
           When you want the shortest exact install packet for one host instead
@@ -494,15 +494,15 @@
         </p>
         <p>
           OpenCode, OpenClaw, and other MCP-capable agent runtimes can still
-          connect, but Prompt Switchboard should describe them as starter-kit
-          generic MCP paths, not as the core verified-host story.
+          connect, but Prompt Switchboard should describe them as
+          public-bundle-ready generic MCP paths, not as the core verified-host story.
         </p>
         <p>
           That also means names like <strong>OpenCode</strong> and
           <strong>OpenClaw</strong> stay in the generic-MCP lane for now. They
           are real MCP-capable ecosystem surfaces, and this repo now ships
-          starter assets for them, but Prompt Switchboard still does not claim a
-          fully verified repo-owned host lane there.
+          public-ready packets and starter assets for them, but Prompt Switchboard
+          still does not claim a fully verified repo-owned host lane there.
         </p>
         <table aria-label="Prompt Switchboard builder support matrix">
           <thead>
@@ -522,11 +522,11 @@
             </tr>
             <tr>
               <td>Repo-shipped integration kits</td>
-              <td>Supported now for Codex and Claude Code, with starter-kit generic MCP assets for OpenCode and OpenClaw</td>
+              <td>Supported now for Codex and Claude Code, with public bundle-ready MCP packets for OpenCode and OpenClaw</td>
             </tr>
             <tr>
               <td>OpenCode / OpenClaw host paths</td>
-              <td>Starter-kit only through generic MCP client flows until a tested repo-owned host lane exists</td>
+              <td>Public-bundle-ready generic MCP client flows until a tested repo-owned host lane exists</td>
             </tr>
             <tr>
               <td>Repo-local operator helper</td>
@@ -550,59 +550,26 @@
 
       <section class="card">
         <h2>Current host setup routes</h2>
-        <table aria-label="Current MCP host setup routes">
-          <thead>
-            <tr>
-              <th>Host</th>
-              <th>Current truth</th>
-              <th>Official client path</th>
-              <th>Repo-owned starter asset</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Codex</td>
-              <td>Repo-specific strongest path</td>
-              <td><code>config.toml</code> or <code>codex mcp add</code></td>
-              <td><code>mcp/integration-kits/codex.config.toml.example</code></td>
-            </tr>
-            <tr>
-              <td>Claude Code</td>
-              <td>Repo-specific strongest path</td>
-              <td><code>.mcp.json</code> or <code>claude mcp add</code></td>
-              <td><code>mcp/integration-kits/claude.mcp.json.example</code></td>
-            </tr>
-            <tr>
-              <td>OpenCode</td>
-              <td>Starter-kit only / generic MCP client flow</td>
-              <td>project-root <code>opencode.json</code> / <code>opencode.jsonc</code></td>
-              <td><code>mcp/integration-kits/opencode.jsonc.example</code></td>
-            </tr>
-            <tr>
-              <td>OpenClaw</td>
-              <td>Starter-kit only / generic MCP registry flow</td>
-              <td><code>openclaw mcp set &lt;name&gt; &lt;json&gt;</code></td>
-              <td><code>mcp/integration-kits/openclaw.prompt-switchboard.json.example</code></td>
-            </tr>
-          </tbody>
-        </table>
         <p>
-          The OpenCode and OpenClaw assets are intentionally narrower than the
-          Codex and Claude Code kits. They are real repo-owned starter paths for
-          generic MCP use, but they do <strong>not</strong> mean Prompt
-          Switchboard already has a fully verified repo-specific host lane there.
+          Keep this page focused on the builder contract, not the copy-paste setup
+          steps for every host. The exact packet for one host now lives on the
+          <a href="./mcp-host-packets.html">host packets page</a>, while the
+          machine-readable placement hints, starter assets, public-ready packets, and first-call flow
+          live in
+          <a href="https://github.com/xiaojiou176-open/multi-ai-sidepanel/blob/main/mcp/integration-kits/support-matrix.json">support-matrix.json</a>.
         </p>
         <p>
-          If you want the copy-paste page instead of the deeper contract page,
-          use <a href="./mcp-starter-kits.html">the MCP starter kits guide</a>.
+          Use <a href="./mcp-starter-kits.html">the MCP starter kits guide</a> when you
+          want the copy-paste starter assets, and use
+          <a href="./public-distribution-matrix.html">the public distribution matrix</a>
+          when you need the honest split between repo-owned packets and official
+          published listings.
         </p>
         <p>
-          If you need the public-facing install and listing truth, use
-          <a href="./public-distribution-matrix.html">the public distribution matrix</a>.
-        </p>
-        <p>
-          If you want the shortest one-host packet instead of the deeper contract page, use
-          <a href="./mcp-host-packets.html">the host packets page</a>.
+          The short version stays the same: Codex and Claude Code are the strongest
+          repo-specific lanes today; OpenCode and OpenClaw remain narrower
+          public-bundle-ready / unverified-host paths until a verified repo-owned host
+          lane is proven there.
         </p>
       </section>
 

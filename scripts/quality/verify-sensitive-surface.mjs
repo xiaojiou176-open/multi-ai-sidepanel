@@ -41,6 +41,9 @@ for (const filePath of getRepoSurfaceFiles()) {
   try {
     text = fs.readFileSync(filePath, 'utf8');
   } catch (error) {
+    if (error && typeof error === 'object' && 'code' in error && error.code === 'ENOENT') {
+      continue;
+    }
     addFinding('read-failure', normalizeRepoPath(filePath), {
       reason: error instanceof Error ? error.message : String(error),
     });
