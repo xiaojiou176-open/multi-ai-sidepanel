@@ -3,6 +3,23 @@
   "version": "0.2.2",
   "license": "MIT",
   "description": "Compare-first Prompt Switchboard MCP bundle for Codex and compatible bundle consumers such as OpenClaw.",
+  "keywords": [
+    "prompt-switchboard",
+    "codex",
+    "mcp",
+    "bundle",
+    "compare-first",
+    "local-first"
+  ],
+  "homepage": "https://github.com/xiaojiou176-open/multi-ai-sidepanel/tree/main/mcp/integration-kits/public-bundles/codex-bundle",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xiaojiou176-open/multi-ai-sidepanel.git",
+    "directory": "mcp/integration-kits/public-bundles/codex-bundle"
+  },
+  "bugs": {
+    "url": "https://github.com/xiaojiou176-open/multi-ai-sidepanel/issues"
+  },
   "files": [
     ".codex-plugin",
     ".mcp.json",

@@ -3,6 +3,23 @@
   "version": "0.2.2",
   "license": "MIT",
   "description": "Prompt Switchboard OpenClaw MCP bundle packet with registry snippets, placement hints, and compare-first smoke notes.",
+  "keywords": [
+    "prompt-switchboard",
+    "openclaw",
+    "mcp",
+    "bundle",
+    "compare-first",
+    "local-first"
+  ],
+  "homepage": "https://github.com/xiaojiou176-open/multi-ai-sidepanel/tree/main/mcp/integration-kits/public-bundles/openclaw-bundle",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xiaojiou176-open/multi-ai-sidepanel.git",
+    "directory": "mcp/integration-kits/public-bundles/openclaw-bundle"
+  },
+  "bugs": {
+    "url": "https://github.com/xiaojiou176-open/multi-ai-sidepanel/issues"
+  },
   "files": [
     ".codex-plugin",
     "openclaw.prompt-switchboard.json",

@@ -4,6 +4,23 @@
   "type": "module",
   "license": "MIT",
   "description": "Prompt Switchboard bootstrap plugin for OpenCode plus a compare-first MCP packet.",
+  "keywords": [
+    "prompt-switchboard",
+    "opencode",
+    "mcp",
+    "plugin",
+    "compare-first",
+    "local-first"
+  ],
+  "homepage": "https://github.com/xiaojiou176-open/multi-ai-sidepanel/tree/main/mcp/integration-kits/public-bundles/opencode-plugin",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xiaojiou176-open/multi-ai-sidepanel.git",
+    "directory": "mcp/integration-kits/public-bundles/opencode-plugin"
+  },
+  "bugs": {
+    "url": "https://github.com/xiaojiou176-open/multi-ai-sidepanel/issues"
+  },
   "dependencies": {
     "@opencode-ai/plugin": "*"
   },
