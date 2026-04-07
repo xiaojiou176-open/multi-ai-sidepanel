@@ -134,6 +134,16 @@
           <li>Prompt Switchboard still stays local-first, compare-first, and browser-native. This packet does not turn it into a hosted relay, SDK, or generic automation platform.</li>
         </ul>
       </section>
+      <section class="card">
+        <h2>Owner-run publish packet</h2>
+        <ol>
+          <li>Run <code>npm run release:host-kits</code> and verify the OpenCode packet archive under <code>dist/public-bundles/</code>.</li>
+          <li>Choose the owner-controlled npm package name and namespace for the OpenCode plugin package.</li>
+          <li>Publish <code>mcp/integration-kits/public-bundles/opencode-plugin/</code> to npm.</li>
+          <li>Install it through the official OpenCode plugin flow and verify one compare-first smoke path.</li>
+          <li>Only after the package URL and install proof exist should you update public docs to claim Prompt Switchboard is publicly published for OpenCode.</li>
+        </ol>
+      </section>
     </div>
   </body>
 </html>

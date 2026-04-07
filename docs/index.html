@@ -10,13 +10,10 @@
     />
     <link rel="canonical" href="https://xiaojiou176-open.github.io/multi-ai-sidepanel/" />
     <meta property="og:type" content="website" />
-    <meta
-      property="og:title"
-      content="Prompt Switchboard | Compare-first local AI workspace"
-    />
+    <meta property="og:title" content="Prompt Switchboard | Compare-first local AI workspace" />
     <meta
       property="og:description"
-      content="Ask once, compare ChatGPT, Gemini, Perplexity, Qwen, and Grok side by side, keep the trust boundary in your browser, and connect the governed MCP sidecar for Codex or Claude Code browser workflows when you need the builder lane."
+      content="Ask once, compare ChatGPT, Gemini, Perplexity, Qwen, and Grok side by side, keep the trust boundary in your browser, and move from install to first compare without tab juggling. The governed MCP sidecar stays optional after the product path is already clear."
     />
     <meta property="og:url" content="https://xiaojiou176-open.github.io/multi-ai-sidepanel/" />
     <meta
@@ -28,13 +25,10 @@
       content="Prompt Switchboard social preview showing the compare-first browser extension."
     />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta
-      name="twitter:title"
-      content="Prompt Switchboard | Compare-first local AI workspace"
-    />
+    <meta name="twitter:title" content="Prompt Switchboard | Compare-first local AI workspace" />
     <meta
       name="twitter:description"
-      content="Compare-first, local-first, browser-native AI compare workspace for ChatGPT, Gemini, Perplexity, Qwen, and Grok, plus a governed MCP sidecar for Codex and Claude Code browser workflows."
+      content="Compare-first, local-first, browser-native AI compare workspace for ChatGPT, Gemini, Perplexity, Qwen, and Grok in one browser side panel."
     />
     <meta
       name="twitter:image"
@@ -47,7 +41,7 @@
         "name": "Prompt Switchboard",
         "applicationCategory": "BrowserApplication",
         "operatingSystem": "Chrome-compatible browsers",
-        "description": "Compare-first, local-first, browser-native AI compare workspace for ChatGPT, Gemini, Perplexity, Qwen, and Grok in one browser side panel, with an optional governed MCP sidecar for Codex and Claude Code browser workflows.",
+        "description": "Compare-first, local-first, browser-native AI compare workspace for ChatGPT, Gemini, Perplexity, Qwen, and Grok in one browser side panel, with a governed MCP sidecar for Codex and Claude Code browser workflows.",
         "url": "https://xiaojiou176-open.github.io/multi-ai-sidepanel/",
         "image": "https://xiaojiou176-open.github.io/multi-ai-sidepanel/assets/prompt-switchboard-social-preview.png",
         "screenshot": [
@@ -73,18 +67,21 @@
     <style>
       :root {
         color-scheme: light;
-        --bg: #fffaf6;
-        --panel: rgba(255, 255, 255, 0.86);
+        --bg: #fcf6ef;
+        --panel: rgba(255, 252, 249, 0.88);
         --panel-strong: #ffffff;
-        --ink: #0f172a;
-        --muted: #475569;
-        --soft: #f8e7ef;
-        --line: rgba(251, 113, 133, 0.16);
-        --brand-a: #d946ef;
-        --brand-b: #f43f5e;
-        --brand-c: #f59e0b;
+        --ink: #18181b;
+        --muted: #57534e;
+        --soft: #f7e8dc;
+        --line: rgba(148, 98, 68, 0.14);
+        --brand-a: #b45309;
+        --brand-b: #ea580c;
+        --brand-c: #d97706;
         --success: #047857;
         --shadow: 0 30px 80px rgba(15, 23, 42, 0.08);
+        --display-font:
+          'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', 'Baskerville', Georgia, serif;
+        --body-font: 'Avenir Next', 'Segoe UI', sans-serif;
       }
 
       * {
@@ -93,12 +90,12 @@
 
       body {
         margin: 0;
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        font-family: var(--body-font);
         color: var(--ink);
         background:
-          radial-gradient(circle at top left, rgba(244, 114, 182, 0.22), transparent 22%),
-          radial-gradient(circle at bottom right, rgba(251, 191, 36, 0.18), transparent 20%),
-          linear-gradient(180deg, #fffaf6 0%, #ffffff 45%, #fff5e9 100%);
+          radial-gradient(circle at top left, rgba(234, 88, 12, 0.14), transparent 24%),
+          radial-gradient(circle at bottom right, rgba(217, 119, 6, 0.12), transparent 20%),
+          linear-gradient(180deg, #fcf6ef 0%, #ffffff 45%, #f9efe4 100%);
       }
 
       a {
@@ -124,6 +121,7 @@
         gap: 12px;
         font-weight: 700;
         letter-spacing: -0.02em;
+        font-family: var(--body-font);
       }
 
       .badge {
@@ -132,9 +130,9 @@
         gap: 8px;
         padding: 10px 14px;
         border-radius: 999px;
-        background: #fff1f6;
-        border: 1px solid #fbcfe8;
-        color: #be185d;
+        background: #fff3e6;
+        border: 1px solid #fed7aa;
+        color: #9a3412;
         font-size: 13px;
         font-weight: 700;
         letter-spacing: 0.12em;
@@ -155,7 +153,7 @@
         font-size: 14px;
         font-weight: 600;
         border: 1px solid var(--line);
-        background: rgba(255, 255, 255, 0.72);
+        background: rgba(255, 255, 255, 0.74);
         color: var(--ink);
       }
 
@@ -163,7 +161,7 @@
         color: white;
         border: none;
         background: linear-gradient(135deg, var(--brand-a), var(--brand-b), var(--brand-c));
-        box-shadow: 0 16px 40px rgba(244, 114, 182, 0.24);
+        box-shadow: 0 16px 40px rgba(180, 83, 9, 0.22);
       }
 
       .hero {
@@ -176,8 +174,9 @@
 
       .hero-copy h1 {
         margin: 18px 0 0;
+        font-family: var(--display-font);
         font-size: clamp(42px, 5vw, 72px);
-        line-height: 0.98;
+        line-height: 0.95;
         letter-spacing: -0.05em;
       }
 
@@ -198,11 +197,11 @@
       .chip {
         padding: 10px 14px;
         border-radius: 999px;
-        background: rgba(255, 255, 255, 0.8);
+        background: rgba(255, 255, 255, 0.84);
         border: 1px solid var(--line);
         font-size: 14px;
         font-weight: 600;
-        color: #334155;
+        color: #44403c;
       }
 
       .hero-actions {
@@ -263,9 +262,50 @@
 
       .section-head h2 {
         margin: 0;
+        font-family: var(--display-font);
         font-size: 34px;
         line-height: 1.05;
         letter-spacing: -0.04em;
+      }
+
+      .step-grid {
+        display: grid;
+        gap: 14px;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        margin-top: 18px;
+      }
+
+      .step-card {
+        padding: 18px;
+        border-radius: 24px;
+        background: rgba(255, 255, 255, 0.88);
+        border: 1px solid var(--line);
+      }
+
+      .step-number {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 34px;
+        border-radius: 999px;
+        background: linear-gradient(135deg, #fff7ed, #ffedd5);
+        border: 1px solid rgba(180, 83, 9, 0.16);
+        color: #9a3412;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .step-card h3 {
+        margin: 16px 0 8px;
+        font-size: 20px;
+        letter-spacing: -0.02em;
+      }
+
+      .step-card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.65;
       }
 
       .section-head p {
@@ -355,7 +395,8 @@
         .hero,
         .benefits,
         .grid-2,
-        .builder-strip {
+        .builder-strip,
+        .step-grid {
           grid-template-columns: 1fr;
         }
 
@@ -392,8 +433,6 @@
           <a class="nav-link" href="./prompt-packs.html">Prompt packs</a>
           <a class="nav-link" href="./trust-boundary.html">Trust boundary</a>
           <a class="nav-link" href="./faq.html">FAQ</a>
-          <a class="nav-link" href="./mcp-host-packets.html">Host packets</a>
-          <a class="nav-link" href="./public-distribution-matrix.html">Distribution</a>
           <a
             class="nav-link"
             href="https://github.com/xiaojiou176-open/multi-ai-sidepanel/discussions"
@@ -414,344 +453,384 @@
       </nav>
 
       <main>
-      <section class="hero">
-        <div class="hero-copy">
-          <span class="badge">Compare-first control tower</span>
-          <h1>Compare ChatGPT, Gemini, Perplexity, Qwen, and Grok from one local side panel.</h1>
-          <p>
-            Prompt Switchboard is a local-first browser extension and browser-side control tower
-            that fans one prompt out to multiple supported AI chats, lines the answers up side by
-            side, and keeps the trust boundary inside your browser.
-          </p>
-          <p>
-            Developers who already use Codex or Claude Code in the browser can
-            also connect the governed MCP sidecar for compare, retry, export,
-            analyst, and next-step workflow actions without turning this workspace into generic
-            browser automation or a hosted agent platform.
-          </p>
-          <p>
-            The supported install path today is the packaged GitHub Release zip. Browser-store
-            submission materials are being kept ready, but GitHub Releases remains the supported
-            install surface today.
-          </p>
-          <div class="chip-row">
-            <span class="chip">Local-first</span>
-            <span class="chip">No hosted relay</span>
-            <span class="chip">Uses your existing sessions</span>
-            <span class="chip">Compare side by side</span>
-            <span class="chip">Readable local exports</span>
-            <span class="chip">Codex / Claude Code via MCP</span>
+        <section class="hero">
+          <div class="hero-copy">
+            <span class="badge">Compare-first control tower</span>
+            <h1>Compare ChatGPT, Gemini, Perplexity, Qwen, and Grok from one local side panel.</h1>
+            <p>
+              Prompt Switchboard is a local-first browser extension and browser-side control tower
+              that fans one prompt out to multiple supported AI chats, lines the answers up side by
+              side, and keeps the trust boundary inside your browser.
+            </p>
+            <p>
+              The supported install path today is the packaged GitHub Release zip. Browser-store
+              submission materials are being kept ready, but GitHub Releases remains the supported
+              install surface today.
+            </p>
+            <div class="chip-row">
+              <span class="chip">Local-first</span>
+              <span class="chip">No hosted relay</span>
+              <span class="chip">Uses your existing sessions</span>
+              <span class="chip">Compare side by side</span>
+              <span class="chip">Readable local exports</span>
+            </div>
+            <div class="hero-actions">
+              <a
+                class="cta"
+                href="https://github.com/xiaojiou176-open/multi-ai-sidepanel/releases/latest"
+                >Download latest build</a
+              >
+              <a class="ghost" href="./first-compare-guide.html">Plan the first compare</a>
+              <a class="ghost" href="#default-path">See the default path</a>
+              <a class="ghost" href="#proof">See the compare proof</a>
+            </div>
           </div>
-          <div class="hero-actions">
-            <a
-              class="cta"
-              href="https://github.com/xiaojiou176-open/multi-ai-sidepanel/releases/latest"
-              >Download latest build</a
-            >
-            <a class="ghost" href="./first-compare-guide.html">Plan the first compare</a>
-            <a class="ghost" href="./mcp-host-packets.html">Open host packets</a>
-            <a class="ghost" href="./public-distribution-matrix.html">See distribution truth</a>
-            <a class="ghost" href="#proof">See the compare proof</a>
+          <div class="hero-card">
+            <img
+              src="./assets/prompt-switchboard-hero.png"
+              alt="Prompt Switchboard compare view showing one prompt and multiple AI responses side by side."
+            />
           </div>
-        </div>
-        <div class="hero-card">
-          <img
-            src="./assets/prompt-switchboard-hero.png"
-            alt="Prompt Switchboard compare view showing one prompt and multiple AI responses side by side."
-          />
-        </div>
-      </section>
+        </section>
 
-      <section class="section">
-        <article class="section-card builder-strip">
-          <div>
-            <span class="badge">Builder surface</span>
-            <h2 style="margin-top: 16px">Works alongside Codex, Claude Code, and broader MCP client workflows.</h2>
-            <p>
-              The primary product story stays compare-first. The MCP sidecar is
-              the secondary builder lane: a governed local surface for Codex
-              and Claude Code browser workflows first.
-            </p>
-            <p>
-              This repo now also ships starter-kit generic MCP assets for
-              OpenCode and OpenClaw. Those paths are real and usable, but they
-              still stay narrower than the verified Codex and Claude Code host
-              lanes.
-            </p>
-          </div>
-          <div class="hero-actions" style="margin-top: 0">
-            <a class="cta" href="./mcp-coding-agents.html">Explore the MCP agents page</a>
-            <a class="ghost" href="./first-compare-guide.html">Open the first compare guide</a>
-            <a class="ghost" href="./mcp-starter-kits.html">Open starter kits</a>
-            <a class="ghost" href="./mcp-host-packets.html">Open host packets</a>
-            <a class="ghost" href="./public-distribution-matrix.html">Open distribution matrix</a>
-            <a class="ghost" href="./trust-boundary.html">Read the trust boundary</a>
-          </div>
-        </article>
-      </section>
+        <section class="section" id="default-path">
+          <article class="section-card builder-strip">
+            <div>
+              <span class="badge">Default path</span>
+              <h2 style="margin-top: 16px">
+                Install, run one compare, then export or retry from the same turn.
+              </h2>
+              <p>
+                Prompt Switchboard is easiest to judge on one honest path: install the packaged
+                build, open the AI tabs you already trust, run a single compare turn, then keep
+                moving from that same turn with export or retry instead of rebuilding context.
+              </p>
+              <p>
+                You do not need the builder lane, MCP starter kits, or distribution packets to
+                decide whether the core compare-first product is useful.
+              </p>
+              <div class="step-grid">
+                <article class="step-card">
+                  <span class="step-number">01</span>
+                  <h3>Install</h3>
+                  <p>
+                    Use the packaged GitHub Release build and skip local setup on the first pass.
+                  </p>
+                </article>
+                <article class="step-card">
+                  <span class="step-number">02</span>
+                  <h3>Compare</h3>
+                  <p>Ask one real prompt from the side panel while your trusted tabs stay open.</p>
+                </article>
+                <article class="step-card">
+                  <span class="step-number">03</span>
+                  <h3>Keep the turn</h3>
+                  <p>
+                    Retry only failures or export a readable artifact before you ever open builder
+                    docs.
+                  </p>
+                </article>
+              </div>
+            </div>
+            <div class="hero-actions" style="margin-top: 0">
+              <a class="cta" href="./install.html">Open the install guide</a>
+              <a class="ghost" href="./first-compare-guide.html">Run the first compare</a>
+              <a class="ghost" href="#after-first-compare">See export + retry next</a>
+              <a class="ghost" href="./trust-boundary.html">Read the trust boundary</a>
+            </div>
+          </article>
+        </section>
 
-      <section class="section">
-        <article class="section-card builder-strip">
-          <div>
-            <span class="badge">Public distribution</span>
-            <h2 style="margin-top: 16px">Public bundle now, official listing only when it is actually live.</h2>
-            <p>
-              Prompt Switchboard now ships public starter bundles for Codex,
-              Claude Code, OpenCode, and OpenClaw. That means the public docs,
-              support matrix, config snippets, placement hints, and compare-first
-              smoke flow are all available today without guesswork.
-            </p>
-            <p>
-              The public distribution matrix keeps three truths separate:
-              repo-owned bundle available now, official marketplace or registry
-              surface exists, and Prompt Switchboard is actually published there.
-            </p>
-            <p>
-              The host packets page turns that matrix into exact install packets
-              for Codex, Claude Code, OpenCode, and OpenClaw, so the shortest
-              honest path is always one click away.
-            </p>
+        <section class="section">
+          <div class="section-head">
+            <div>
+              <h2>Why people star it</h2>
+              <p>
+                The front door leads with outcomes, not framework trivia: one prompt fan-out, a
+                readable compare board, honest local-first boundaries, and a clean path from install
+                to first answer.
+              </p>
+            </div>
           </div>
-          <div class="hero-actions" style="margin-top: 0">
-            <a class="cta" href="./public-distribution-matrix.html">Open distribution matrix</a>
-            <a class="ghost" href="./mcp-host-packets.html">Open host packets</a>
-            <a class="ghost" href="./mcp-starter-kits.html">See starter bundles</a>
-            <a class="ghost" href="./mcp-coding-agents.html">See MCP host truth</a>
-            <a class="ghost" href="./faq.html">Read the FAQ</a>
+          <div class="benefits">
+            <article class="section-card benefit">
+              <h3>Compare responses side by side</h3>
+              <p>
+                Line up model answers in one board instead of bouncing between tabs and losing
+                context.
+              </p>
+            </article>
+            <article class="section-card benefit">
+              <h3>Keep everything local in your browser</h3>
+              <p>
+                No hosted relay, no extension account layer, and no extra trust hop between you and
+                the sites.
+              </p>
+            </article>
+            <article class="section-card benefit">
+              <h3>Reuse the AI tabs you already use</h3>
+              <p>
+                Prompt Switchboard works with the sessions you already keep open on supported AI
+                chat sites.
+              </p>
+            </article>
+            <article class="section-card benefit">
+              <h3>Export and restore sessions without a backend</h3>
+              <p>
+                Keep your compare runs portable with import/export support inside the extension
+                settings.
+              </p>
+            </article>
           </div>
-        </article>
-      </section>
+        </section>
 
-      <section class="section">
-        <div class="section-head">
-          <div>
-            <h2>Why people star it</h2>
-            <p>
-              The front door leads with outcomes, not framework trivia: one prompt fan-out, a
-              readable compare board, honest local-first boundaries, and a clean path from install
-              to first answer.
-            </p>
+        <section class="section">
+          <div class="section-head">
+            <div>
+              <h2>Use cases that fit the product</h2>
+              <p>
+                These pages exist to answer a real user question, not to create empty SEO surface.
+                Each one points back to a workflow Prompt Switchboard can actually support today.
+              </p>
+            </div>
           </div>
-        </div>
-        <div class="benefits">
-          <article class="section-card benefit">
-            <h3>Compare responses side by side</h3>
-            <p>
-              Line up model answers in one board instead of bouncing between tabs and losing
-              context.
+          <div class="benefits">
+            <article class="section-card benefit">
+              <h3>Compare ChatGPT vs Gemini vs Perplexity</h3>
+              <p>
+                Use one local compare board when you already trust the browser tabs and want the
+                same prompt aligned across them.
+              </p>
+              <p>
+                <a href="./compare-chatgpt-vs-gemini-vs-perplexity.html"
+                  >Open the compare use case</a
+                >
+              </p>
+            </article>
+            <article class="section-card benefit">
+              <h3>Best AI for rewriting text</h3>
+              <p>
+                Run the same rewrite prompt side by side and keep the strongest edit in view without
+                rebuilding context by hand.
+              </p>
+              <p><a href="./best-ai-for-rewriting-text.html">Open the rewriting page</a></p>
+            </article>
+            <article class="section-card benefit">
+              <h3>Best AI for coding explanations</h3>
+              <p>
+                Use one browser workspace to compare debugging explanations, architecture summaries,
+                and trade-off framing.
+              </p>
+              <p><a href="./best-ai-for-coding-explanations.html">Open the coding page</a></p>
+            </article>
+            <article class="section-card benefit">
+              <h3>Why local-first AI comparison matters</h3>
+              <p>
+                See why Prompt Switchboard stays inside the browser instead of adding a hosted relay
+                between you and the tabs you already trust.
+              </p>
+              <p><a href="./local-first-ai-comparison.html">Open the local-first page</a></p>
+            </article>
+            <article class="section-card benefit">
+              <h3>Prompt Switchboard for Codex and Claude Code</h3>
+              <p>
+                See how the local MCP sidecar gives MCP-capable coding agents a governed compare,
+                analysis, and next-step workflow surface.
+              </p>
+              <p><a href="./mcp-coding-agents.html">Open the MCP agents page</a></p>
+            </article>
+          </div>
+        </section>
+
+        <section class="section" id="proof">
+          <div class="section-head">
+            <div>
+              <h2>What changes in practice</h2>
+              <p>
+                The strongest evidence is not a vague promise about AI productivity. It is the
+                before-and-after of the comparison workflow itself: less tab juggling, less
+                copy-paste, and one place to review the run.
+              </p>
+            </div>
+          </div>
+          <article class="section-card evidence">
+            <img
+              src="./assets/prompt-switchboard-before-after.svg"
+              alt="Before and after diagram showing manual multi-tab comparison versus Prompt Switchboard's single local side panel workflow."
+            />
+            <p class="caption">
+              Manual comparison means duplicating prompts, waiting across tabs, and rebuilding
+              context by hand. Prompt Switchboard reduces that overhead to one prompt fan-out, one
+              compare board, and one saved local session.
             </p>
           </article>
-          <article class="section-card benefit">
-            <h3>Keep everything local in your browser</h3>
-            <p>
-              No hosted relay, no extension account layer, and no extra trust hop between you and
-              the sites.
+        </section>
+
+        <section class="section grid-2">
+          <article class="section-card shot">
+            <img
+              src="./assets/prompt-switchboard-demo.gif"
+              alt="Animated Prompt Switchboard demo showing the compare-first flow from empty state to completed multi-model answers."
+            />
+            <p class="caption">
+              The demo flow now shows the extension moving from ready state to compare fan-out to
+              staged next-step workflow and completed side-by-side results.
             </p>
           </article>
-          <article class="section-card benefit">
-            <h3>Reuse the AI tabs you already use</h3>
-            <p>
-              Prompt Switchboard works with the sessions you already keep open on supported AI chat
-              sites.
+          <article class="section-card shot">
+            <img
+              src="./assets/prompt-switchboard-compare-detail.png"
+              alt="Prompt Switchboard compare detail with model cards, status chips, copy action, and open-site action."
+            />
+            <p class="caption">
+              The compare board now keeps next-step workflow, analyst guidance, model status, copy
+              actions, and source-site shortcuts clear in one turn-level surface.
             </p>
           </article>
-          <article class="section-card benefit">
-            <h3>Export and restore sessions without a backend</h3>
-            <p>
-              Keep your compare runs portable with import/export support inside the extension
-              settings.
+        </section>
+
+        <section class="section grid-2">
+          <article class="section-card flow">
+            <img
+              src="./assets/prompt-switchboard-workflow.svg"
+              alt="Diagram showing Prompt Switchboard workflow: open supported sites, ask once, compare clearly, while staying local-first."
+            />
+            <p class="caption">
+              One browser-side workflow: open the supported sites, ask once from the side panel, and
+              compare the answers without leaving your workspace.
             </p>
           </article>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="section-head">
-          <div>
-            <h2>Use cases that fit the product</h2>
-            <p>
-              These pages exist to answer a real user question, not to create empty SEO surface.
-              Each one points back to a workflow Prompt Switchboard can actually support today.
+          <article class="section-card shot">
+            <img
+              src="./assets/prompt-switchboard-settings.png"
+              alt="Prompt Switchboard settings view with data export, import, language, theme, and keyboard preferences."
+            />
+            <p class="caption">
+              Settings keep the surface polished for real use too: import/export, language, theme,
+              and input behavior live in one panel.
             </p>
-          </div>
-        </div>
-        <div class="benefits">
-          <article class="section-card benefit">
-            <h3>Compare ChatGPT vs Gemini vs Perplexity</h3>
-            <p>Use one local compare board when you already trust the browser tabs and want the same prompt aligned across them.</p>
-            <p><a href="./compare-chatgpt-vs-gemini-vs-perplexity.html">Open the compare use case</a></p>
           </article>
-          <article class="section-card benefit">
-            <h3>Best AI for rewriting text</h3>
-            <p>Run the same rewrite prompt side by side and keep the strongest edit in view without rebuilding context by hand.</p>
-            <p><a href="./best-ai-for-rewriting-text.html">Open the rewriting page</a></p>
-          </article>
-          <article class="section-card benefit">
-            <h3>Best AI for coding explanations</h3>
-            <p>Use one browser workspace to compare debugging explanations, architecture summaries, and trade-off framing.</p>
-            <p><a href="./best-ai-for-coding-explanations.html">Open the coding page</a></p>
-          </article>
-          <article class="section-card benefit">
-            <h3>Why local-first AI comparison matters</h3>
-            <p>See why Prompt Switchboard stays inside the browser instead of adding a hosted relay between you and the tabs you already trust.</p>
-            <p><a href="./local-first-ai-comparison.html">Open the local-first page</a></p>
-          </article>
-          <article class="section-card benefit">
-            <h3>Prompt Switchboard for Codex and Claude Code</h3>
-            <p>See how the local MCP sidecar gives MCP-capable coding agents a governed compare, analysis, and next-step workflow surface.</p>
-            <p><a href="./mcp-coding-agents.html">Open the MCP agents page</a></p>
-          </article>
-        </div>
-      </section>
+        </section>
 
-      <section class="section" id="proof">
-        <div class="section-head">
-          <div>
-            <h2>What changes in practice</h2>
-            <p>
-              The strongest evidence is not a vague promise about AI productivity. It is the
-              before-and-after of the comparison workflow itself: less tab juggling, less
-              copy-paste, and one place to review the run.
+        <section class="section grid-2" id="after-first-compare">
+          <article class="section-card quick">
+            <span class="badge">First-success path</span>
+            <h2 style="margin-top: 18px">Install, compare once, then keep the turn alive.</h2>
+            <p class="caption">
+              What you need first: a Chromium-compatible browser with Developer Mode and at least
+              one supported AI chat tab already open and signed in inside the same browser profile
+              where you load Prompt Switchboard.
             </p>
-          </div>
-        </div>
-        <article class="section-card evidence">
-          <img
-            src="./assets/prompt-switchboard-before-after.svg"
-            alt="Before and after diagram showing manual multi-tab comparison versus Prompt Switchboard's single local side panel workflow."
-          />
-          <p class="caption">
-            Manual comparison means duplicating prompts, waiting across tabs, and rebuilding context
-            by hand. Prompt Switchboard reduces that overhead to one prompt fan-out, one compare
-            board, and one saved local session.
-          </p>
-        </article>
-      </section>
+            <ol>
+              <li>
+                Download the latest packaged build from the latest GitHub Release and unzip it
+                locally.
+              </li>
+              <li>
+                Open <code>chrome://extensions</code>, enable Developer Mode, and load the
+                extracted folder as an unpacked extension.
+              </li>
+              <li>
+                If the Prompt Switchboard icon is hidden, open the browser Extensions menu, pin it,
+                and click the toolbar icon to open the side panel.
+              </li>
+              <li>
+                Open your supported AI tabs, ask one prompt, and compare every answer from the side
+                panel.
+              </li>
+              <li>
+                Retry only the failed cards or export a readable compare artifact from that same
+                turn.
+              </li>
+            </ol>
+            <p class="caption">
+              Today the supported install path is the packaged GitHub Release zip. A lower-friction
+              store install path is being prepared, but it is not live yet.
+            </p>
+            <p class="caption">
+              Official Google Chrome branded builds 137+ / 139+ no longer reliably auto-load
+              unpacked extensions from command-line flags. Keep automated runtime proof on Chromium
+              or Chrome for Testing. If you are validating in real Chrome, open
+              <code>chrome://extensions</code>, enable Developer Mode, and use
+              <strong>Load unpacked</strong> manually in the same signed-in profile.
+            </p>
+          </article>
+          <article class="section-card links">
+            <span class="badge">After the compare</span>
+            <h2 style="margin-top: 18px">What you do next</h2>
+            <ul>
+              <li>Export a readable compare summary or Markdown artifact.</li>
+              <li>Retry only the failed models instead of replaying the whole turn.</li>
+              <li>Reuse prompt packs when you want a faster second run.</li>
+            </ul>
+            <p class="caption">
+              <strong>Still not the goal:</strong> a hosted relay, a provider-neutral SDK, or
+              arbitrary site automation.
+            </p>
+          </article>
+        </section>
 
-      <section class="section grid-2">
-        <article class="section-card shot">
-          <img
-            src="./assets/prompt-switchboard-demo.gif"
-            alt="Animated Prompt Switchboard demo showing the compare-first flow from empty state to completed multi-model answers."
-          />
-          <p class="caption">
-            The demo flow now shows the extension moving from ready state to compare fan-out to
-            staged next-step workflow and completed side-by-side results.
-          </p>
-        </article>
-        <article class="section-card shot">
-          <img
-            src="./assets/prompt-switchboard-compare-detail.png"
-            alt="Prompt Switchboard compare detail with model cards, status chips, copy action, and open-site action."
-          />
-          <p class="caption">
-            The compare board now keeps next-step workflow, analyst guidance, model status, copy
-            actions, and source-site shortcuts clear in one turn-level surface.
-          </p>
-        </article>
-      </section>
+        <section class="section">
+          <article class="section-card builder-strip">
+            <div>
+              <span class="badge">Optional builder lane</span>
+              <h2 style="margin-top: 16px">
+                Use the governed MCP surface only after the product path is clear.
+              </h2>
+              <p>
+                The MCP sidecar is real, but it is a secondary builder surface for Codex, Claude
+                Code, and narrower starter-kit lanes after you already understand the compare-first
+                product.
+              </p>
+              <p>
+                Public distribution truth, starter kits, and host packets still matter. They just
+                should not outrank install, first compare, export, and retry.
+              </p>
+            </div>
+            <div class="hero-actions" style="margin-top: 0">
+              <a class="cta" href="./mcp-coding-agents.html">Open the MCP agents page</a>
+              <a class="ghost" href="./mcp-starter-kits.html">Open starter kits</a>
+              <a class="ghost" href="./mcp-host-packets.html">Open host packets</a>
+              <a class="ghost" href="./public-distribution-matrix.html">Open distribution matrix</a>
+            </div>
+          </article>
+        </section>
 
-      <section class="section grid-2">
-        <article class="section-card flow">
-          <img
-            src="./assets/prompt-switchboard-workflow.svg"
-            alt="Diagram showing Prompt Switchboard workflow: open supported sites, ask once, compare clearly, while staying local-first."
-          />
-          <p class="caption">
-            One browser-side workflow: open the supported sites, ask once from the side panel, and
-            compare the answers without leaving your workspace.
-          </p>
-        </article>
-        <article class="section-card shot">
-          <img
-            src="./assets/prompt-switchboard-settings.png"
-            alt="Prompt Switchboard settings view with data export, import, language, theme, and keyboard preferences."
-          />
-          <p class="caption">
-            Settings keep the surface polished for real use too: import/export, language, theme, and
-            input behavior live in one panel.
-          </p>
-        </article>
-      </section>
-
-      <section class="section grid-2">
-        <article class="section-card quick">
-          <span class="badge">First-answer path</span>
-          <h2 style="margin-top: 18px">Install the latest build</h2>
-          <p class="caption">
-            What you need first: a Chromium-compatible browser with Developer Mode and at least one
-            supported AI chat tab already open and signed in inside the same browser profile where
-            you load Prompt Switchboard.
-          </p>
-          <ol>
-            <li>
-              Download the latest packaged build from the latest GitHub Release and unzip it
-              locally.
-            </li>
-            <li>
-              Load the extracted folder as an unpacked extension in
-              <code>chrome://extensions</code> with Developer Mode enabled.
-            </li>
-            <li>
-              Open your supported AI tabs, ask one prompt, and compare every answer from the side
-              panel.
-            </li>
-          </ol>
-          <p class="caption">
-            Today the supported install path is the packaged GitHub Release zip. A lower-friction
-            store install path is being prepared, but it is not live yet.
-          </p>
-          <p class="caption">
-            Need the local build, release, or asset workflow? Read
-            <a
-              href="https://github.com/xiaojiou176-open/multi-ai-sidepanel/blob/main/CONTRIBUTING.md"
-              >CONTRIBUTING.md</a
-            >.
-          </p>
-        </article>
-        <article class="section-card links">
-          <span class="badge">Good fit</span>
-          <h2 style="margin-top: 18px">Who it is for</h2>
-          <ul>
-            <li>You already use multiple AI chat sites and want one compare board.</li>
-            <li>You want the trust boundary to stay inside the browser.</li>
-            <li>You want local-first session history and export or import support.</li>
-          </ul>
-          <p class="caption">
-            <strong>Not the goal:</strong> a hosted relay, a provider-neutral SDK, or arbitrary site
-            automation.
-          </p>
-        </article>
-      </section>
-
-      <section class="section">
-        <article class="section-card quick">
-          <span class="badge">Stay in the loop</span>
-          <h2 style="margin-top: 18px">Why star it now</h2>
-          <p>
-            Star the repo if you want the latest packaged builds, selector drift fixes, and
-            compare-first front-door updates to stay easy to find.
-          </p>
-          <div class="hero-actions">
-            <a class="cta" href="https://github.com/xiaojiou176-open/multi-ai-sidepanel"
-              >Star on GitHub</a
-            >
-            <a class="ghost" href="https://github.com/xiaojiou176-open/multi-ai-sidepanel/releases"
-              >Browse releases</a
-            >
-          </div>
-          <p class="caption">
-            Start here for public onboarding:
-            <a href="./install.html">Install guide</a>,
-            <a href="./prompt-packs.html">Prompt packs</a>,
-            <a href="./mcp-coding-agents.html">MCP agents</a>,
-            <a href="./supported-sites.html">Supported sites</a>,
-            <a href="./trust-boundary.html">Trust boundary</a>,
-            and <a href="./faq.html">FAQ</a>.
-          </p>
-        </article>
-      </section>
-
+        <section class="section">
+          <article class="section-card quick">
+            <span class="badge">Stay in the loop</span>
+            <h2 style="margin-top: 18px">Why star it now</h2>
+            <p>
+              Star the repo if you want the latest packaged builds, selector drift fixes, and
+              compare-first front-door updates to stay easy to find.
+            </p>
+            <div class="hero-actions">
+              <a class="cta" href="https://github.com/xiaojiou176-open/multi-ai-sidepanel"
+                >Star on GitHub</a
+              >
+              <a
+                class="ghost"
+                href="https://github.com/xiaojiou176-open/multi-ai-sidepanel/releases"
+                >Browse releases</a
+              >
+            </div>
+            <p class="caption">
+              Start here for public onboarding:
+              <a href="./install.html">Install guide</a>,
+              <a href="./first-compare-guide.html">first compare guide</a>,
+              <a href="./prompt-packs.html">Prompt packs</a>,
+              <a href="./supported-sites.html">Supported sites</a>,
+              <a href="./trust-boundary.html">Trust boundary</a>, and <a href="./faq.html">FAQ</a>.
+            </p>
+            <p class="caption">
+              Builder lane after that:
+              <a href="./mcp-coding-agents.html">MCP agents</a>,
+              <a href="./mcp-starter-kits.html">starter kits</a>,
+              <a href="./mcp-host-packets.html">host packets</a>, and
+              <a href="./public-distribution-matrix.html">distribution truth</a>.
+            </p>
+          </article>
+        </section>
       </main>
 
       <footer class="footer">

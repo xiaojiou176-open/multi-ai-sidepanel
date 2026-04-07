@@ -132,6 +132,12 @@
           "published OpenCode plugin package under an owner-controlled namespace",
           "owner publish permission"
         ],
+        "steps": [
+          "Run npm run release:host-kits and verify the OpenCode packet archive under dist/public-bundles/.",
+          "Choose the owner-controlled npm package name and namespace for the OpenCode plugin package.",
+          "Publish mcp/integration-kits/public-bundles/opencode-plugin/ to npm.",
+          "Install it through the official OpenCode plugin flow and verify one compare-first smoke path."
+        ],
         "verify_after": [
           "package URL",
           "plugin install flow",
@@ -189,6 +195,12 @@
         "missing": [
           "published OpenClaw plugin or bundle listing under an owner-controlled surface",
           "owner-controlled publish permission"
+        ],
+        "steps": [
+          "Run npm run release:host-kits and verify the OpenClaw packet archive under dist/public-bundles/.",
+          "Choose the official OpenClaw public surface you will really use: bundle install, plugin listing, or another official listing surface backed by OpenClaw docs.",
+          "Publish the repo-owned OpenClaw packet and keep the MCP registry JSON, shell helper, and install docs aligned to that exact surface.",
+          "Verify the listing URL or bundle URL and one compare-first smoke path after publish."
         ],
         "verify_after": [
           "listing or package URL",

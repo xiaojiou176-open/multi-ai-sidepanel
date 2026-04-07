@@ -5,7 +5,9 @@ import { afterEach, describe, expect, it } from 'vitest';
 import {
   buildLiveDiagnosis,
   classifyExtensionSurfaceProbeFailure,
+  isPromptSwitchboardManifestIdentity,
   resolveLiveProbeConfig,
+  resolveLiveProbeBlockers,
   type LiveProbeResult,
 } from './live-probe-shared';
 
@@ -44,6 +46,28 @@ describe('live-probe-shared', () => {
     ).toContain('closed before Prompt Switchboard could finish the live probe');
   });
 
+  it('accepts the Prompt Switchboard manifest fingerprint as a repo-owned extension identity', () => {
+    expect(
+      isPromptSwitchboardManifestIdentity({
+        runtimeId: 'abcdefghijklmnopabcdefghijklmnop',
+        manifestName: 'Prompt Switchboard',
+        optionsPage: 'settings.html',
+        sidePanelDefaultPath: 'index.html',
+      })
+    ).toBe(true);
+  });
+
+  it('rejects component-extension identities that are not Prompt Switchboard', () => {
+    expect(
+      isPromptSwitchboardManifestIdentity({
+        runtimeId: 'abcdefghijklmnopabcdefghijklmnop',
+        manifestName: 'Google Network Speech',
+        optionsPage: null,
+        sidePanelDefaultPath: null,
+      })
+    ).toBe(false);
+  });
+
   it('surfaces unavailable extension inspection as a probe blocker without hiding site readiness', () => {
     const probe: LiveProbeResult = {
       mode: 'prompt_switchboard_live_site_probe',
@@ -53,7 +77,7 @@ describe('live-probe-shared', () => {
       effectiveRun: {
         attachModeRequested: 'browser',
         attachModeResolved: 'browser',
-        browserChannel: 'chromium',
+        browserChannel: 'chrome',
         cdpUrl: 'http://127.0.0.1:9336',
         userDataDir: '/tmp/profile',
         profileDirectory: 'Profile 23',
@@ -119,7 +143,7 @@ describe('live-probe-shared', () => {
       effectiveRun: {
         attachModeRequested: 'browser',
         attachModeResolved: 'browser',
-        browserChannel: 'chromium',
+        browserChannel: 'chrome',
         cdpUrl: 'http://127.0.0.1:9444',
         userDataDir: '/tmp/fresh-lane',
         profileDirectory: 'Default',
@@ -181,7 +205,7 @@ describe('live-probe-shared', () => {
       effectiveRun: {
         attachModeRequested: 'browser',
         attachModeResolved: 'browser',
-        browserChannel: 'chromium',
+        browserChannel: 'chrome',
         cdpUrl: 'http://127.0.0.1:9336',
         userDataDir: '/tmp/profile',
         profileDirectory: 'Profile 1',
@@ -249,7 +273,7 @@ describe('live-probe-shared', () => {
       effectiveRun: {
         attachModeRequested: 'browser',
         attachModeResolved: 'browser',
-        browserChannel: 'chromium',
+        browserChannel: 'chrome',
         cdpUrl: 'http://127.0.0.1:9777',
         userDataDir: '/tmp/cft-auto',
         profileDirectory: 'Default',
@@ -263,7 +287,8 @@ describe('live-probe-shared', () => {
           model: 'ChatGPT',
           state: 'site_login_gated',
           readinessStatus: 'selector_drift_suspect',
-          nextAction: 'Log in to ChatGPT inside the active browser/profile, then rerun the live probe.',
+          nextAction:
+            'Log in to ChatGPT inside the active browser/profile, then rerun the live probe.',
           url: 'https://chatgpt.com/',
           title: 'ChatGPT',
           hasPromptSurface: true,
@@ -331,6 +356,26 @@ describe('live-probe-shared', () => {
     expect(config.targetModels).toEqual(['ChatGPT']);
   });
 
+  it('blocks persistent non-clone probing against the canonical repo-owned browser root', async () => {
+    const config = {
+      ...resolveLiveProbeConfig(),
+      liveFlag: true,
+      attachModeRequested: 'persistent' as const,
+      cloneProfile: false,
+      isPersistentBrowserRoot: true,
+      profileBlockers: [],
+      browserExecutableBlockers: [],
+      extensionPath: makeTempRoot(),
+      browserChannel: 'chromium',
+    };
+
+    const { blockers } = await resolveLiveProbeBlockers(config);
+
+    expect(blockers).toContain(
+      'Persistent live probe paths must not launch Playwright directly against the canonical repo-owned browser root. Use PROMPT_SWITCHBOARD_CLONE_PROFILE=1 or the real Chrome attach lane instead.'
+    );
+  });
+
   it('keeps canonical readiness alongside raw live site state', () => {
     const probe: LiveProbeResult = {
       mode: 'prompt_switchboard_live_site_probe',
@@ -340,7 +385,7 @@ describe('live-probe-shared', () => {
       effectiveRun: {
         attachModeRequested: 'browser',
         attachModeResolved: 'browser',
-        browserChannel: 'chromium',
+        browserChannel: 'chrome',
         cdpUrl: 'http://127.0.0.1:9336',
         userDataDir: '/tmp/profile',
         profileDirectory: 'Profile 23',
@@ -354,7 +399,8 @@ describe('live-probe-shared', () => {
           model: 'ChatGPT',
           state: 'site_login_gated',
           readinessStatus: 'selector_drift_suspect',
-          nextAction: 'Log in to ChatGPT inside the active browser/profile, then rerun the live probe.',
+          nextAction:
+            'Log in to ChatGPT inside the active browser/profile, then rerun the live probe.',
           url: 'https://chatgpt.com/',
           title: 'ChatGPT',
           hasPromptSurface: false,

@@ -42,6 +42,14 @@ import {
   type SubstrateActionSuccessPayloadMap,
 } from '../substrate/api';
 import { presentWorkflowRun } from '../substrate/workflow';
+import {
+  buildDeliveryErrorMessage,
+  buildReadinessErrorMessage,
+  buildReadinessFailurePayload,
+  createAssistantPlaceholder,
+  createUserTurnMessage,
+  markTurnDeliveryFailure,
+} from '../services/sessionRuntime';
 
 type WorkflowRunDetailPayload = SubstrateActionSuccessPayloadMap['get_workflow_run'];
 
@@ -134,91 +142,10 @@ interface AppState {
 const DEFAULT_SELECTED_MODELS: ModelName[] = ['ChatGPT'];
 const IDEMPOTENCY_WINDOW_MS = 5000;
 
-const buildDeliveryErrorMessage = (errorCode: SendErrorCode): string => {
-  switch (errorCode) {
-    case SEND_ERROR_CODES.TIMEOUT:
-      return i18n.t('runtime.deliveryTimeout', 'This model timed out before it could respond.');
-    case SEND_ERROR_CODES.RUNTIME:
-      return i18n.t(
-        'runtime.deliveryRuntime',
-        'Prompt Switchboard could not deliver this prompt to the target tab.'
-      );
-    case SEND_ERROR_CODES.HANDSHAKE:
-      return i18n.t(
-        'runtime.deliveryHandshake',
-        'Prompt Switchboard could not confirm that the target tab was ready.'
-      );
-    case SEND_ERROR_CODES.REJECTED:
-    default:
-      return i18n.t(
-        'runtime.deliveryRejected',
-        'This model rejected the prompt request before a response was received.'
-      );
-  }
-};
-
-const buildReadinessErrorMessage = (report: ModelReadinessReport): string => {
-  switch (report.status) {
-    case READINESS_STATUSES.TAB_MISSING:
-      return i18n.t('runtime.readinessTabMissing', {
-        defaultValue: '{{model}} is not open in a signed-in browser tab.',
-        model: report.model,
-      });
-    case READINESS_STATUSES.TAB_LOADING:
-      return i18n.t('runtime.readinessTabLoading', {
-        defaultValue: '{{model}} is still loading. Give the tab a moment and try again.',
-        model: report.model,
-      });
-    case READINESS_STATUSES.MODEL_MISMATCH:
-      return i18n.t('runtime.readinessModelMismatch', {
-        defaultValue: '{{model}} is open, but this tab does not match the expected chat surface.',
-        model: report.model,
-      });
-    case READINESS_STATUSES.SELECTOR_DRIFT_SUSPECT:
-      return i18n.t('runtime.readinessSelectorDrift', {
-        defaultValue:
-          '{{model}} looks open, but Prompt Switchboard could not confirm the input controls on this page.',
-        model: report.model,
-      });
-    case READINESS_STATUSES.CONTENT_UNAVAILABLE:
-    default:
-      return i18n.t('runtime.readinessContentUnavailable', {
-        defaultValue: '{{model}} did not confirm readiness from the current browser tab.',
-        model: report.model,
-      });
-  }
-};
-
 const toReadinessMap = (reports: ModelReadinessReport[]) =>
   Object.fromEntries(reports.map((report) => [report.model, report])) as Partial<
     Record<ModelName, ModelReadinessReport>
   >;
-
-const buildReadinessFailurePayload = (
-  report: ModelReadinessReport,
-  requestId: string,
-  turnId: string
-): StreamResponsePayload => ({
-  model: report.model,
-  requestId,
-  turnId,
-  text: buildReadinessErrorMessage(report),
-  isComplete: true,
-  deliveryStatus: DELIVERY_STATUS.ERROR,
-  errorCode: SEND_ERROR_CODES.HANDSHAKE,
-  completedAt: Date.now(),
-  data: {
-    stage: 'content_ready_handshake',
-    hostname: report.hostname,
-    selectorSource: report.selectorSource,
-    remoteConfigConfigured: report.remoteConfigConfigured,
-    failureClass: report.failureClass,
-    readinessStatus: report.status,
-    inputReady: report.inputReady,
-    submitReady: report.submitReady,
-    lastCheckedAt: report.lastCheckedAt,
-  },
-});
 
 const requestModelReadiness = async (models: ModelName[]): Promise<ModelReadinessReport[]> => {
   const uniqueModels = Array.from(new Set(models));
@@ -230,6 +157,77 @@ const requestModelReadiness = async (models: ModelName[]): Promise<ModelReadines
   })) as { reports?: ModelReadinessReport[] } | undefined;
 
   return Array.isArray(response?.reports) ? response.reports : [];
+};
+
+const sessionHasTurn = (sessions: Session[], sessionId: string, turnId: string) =>
+  Boolean(
+    sessions
+      .find((entry) => entry.id === sessionId)
+      ?.messages.some((message) => message.turnId === turnId)
+  );
+
+const appendTurnMessagesToStore = ({
+  addMessage,
+  updateLastMessage,
+  prompt,
+  requestedModels,
+  turnId,
+  requestId,
+  blockedReports,
+}: {
+  addMessage: (message: Message) => void;
+  updateLastMessage: (
+    payloadOrModel: StreamResponsePayload | ModelName,
+    text?: string,
+    isComplete?: boolean
+  ) => void;
+  prompt: string;
+  requestedModels: ModelName[];
+  turnId: string;
+  requestId: string;
+  blockedReports: ModelReadinessReport[];
+}) => {
+  addMessage(createUserTurnMessage(prompt, turnId, requestId, requestedModels));
+  requestedModels
+    .map((model) => createAssistantPlaceholder(model, turnId, requestId))
+    .forEach((message) => addMessage(message));
+  blockedReports.forEach((report) => {
+    updateLastMessage(buildReadinessFailurePayload(report, requestId, turnId));
+  });
+};
+
+const syncOrAppendTurnFromStorage = async ({
+  get,
+  currentSessionId,
+  prompt,
+  requestedModels,
+  turnId,
+  requestId,
+  blockedReports,
+}: {
+  get: () => AppState;
+  currentSessionId: string;
+  prompt: string;
+  requestedModels: ModelName[];
+  turnId: string;
+  requestId: string;
+  blockedReports: ModelReadinessReport[];
+}) => {
+  const storageSessions = await StorageService.getSessions();
+  if (sessionHasTurn(storageSessions, currentSessionId, turnId)) {
+    await get().loadSessions();
+    return;
+  }
+
+  appendTurnMessagesToStore({
+    addMessage: get().addMessage,
+    updateLastMessage: get().updateLastMessage,
+    prompt,
+    requestedModels,
+    turnId,
+    requestId,
+    blockedReports,
+  });
 };
 
 const executeSubstrateBackgroundAction = async <TAction extends SubstrateActionName>(
@@ -271,7 +269,9 @@ const executeSubstrateBackgroundAction = async <TAction extends SubstrateActionN
   return SubstrateActionOutcomeSchemas[action].parse(response) as SubstrateActionOutcome<TAction>;
 };
 
-const getOutcomeReadinessReports = (outcome: SubstrateActionOutcome<'compare' | 'retry_failed'>) => {
+const getOutcomeReadinessReports = (
+  outcome: SubstrateActionOutcome<'compare' | 'retry_failed'>
+) => {
   if (outcome.ok) {
     return (outcome.data as { readinessReports?: ModelReadinessReport[] }).readinessReports ?? [];
   }
@@ -306,19 +306,14 @@ const toSendErrorCodeFromSubstrateError = (
     return SEND_ERROR_CODES.RUNTIME;
   }
 
-  if (
-    outcome.error.kind === 'blocked' ||
-    outcome.error.kind === 'waiting_external'
-  ) {
+  if (outcome.error.kind === 'blocked' || outcome.error.kind === 'waiting_external') {
     return SEND_ERROR_CODES.HANDSHAKE;
   }
 
   return SEND_ERROR_CODES.RUNTIME;
 };
 
-const toWorkflowUxStatus = (
-  detail: WorkflowRunDetailPayload
-): WorkflowUxStatus => {
+const toWorkflowUxStatus = (detail: WorkflowRunDetailPayload): WorkflowUxStatus => {
   if (detail.output && typeof detail.output === 'object' && 'prompt' in detail.output) {
     return 'seed_ready';
   }
@@ -403,40 +398,6 @@ const createDefaultSession = (): Session => ({
   selectedModels: [...DEFAULT_SELECTED_MODELS],
 });
 
-const createUserTurnMessage = (
-  input: string,
-  turnId: string,
-  requestId: string,
-  requestedModels: ModelName[]
-): Message => ({
-  id: crypto.randomUUID(),
-  role: MESSAGE_ROLES.USER,
-  text: input,
-  timestamp: Date.now(),
-  turnId,
-  requestId,
-  requestedModels,
-  isStreaming: false,
-  deliveryStatus: DELIVERY_STATUS.COMPLETE,
-  completedAt: Date.now(),
-});
-
-const createAssistantPlaceholder = (
-  model: ModelName,
-  turnId: string,
-  requestId: string
-): Message => ({
-  id: crypto.randomUUID(),
-  role: MESSAGE_ROLES.ASSISTANT,
-  text: i18n.t('runtime.waitingResponse', 'Waiting for response…'),
-  model,
-  timestamp: Date.now(),
-  turnId,
-  requestId,
-  isStreaming: true,
-  deliveryStatus: DELIVERY_STATUS.PENDING,
-});
-
 const normalizeSessionForStore = (session: Session): Session => ({
   ...session,
   messages: normalizeSessionMessages(session.messages, session.selectedModels),
@@ -492,41 +453,6 @@ const updateMessageFromPayload = (message: Message, payload: StreamResponsePaylo
     deliveryErrorCode: payload.errorCode ?? message.deliveryErrorCode,
     completedAt,
     data: payload.data ?? message.data,
-  };
-};
-
-const markTurnDeliveryFailure = (
-  session: Session,
-  turnId: string,
-  models: ModelName[],
-  errorCode: SendErrorCode,
-  requestId: string
-): Session => {
-  const messages = session.messages.map((message) => {
-    if (
-      message.role === MESSAGE_ROLES.ASSISTANT &&
-      message.turnId === turnId &&
-      message.model &&
-      models.includes(message.model)
-    ) {
-      return updateMessageFromPayload(message, {
-        model: message.model,
-        requestId,
-        turnId,
-        text: buildDeliveryErrorMessage(errorCode),
-        isComplete: true,
-        deliveryStatus: DELIVERY_STATUS.ERROR,
-        errorCode,
-      });
-    }
-
-    return message;
-  });
-
-  return {
-    ...session,
-    messages,
-    updatedAt: Date.now(),
   };
 };
 
@@ -903,7 +829,9 @@ export const useStore = create<AppState>((set, get) => ({
               lastCheckedAt: Date.now(),
             })
           );
-    const readyModels = resolvedReports.filter((report) => report.ready).map((report) => report.model);
+    const readyModels = resolvedReports
+      .filter((report) => report.ready)
+      .map((report) => report.model);
     if (readyModels.length === 0) {
       set({
         sendErrorCode: SEND_ERROR_CODES.HANDSHAKE,
@@ -933,44 +861,23 @@ export const useStore = create<AppState>((set, get) => ({
       });
       const latestReadinessReports = getOutcomeReadinessReports(outcome);
       const latestReadyModels = getOutcomeReadyModels(outcome);
-      const storageSessions = await StorageService.getSessions();
 
       if (outcome.ok) {
-        const persistedSession = storageSessions.find((entry) => entry.id === currentSessionId);
-        const hasPersistedTurn = Boolean(
-          persistedSession?.messages.some((message) => message.turnId === outcome.data.turnId)
-        );
-
-        if (hasPersistedTurn) {
-          await get().loadSessions();
-        } else {
-          const userMsg = createUserTurnMessage(
-            input,
-            outcome.data.turnId,
-            outcome.data.requestId,
-            uniqueModels
-          );
-          get().addMessage(userMsg);
-
-          uniqueModels
-            .map((model) => createAssistantPlaceholder(model, outcome.data.turnId, outcome.data.requestId))
-            .forEach((message) => get().addMessage(message));
-
-          outcome.data.blockedReports.forEach((report) => {
-            get().updateLastMessage(
-              buildReadinessFailurePayload(
-                report,
-                outcome.data.requestId,
-                outcome.data.turnId
-              )
-            );
-          });
-        }
+        await syncOrAppendTurnFromStorage({
+          get,
+          currentSessionId,
+          prompt: input,
+          requestedModels: uniqueModels,
+          turnId: outcome.data.turnId,
+          requestId: outcome.data.requestId,
+          blockedReports: outcome.data.blockedReports,
+        });
 
         const currentSession = get().sessions.find((entry) => entry.id === currentSessionId);
         if (
           currentSession &&
-          currentSession.messages.filter((message) => message.role === MESSAGE_ROLES.USER).length === 1
+          currentSession.messages.filter((message) => message.role === MESSAGE_ROLES.USER)
+            .length === 1
         ) {
           try {
             const title = await smartGenerateTitle(input);
@@ -996,22 +903,16 @@ export const useStore = create<AppState>((set, get) => ({
             : null;
 
         if (details?.turnId && details.requestId) {
-          const currentSession = get().sessions.find((entry) => entry.id === currentSessionId);
-          const hasLocalTurn = Boolean(
-            currentSession?.messages.some((message) => message.turnId === details.turnId)
-          );
-
-          if (!hasLocalTurn) {
-            const userMsg = createUserTurnMessage(
-              input,
-              details.turnId,
-              details.requestId,
-              details.requestedModels ?? uniqueModels
-            );
-            get().addMessage(userMsg);
-            (details.requestedModels ?? uniqueModels)
-              .map((model) => createAssistantPlaceholder(model, details.turnId!, details.requestId!))
-              .forEach((message) => get().addMessage(message));
+          if (!sessionHasTurn(get().sessions, currentSessionId, details.turnId)) {
+            appendTurnMessagesToStore({
+              addMessage: get().addMessage,
+              updateLastMessage: get().updateLastMessage,
+              prompt: input,
+              requestedModels: details.requestedModels ?? uniqueModels,
+              turnId: details.turnId,
+              requestId: details.requestId,
+              blockedReports: [],
+            });
           }
 
           const updatedSessions = get().sessions.map((session) =>
@@ -1071,7 +972,9 @@ export const useStore = create<AppState>((set, get) => ({
     const requestKey = `${currentSessionId}:${userMessage.text.trim()}:${uniqueModels.join(',')}:retry`;
     const now = Date.now();
     const readinessReports = await get().refreshModelReadiness(uniqueModels);
-    const readyModels = readinessReports.filter((report) => report.ready).map((report) => report.model);
+    const readyModels = readinessReports
+      .filter((report) => report.ready)
+      .map((report) => report.model);
     if (readyModels.length === 0) {
       set({
         sendErrorCode: SEND_ERROR_CODES.HANDSHAKE,
@@ -1101,37 +1004,17 @@ export const useStore = create<AppState>((set, get) => ({
       });
       const latestReadinessReports = getOutcomeReadinessReports(outcome);
       const latestReadyModels = getOutcomeReadyModels(outcome);
-      const storageSessions = await StorageService.getSessions();
 
       if (outcome.ok) {
-        const persistedSession = storageSessions.find((entry) => entry.id === currentSessionId);
-        const hasPersistedTurn = Boolean(
-          persistedSession?.messages.some((message) => message.turnId === outcome.data.turnId)
-        );
-
-        if (hasPersistedTurn) {
-          await get().loadSessions();
-        } else {
-          const retryUserMessage = createUserTurnMessage(
-            userMessage.text,
-            outcome.data.turnId,
-            outcome.data.requestId,
-            uniqueModels
-          );
-          get().addMessage(retryUserMessage);
-          uniqueModels
-            .map((model) => createAssistantPlaceholder(model, outcome.data.turnId, outcome.data.requestId))
-            .forEach((message) => get().addMessage(message));
-          outcome.data.blockedReports.forEach((report) => {
-            get().updateLastMessage(
-              buildReadinessFailurePayload(
-                report,
-                outcome.data.requestId,
-                outcome.data.turnId
-              )
-            );
-          });
-        }
+        await syncOrAppendTurnFromStorage({
+          get,
+          currentSessionId,
+          prompt: userMessage.text,
+          requestedModels: uniqueModels,
+          turnId: outcome.data.turnId,
+          requestId: outcome.data.requestId,
+          blockedReports: outcome.data.blockedReports,
+        });
       } else {
         const details =
           outcome.error.details && typeof outcome.error.details === 'object'
@@ -1143,16 +1026,17 @@ export const useStore = create<AppState>((set, get) => ({
               })
             : null;
         if (details?.turnId && details.requestId) {
-          const retryUserMessage = createUserTurnMessage(
-            userMessage.text,
-            details.turnId,
-            details.requestId,
-            details.requestedModels ?? uniqueModels
-          );
-          get().addMessage(retryUserMessage);
-          (details.requestedModels ?? uniqueModels)
-            .map((model) => createAssistantPlaceholder(model, details.turnId!, details.requestId!))
-            .forEach((message) => get().addMessage(message));
+          if (!sessionHasTurn(get().sessions, currentSessionId, details.turnId)) {
+            appendTurnMessagesToStore({
+              addMessage: get().addMessage,
+              updateLastMessage: get().updateLastMessage,
+              prompt: userMessage.text,
+              requestedModels: details.requestedModels ?? uniqueModels,
+              turnId: details.turnId,
+              requestId: details.requestId,
+              blockedReports: [],
+            });
+          }
 
           const updatedSessions = get().sessions.map((entry) =>
             entry.id === currentSessionId
@@ -1307,11 +1191,11 @@ export const useStore = create<AppState>((set, get) => ({
                   'analysis.blocked.body',
                   'Prompt Switchboard keeps the BYOK lane disabled here because provider guidance says browser builds should not ship production API keys client-side.'
                 )
-              : provider.availabilityReason ??
-                i18n.t(
-                  'analysis.blocked.fallback',
-                  'This analysis provider is blocked in the browser build.'
-                )
+              : (provider.availabilityReason ??
+                  i18n.t(
+                    'analysis.blocked.fallback',
+                    'This analysis provider is blocked in the browser build.'
+                  ))
           ),
         },
       }));
@@ -1510,7 +1394,11 @@ export const useStore = create<AppState>((set, get) => ({
       analysisState = get().analysisByTurn[turnId];
     }
 
-    if (!analysisState || analysisState.status !== ANALYSIS_STATUSES.SUCCESS || !analysisState.result) {
+    if (
+      !analysisState ||
+      analysisState.status !== ANALYSIS_STATUSES.SUCCESS ||
+      !analysisState.result
+    ) {
       const message =
         analysisState?.errorMessage ??
         i18n.t(
@@ -1587,11 +1475,7 @@ export const useStore = create<AppState>((set, get) => ({
     set((state) => ({
       workflowByTurn: {
         ...state.workflowByTurn,
-        [turnId]: createWorkflowTurnStateFromDetail(
-          turnId,
-          detailOutcome.data,
-          targetModels
-        ),
+        [turnId]: createWorkflowTurnStateFromDetail(turnId, detailOutcome.data, targetModels),
       },
     }));
   },

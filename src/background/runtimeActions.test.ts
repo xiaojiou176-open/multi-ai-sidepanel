@@ -1,9 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import {
-  checkModelsReady,
-  forwardResponseUpdate,
-  runCompareAnalysis,
-} from './runtimeActions';
+import { checkModelsReady, forwardResponseUpdate, runCompareAnalysis } from './runtimeActions';
 import { FAILURE_CLASSES, MSG_TYPES, READINESS_STATUSES, SEND_ERROR_CODES } from '../utils/types';
 
 const mocks = vi.hoisted(() => ({
@@ -11,6 +7,7 @@ const mocks = vi.hoisted(() => ({
   getCurrentSessionId: vi.fn(),
   saveSessions: vi.fn(),
   saveBufferedStreamUpdate: vi.fn(),
+  applyStreamResponseUpdate: vi.fn(),
   loggerInfo: vi.fn(),
   loggerError: vi.fn(),
   loggerWarn: vi.fn(),
@@ -28,6 +25,7 @@ vi.mock('../services/storage', () => ({
     getCurrentSessionId: mocks.getCurrentSessionId,
     saveSessions: mocks.saveSessions,
     saveBufferedStreamUpdate: mocks.saveBufferedStreamUpdate,
+    applyStreamResponseUpdate: mocks.applyStreamResponseUpdate,
   },
 }));
 
@@ -122,6 +120,7 @@ describe('runtimeActions', () => {
     ]);
     mocks.saveSessions.mockResolvedValue(undefined);
     mocks.saveBufferedStreamUpdate.mockResolvedValue(undefined);
+    mocks.applyStreamResponseUpdate.mockResolvedValue(undefined);
 
     testGlobal.chrome = {
       tabs: {
@@ -153,22 +152,23 @@ describe('runtimeActions', () => {
   });
 
   it('returns selector-drift readiness when the content handshake reports blocked controls', async () => {
-    (testGlobal.chrome as { tabs: { sendMessage: ReturnType<typeof vi.fn> } }).tabs.sendMessage
-      .mockResolvedValue({
-        type: MSG_TYPES.PONG,
-        payload: {
-          ready: false,
-          model: 'ChatGPT',
-          hostname: 'chatgpt.com',
-          selectorSource: 'cached',
-          remoteConfigConfigured: true,
-          failureClass: FAILURE_CLASSES.SELECTOR_DRIFT_SUSPECT,
-          readinessStatus: READINESS_STATUSES.SELECTOR_DRIFT_SUSPECT,
-          inputReady: true,
-          submitReady: false,
-          lastCheckedAt: 88,
-        },
-      });
+    (
+      testGlobal.chrome as { tabs: { sendMessage: ReturnType<typeof vi.fn> } }
+    ).tabs.sendMessage.mockResolvedValue({
+      type: MSG_TYPES.PONG,
+      payload: {
+        ready: false,
+        model: 'ChatGPT',
+        hostname: 'chatgpt.com',
+        selectorSource: 'cached',
+        remoteConfigConfigured: true,
+        failureClass: FAILURE_CLASSES.SELECTOR_DRIFT_SUSPECT,
+        readinessStatus: READINESS_STATUSES.SELECTOR_DRIFT_SUSPECT,
+        inputReady: true,
+        submitReady: false,
+        lastCheckedAt: 88,
+      },
+    });
 
     await expect(checkModelsReady({ models: ['ChatGPT'] })).resolves.toEqual([
       expect.objectContaining({
@@ -198,7 +198,9 @@ describe('runtimeActions', () => {
     }));
 
     (testGlobal.chrome as { tabs: { sendMessage: ReturnType<typeof vi.fn> } }).tabs.sendMessage
-      .mockRejectedValueOnce(new Error('Could not establish connection. Receiving end does not exist.'))
+      .mockRejectedValueOnce(
+        new Error('Could not establish connection. Receiving end does not exist.')
+      )
       .mockResolvedValueOnce({
         type: MSG_TYPES.PONG,
         payload: {
@@ -225,9 +227,10 @@ describe('runtimeActions', () => {
     expect(mocks.rememberTabId).toHaveBeenCalledWith('ChatGPT', 202);
   });
 
-  it('persists buffered updates and forwards them to the side panel without crashing on send failure', async () => {
-    (testGlobal.chrome as { runtime: { sendMessage: ReturnType<typeof vi.fn> } }).runtime.sendMessage
-      .mockRejectedValueOnce(new Error('panel closed'));
+  it('persists stream updates through StorageService and forwards them to the side panel without crashing on send failure', async () => {
+    (
+      testGlobal.chrome as { runtime: { sendMessage: ReturnType<typeof vi.fn> } }
+    ).runtime.sendMessage.mockRejectedValueOnce(new Error('panel closed'));
 
     forwardResponseUpdate({
       model: 'ChatGPT',
@@ -240,7 +243,7 @@ describe('runtimeActions', () => {
     await Promise.resolve();
     await Promise.resolve();
 
-    expect(mocks.saveBufferedStreamUpdate).toHaveBeenCalledWith({
+    expect(mocks.applyStreamResponseUpdate).toHaveBeenCalledWith({
       model: 'ChatGPT',
       requestId: 'req-1',
       turnId: 'turn-1',
@@ -257,19 +260,6 @@ describe('runtimeActions', () => {
         requestId: 'req-1',
       }),
     });
-    expect(mocks.saveSessions).toHaveBeenCalledWith([
-      expect.objectContaining({
-        id: 'session-1',
-        messages: expect.arrayContaining([
-          expect.objectContaining({
-            id: 'assistant-1',
-            text: 'stream chunk',
-            turnId: 'turn-1',
-            deliveryStatus: 'streaming',
-          }),
-        ]),
-      }),
-    ]);
   });
 
   it('returns a timeout payload when compare analysis never responds', async () => {
@@ -379,7 +369,8 @@ describe('runtimeActions', () => {
       expect.objectContaining({
         ok: false,
         errorCode: SEND_ERROR_CODES.HANDSHAKE,
-        errorMessage: 'Prompt Switchboard could not confirm that ChatGPT was ready for AI analysis.',
+        errorMessage:
+          'Prompt Switchboard could not confirm that ChatGPT was ready for AI analysis.',
         data: expect.objectContaining({
           stage: 'content_ready_handshake',
           failureClass: FAILURE_CLASSES.HANDSHAKE_MISMATCH,

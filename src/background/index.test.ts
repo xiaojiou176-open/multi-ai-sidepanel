@@ -22,6 +22,7 @@ vi.mock('../services/storage', () => ({
     getCurrentSessionId: vi.fn().mockResolvedValue(null),
     saveSessions: vi.fn().mockResolvedValue(undefined),
     saveBufferedStreamUpdate: vi.fn().mockResolvedValue(undefined),
+    applyStreamResponseUpdate: vi.fn().mockResolvedValue(undefined),
     consumeBufferedStreamUpdates: vi.fn().mockResolvedValue([]),
   },
 }));
@@ -66,9 +67,7 @@ describe('background index', () => {
     });
   });
 
-  it(
-    'handles broadcast prompt and forwards execute prompt',
-    async () => {
+  it('handles broadcast prompt and forwards execute prompt', async () => {
     const runtimeActions = await import('./runtimeActions');
     const broadcastPromptSpy = vi
       .spyOn(runtimeActions, 'broadcastPrompt')
@@ -100,9 +99,7 @@ describe('background index', () => {
       requestId: 'req-1',
       turnId: 'turn-1',
     });
-    },
-    15_000
-  );
+  }, 15_000);
 
   it('forwards stream response to sidepanel', async () => {
     await import('./index');
@@ -584,9 +581,7 @@ describe('background index', () => {
 
   it('marks handshake timeout failures when the content script never answers the ping', async () => {
     vi.useFakeTimers();
-    chrome.tabs.sendMessage = vi.fn().mockImplementationOnce(
-      () => new Promise(() => undefined)
-    );
+    chrome.tabs.sendMessage = vi.fn().mockImplementationOnce(() => new Promise(() => undefined));
 
     await import('./index');
 

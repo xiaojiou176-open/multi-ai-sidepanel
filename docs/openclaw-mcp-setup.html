@@ -127,6 +127,16 @@
           <li>Prompt Switchboard still stays compare-first, local-first, and browser-native. This packet does not turn it into a hosted relay, SDK, or generic automation platform.</li>
         </ul>
       </section>
+      <section class="card">
+        <h2>Owner-run publish packet</h2>
+        <ol>
+          <li>Run <code>npm run release:host-kits</code> and verify the OpenClaw packet archive under <code>dist/public-bundles/</code>.</li>
+          <li>Choose the official OpenClaw public surface you will really use: bundle install, plugin listing, or another official listing surface backed by OpenClaw docs.</li>
+          <li>Publish the repo-owned OpenClaw packet and keep the MCP registry JSON, shell helper, and install docs aligned to that exact surface.</li>
+          <li>Verify the listing or bundle URL, the install flow, and one compare-first smoke run after publish.</li>
+          <li>Only after those proofs exist should you update public docs to claim Prompt Switchboard is publicly published for OpenClaw.</li>
+        </ol>
+      </section>
     </div>
   </body>
 </html>

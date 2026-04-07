@@ -4,7 +4,7 @@ One prompt, many AI chats, one side panel.
 
 Prompt Switchboard is a **compare-first, local-first, browser-native AI compare workspace** and **browser-side control tower** for multi-model compare runs. It lets you send one prompt to ChatGPT, Gemini, Perplexity, Qwen, and Grok, then compare the replies in one browser side panel instead of bouncing between tabs.
 
-It also ships a governed local MCP sidecar for **Codex and Claude Code browser workflows**. That sidecar exposes compare, retry, export, session, analyst, and next-step workflow actions without turning Prompt Switchboard into generic browser automation or a hosted agent platform.
+It also ships a governed local MCP sidecar for **Codex and Claude Code browser workflows** while OpenCode and OpenClaw stay on public starter-bundle lanes until stronger host proof exists.
 
 > **Trust boundary**
 >
@@ -12,7 +12,7 @@ It also ships a governed local MCP sidecar for **Codex and Claude Code browser w
 > The supported repo build also does **not** rely on OS-level desktop
 > automation, Force Quit helpers, or host-wide process cleanup.
 
-[Install the latest build](https://github.com/xiaojiou176-open/multi-ai-sidepanel/releases/latest) • [Landing page](./docs/index.html) • [Install guide](./docs/install.html) • [First compare guide](./docs/first-compare-guide.html) • [Supported sites](./docs/supported-sites.html) • [Trust boundary](./docs/trust-boundary.html) • [FAQ guide](./docs/faq.html) • [Host packets](./docs/mcp-host-packets.html) • [Public distribution matrix](./docs/public-distribution-matrix.html) • [Releases](https://github.com/xiaojiou176-open/multi-ai-sidepanel/releases) • [Discussions](https://github.com/xiaojiou176-open/multi-ai-sidepanel/discussions) • [Privacy](./PRIVACY.md) • [Security](./SECURITY.md) • [Building locally](./CONTRIBUTING.md)
+[Install the latest build](https://github.com/xiaojiou176-open/multi-ai-sidepanel/releases/latest) • [Landing page](./docs/index.html) • [Install guide](./docs/install.html) • [First compare guide](./docs/first-compare-guide.html) • [Supported sites](./docs/supported-sites.html) • [Trust boundary](./docs/trust-boundary.html) • [FAQ guide](./docs/faq.html) • [Prompt packs](./docs/prompt-packs.html) • [Releases](https://github.com/xiaojiou176-open/multi-ai-sidepanel/releases) • [Discussions](https://github.com/xiaojiou176-open/multi-ai-sidepanel/discussions) • [Privacy](./PRIVACY.md) • [Security](./SECURITY.md) • [Building locally](./CONTRIBUTING.md)
 
 ![Prompt Switchboard hero showing one prompt and multiple AI answers side by side.](./docs/assets/prompt-switchboard-hero.png)
 
@@ -24,6 +24,20 @@ Before the first compare run, make sure the supported AI tabs you want to use
 are already open and signed in inside the same browser profile.
 The side panel now includes a first-run checklist and readiness repair actions,
 so the shortest path to success lives inside the product instead of only in the docs.
+
+## Default Path
+
+If you only remember one route through this repo, remember this one:
+
+1. **Install the latest build** from GitHub Releases.
+2. **Run one real compare** from the side panel with the tabs you already trust.
+3. **Stay in the same turn** to retry failures only or export a readable compare artifact.
+
+Use these pages in that exact order:
+
+- [Install guide](./docs/install.html)
+- [First compare guide](./docs/first-compare-guide.html)
+- [Prompt packs](./docs/prompt-packs.html)
 
 ## Why It Feels Worth Saving
 
@@ -48,10 +62,13 @@ Before you start:
 - at least one supported AI chat tab already open and signed in
 
 1. Open the [latest Releases page](https://github.com/xiaojiou176-open/multi-ai-sidepanel/releases/latest).
-2. Download the packaged extension zip, unzip it locally, and load the extracted folder as an unpacked extension in `chrome://extensions`.
-3. Open the supported AI tabs you want to compare, then ask once from the side panel.
+2. Download the packaged extension zip, unzip it locally, open `chrome://extensions`, enable **Developer Mode**, and use **Load unpacked** on the extracted folder.
+3. If the Prompt Switchboard icon is hidden, open the browser Extensions menu, pin Prompt Switchboard, then click the toolbar icon to open the side panel.
+4. Open the supported AI tabs you want to compare, then ask once from the side panel.
 
 Today the public install path is the packaged GitHub Release zip. A lower-friction store distribution path is being prepared, but it is not live yet.
+
+If you are validating the real Chrome proof lane, keep one extra rule in mind: official Google Chrome branded builds 137+ / 139+ no longer reliably auto-load unpacked extensions from command-line flags. Automated runtime proof should use Chromium or Chrome for Testing. Real Chrome proof keeps the same signed-in profile, then uses `chrome://extensions` -> **Developer Mode** -> **Load unpacked** manually.
 
 Need the local build path, release workflow, or front-door maintenance steps? Read [`CONTRIBUTING.md`](./CONTRIBUTING.md).
 
@@ -73,11 +90,22 @@ If you want to see the value quickly, try one of these on three or more supporte
 - [Best AI for rewriting text](./docs/best-ai-for-rewriting-text.html)
 - [Best AI for coding explanations](./docs/best-ai-for-coding-explanations.html)
 - [Why local-first AI comparison matters](./docs/local-first-ai-comparison.html)
+- [Prompt packs](./docs/prompt-packs.html)
+
+### After The First Compare Works
+
+- Retry only the failed cards from the same compare turn.
+- Export a readable compare summary or Markdown artifact.
+- Reuse [Prompt packs](./docs/prompt-packs.html) when you want a faster second run.
+
+### Optional Builder Lane
+
+If you already use MCP-capable coding agents, come here **after** the first compare works:
+
 - [Prompt Switchboard for Codex, Claude Code, and MCP agents](./docs/mcp-coding-agents.html)
 - [Prompt Switchboard MCP starter kits](./docs/mcp-starter-kits.html)
 - [Prompt Switchboard host packets](./docs/mcp-host-packets.html)
 - [Prompt Switchboard public distribution matrix](./docs/public-distribution-matrix.html)
-- [Prompt packs](./docs/prompt-packs.html)
 
 ## Why It Beats Tab Juggling
 
@@ -85,13 +113,13 @@ If you want to see the value quickly, try one of these on three or more supporte
 
 The strongest product claim here is not abstract AI productivity. It is much simpler: Prompt Switchboard removes the messy part of side-by-side comparison.
 
-| Manual multi-tab compare                        | Prompt Switchboard                                  |
-| ----------------------------------------------- | --------------------------------------------------- |
-| Paste the same prompt into every site           | Ask once from the side panel                        |
-| Wait in separate tabs and windows               | Watch status chips update in one board              |
-| Reconstruct which answer belongs to which model | Keep aligned model cards in one compare view        |
+| Manual multi-tab compare                        | Prompt Switchboard                                           |
+| ----------------------------------------------- | ------------------------------------------------------------ |
+| Paste the same prompt into every site           | Ask once from the side panel                                 |
+| Wait in separate tabs and windows               | Watch status chips update in one board                       |
+| Reconstruct which answer belongs to which model | Keep aligned model cards in one compare view                 |
 | Copy results back into your own notes by hand   | Copy the best-fit answer or reopen the original tab directly |
-| Lose the comparison context after the session   | Keep the run saved locally for export and restore   |
+| Lose the comparison context after the session   | Keep the run saved locally for export and restore            |
 
 ## How It Works
 
@@ -100,9 +128,11 @@ The strongest product claim here is not abstract AI productivity. It is much sim
 3. **Compare clearly**: review the answers side by side, inspect the per-model run timeline, copy the best response, or jump back into the original model tab.
 4. **Recover, export, and continue**: retry only the failed models, use the repair center when readiness blocks a run, export a readable compare artifact, or seed the next compare round from the completed answers.
 
-## MCP Sidecar
+## Builder Lane (After The First Compare)
 
-Prompt Switchboard now includes a local MCP sidecar for product-level agent integrations.
+Prompt Switchboard also includes a local MCP sidecar for product-level agent integrations.
+That builder lane is real, but it is **not** the default first-stop story of the repo.
+The default story is still: install, run one compare, then export or retry from the same turn.
 
 - The sidecar speaks MCP over `stdio`.
 - The extension bridge stays local on `127.0.0.1`.
@@ -170,12 +200,12 @@ For repo-specific host setup, keep the official client-side configuration flows 
 
 Quick placement map:
 
-| Host | Starter asset | Where it goes |
-| --- | --- | --- |
-| Codex | `codex.config.toml.example` | copy the MCP block into your Codex `config.toml` |
-| Claude Code | `claude.mcp.json.example` | copy the MCP block into your Claude Code config such as `.mcp.json` |
-| OpenCode | `opencode.jsonc.example` | save it as project-root `opencode.jsonc` inside your Prompt Switchboard clone |
-| OpenClaw | `openclaw.prompt-switchboard.json.example` or `openclaw.mcp.servers.json.example` | register it with `openclaw mcp set` or place it under `mcp.servers` |
+| Host        | Starter asset                                                                     | Where it goes                                                                 |
+| ----------- | --------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| Codex       | `codex.config.toml.example`                                                       | copy the MCP block into your Codex `config.toml`                              |
+| Claude Code | `claude.mcp.json.example`                                                         | copy the MCP block into your Claude Code config such as `.mcp.json`           |
+| OpenCode    | `opencode.jsonc.example`                                                          | save it as project-root `opencode.jsonc` inside your Prompt Switchboard clone |
+| OpenClaw    | `openclaw.prompt-switchboard.json.example` or `openclaw.mcp.servers.json.example` | register it with `openclaw mcp set` or place it under `mcp.servers`           |
 
 Use the [public distribution matrix](./docs/public-distribution-matrix.html) when you need the public truth split between:
 

@@ -4,14 +4,8 @@ import http from 'node:http';
 import path from 'node:path';
 import WebSocket from 'ws';
 import { inspectBrowserResourceState } from './browser-resource-hygiene.mjs';
-import {
-  buildRuntimeInspectionReport,
-  runLiveDiagnoseEnvelope,
-} from './live-runtime-gates.mjs';
-import {
-  buildAttachTargetUrls,
-  buildOpenLiveBrowserArgs,
-} from './open-live-browser-helpers.mjs';
+import { buildRuntimeInspectionReport, runLiveDiagnoseEnvelope } from './live-runtime-gates.mjs';
+import { buildAttachTargetUrls, buildOpenLiveBrowserArgs } from './open-live-browser-helpers.mjs';
 import { writeBrowserIdentityPage } from '../shared/browser-instance-identity.mjs';
 import {
   pruneExternalRepoCache,
@@ -21,6 +15,9 @@ import {
 
 const DEFAULT_URL = 'https://chatgpt.com/';
 const DEFAULT_CDP_PORT = 9336;
+const PROMPT_SWITCHBOARD_EXTENSION_NAME = 'Prompt Switchboard';
+const PROMPT_SWITCHBOARD_OPTIONS_PAGE = 'settings.html';
+const PROMPT_SWITCHBOARD_SIDE_PANEL_PATH = 'index.html';
 const EXTENSION_ID_CACHE_PATH = path.resolve(
   process.cwd(),
   '.runtime-cache',
@@ -31,6 +28,7 @@ const LIVE_FLAG = process.env.PROMPT_SWITCHBOARD_LIVE === '1';
 const DETACHED_BROWSER_LAUNCH_ALLOWED =
   process.env.PROMPT_SWITCHBOARD_LIVE_ALLOW_DETACHED_BROWSER === '1';
 const CDP_PORT = Number(process.env.PROMPT_SWITCHBOARD_LIVE_CDP_PORT || DEFAULT_CDP_PORT);
+const BROWSER_CHANNEL = process.env.PROMPT_SWITCHBOARD_LIVE_BROWSER_CHANNEL || 'chrome';
 const START_URL = process.env.PROMPT_SWITCHBOARD_LIVE_START_URL || DEFAULT_URL;
 const EXTENSION_PATH = process.env.PROMPT_SWITCHBOARD_EXTENSION_PATH
   ? path.resolve(process.env.PROMPT_SWITCHBOARD_EXTENSION_PATH)
@@ -38,8 +36,7 @@ const EXTENSION_PATH = process.env.PROMPT_SWITCHBOARD_EXTENSION_PATH
 const browserProfile = resolveBrowserProfile();
 const browserExecutable = resolveBrowserExecutablePath({
   ...process.env,
-  PROMPT_SWITCHBOARD_LIVE_BROWSER_CHANNEL:
-    process.env.PROMPT_SWITCHBOARD_LIVE_BROWSER_CHANNEL || 'chromium',
+  PROMPT_SWITCHBOARD_LIVE_BROWSER_CHANNEL: BROWSER_CHANNEL,
 });
 
 const readCachedExtensionId = () => {
@@ -57,6 +54,47 @@ const writeCachedExtensionId = (value) => {
   }
   fs.mkdirSync(path.dirname(EXTENSION_ID_CACHE_PATH), { recursive: true });
   fs.writeFileSync(EXTENSION_ID_CACHE_PATH, `${value}\n`, 'utf8');
+};
+
+const readProfileRepoOwnedExtensionIds = ({ userDataDir, profileDirectory, extensionPath }) => {
+  const profileRoot = path.resolve(userDataDir, profileDirectory);
+  const extensionRoot = path.resolve(extensionPath);
+  const preferenceFiles = [
+    path.join(profileRoot, 'Preferences'),
+    path.join(profileRoot, 'Secure Preferences'),
+  ];
+  const extensionIds = new Set();
+
+  for (const filePath of preferenceFiles) {
+    if (!fs.existsSync(filePath)) {
+      continue;
+    }
+
+    try {
+      const payload = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+      const settings = payload?.extensions?.settings;
+      if (!settings || typeof settings !== 'object') {
+        continue;
+      }
+
+      for (const [extensionId, entry] of Object.entries(settings)) {
+        const manifest = entry?.manifest;
+        const resolvedPath =
+          typeof entry?.path === 'string' && entry.path.length > 0 ? path.resolve(entry.path) : null;
+        const manifestMatches =
+          manifest?.name === PROMPT_SWITCHBOARD_EXTENSION_NAME &&
+          manifest?.options_page === PROMPT_SWITCHBOARD_OPTIONS_PAGE &&
+          manifest?.side_panel?.default_path === PROMPT_SWITCHBOARD_SIDE_PANEL_PATH;
+        if (manifestMatches || resolvedPath === extensionRoot) {
+          extensionIds.add(extensionId);
+        }
+      }
+    } catch {
+      // Ignore unreadable profile preference files; runtime detection remains authoritative.
+    }
+  }
+
+  return [...extensionIds];
 };
 
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -228,9 +266,7 @@ const browserResources = inspectBrowserResourceState();
 const attachOwnership = inspectAttachBrowserOwnership();
 const cdpReadyBeforeLaunch = await probeCdpReady(CDP_PORT);
 const reusingExistingAttachBrowser =
-  attachOwnership.available &&
-  cdpReadyBeforeLaunch &&
-  attachOwnership.repoOwned.length > 0;
+  attachOwnership.available && cdpReadyBeforeLaunch && attachOwnership.repoOwned.length > 0;
 
 if (!LIVE_FLAG) {
   errors.push('PROMPT_SWITCHBOARD_LIVE=1 is required before launching the attach browser helper.');
@@ -265,11 +301,7 @@ if (
   );
 }
 
-if (
-  attachOwnership.available &&
-  !cdpReadyBeforeLaunch &&
-  attachOwnership.repoOwned.length > 0
-) {
+if (attachOwnership.available && !cdpReadyBeforeLaunch && attachOwnership.repoOwned.length > 0) {
   errors.push(
     `A repo-owned canonical browser instance already exists for ${browserProfile.userDataDir} / ${browserProfile.profileDirectory}, but it is not attachable on CDP port ${CDP_PORT}. Close that instance and rerun the helper instead of second-launching the same browser root.`
   );
@@ -289,8 +321,16 @@ pruneExternalRepoCache({
 
 const executablePath = browserExecutable.executablePath;
 const cachedExtensionId = readCachedExtensionId();
-const extensionWarmupUrl = cachedExtensionId
-  ? `chrome-extension://${cachedExtensionId}/settings.html`
+const profileExtensionIds = readProfileRepoOwnedExtensionIds({
+  userDataDir: browserProfile.userDataDir,
+  profileDirectory: browserProfile.profileDirectory,
+  extensionPath: EXTENSION_PATH,
+});
+const trustedWarmupExtensionId = cachedExtensionId && profileExtensionIds.includes(cachedExtensionId)
+  ? cachedExtensionId
+  : (profileExtensionIds[0] ?? null);
+const extensionWarmupUrl = trustedWarmupExtensionId
+  ? `chrome-extension://${trustedWarmupExtensionId}/settings.html`
   : null;
 const identityPage = writeBrowserIdentityPage({
   repoRoot: process.cwd(),
@@ -316,7 +356,9 @@ let cdpReady = cdpReadyBeforeLaunch;
 
 if (!reusingExistingAttachBrowser) {
   if (!DETACHED_BROWSER_LAUNCH_ALLOWED) {
-    const manualLaunchCommand = [executablePath, ...args].map((part) => JSON.stringify(part)).join(' ');
+    const manualLaunchCommand = [executablePath, ...args]
+      .map((part) => JSON.stringify(part))
+      .join(' ');
     console.error(
       `[test:live:open-browser] failed: Detached repo-owned browser launch now requires PROMPT_SWITCHBOARD_LIVE_ALLOW_DETACHED_BROWSER=1. Launch Chrome manually with ${manualLaunchCommand} or rerun with that explicit operator override.`
     );
@@ -378,16 +420,19 @@ delete runtimeInspectionEnv.PROMPT_SWITCHBOARD_PROFILE_DIRECTORY;
 const runtimeDiagnosisEnvelope = runLiveDiagnoseEnvelope({ env: runtimeInspectionEnv });
 const runtimeInspection = buildRuntimeInspectionReport(runtimeDiagnosisEnvelope);
 const runtimeBlocked = Boolean(runtimeInspection?.laneBlocked);
+const versionPayload = await fetchJson(`http://127.0.0.1:${CDP_PORT}/json/version`);
+const browserMajorVersion = Number(String(versionPayload?.Browser || '').match(/\/(\d+)/)?.[1] || '0');
+const brandedChromeExtensionAutoloadUnsupported =
+  BROWSER_CHANNEL === 'chrome' && browserMajorVersion >= 137;
 const detectedRuntimeId = runtimeInspection?.runtimeEvidence?.detectedRuntimeIds?.[0] || null;
 if (detectedRuntimeId && detectedRuntimeId !== cachedExtensionId) {
   writeCachedExtensionId(detectedRuntimeId);
   const detectedExtensionWarmupUrl = `chrome-extension://${detectedRuntimeId}/settings.html`;
   const detectedExtensionAppUrl = `chrome-extension://${detectedRuntimeId}/index.html`;
   const targets = await listCdpTargets(CDP_PORT);
-  const missingDetectedTargets = [
-    detectedExtensionWarmupUrl,
-    detectedExtensionAppUrl,
-  ].filter((targetUrl) => !hasAttachTarget(targets, targetUrl));
+  const missingDetectedTargets = [detectedExtensionWarmupUrl, detectedExtensionAppUrl].filter(
+    (targetUrl) => !hasAttachTarget(targets, targetUrl)
+  );
   if (missingDetectedTargets.length > 0) {
     const versionPayload = await fetchJson(`http://127.0.0.1:${CDP_PORT}/json/version`);
     if (versionPayload?.webSocketDebuggerUrl) {
@@ -429,8 +474,13 @@ console.log(
       extensionWarmupUrl,
       runtimeInspection,
       nextAction: runtimeBlocked
-        ? 'The repo-owned browser lane launched, but Prompt Switchboard still did not expose a live extension runtime. Treat this lane as runtime-blocked and prefer repo-side debugging or a rebuilt browser lane over repeated Chrome menu clicks.'
+        ? brandedChromeExtensionAutoloadUnsupported
+          ? `The repo-owned real Chrome lane launched, but ${versionPayload?.Browser || `Chrome/${browserMajorVersion}`} did not expose a Prompt Switchboard extension runtime. Official Google Chrome branded builds removed command-line unpacked extension autoload support starting in Chrome 137, and removed --disable-extensions-except in Chrome 139. Keep this profile for login-state validation, then manually use "Load unpacked" in this repo-owned Chrome profile or move automated extension-runtime proof to Chromium/Chrome for Testing.`
+          : 'The repo-owned browser lane launched, but Prompt Switchboard still did not expose a live extension runtime. Treat this lane as runtime-blocked and prefer repo-side debugging or a rebuilt browser lane over repeated Chrome menu clicks.'
         : 'Keep the identity tab open on the left, log in inside the launched browser window if needed, and use the real Prompt Switchboard side panel or toolbar entry instead of direct extension-tab navigation when you need the live UI surface. Then run the attach command in the same repo shell.',
+      trustedWarmupExtensionId,
+      brandedChromeExtensionAutoloadUnsupported,
+      browserVersion: versionPayload?.Browser || null,
       attachCommand,
     },
     null,

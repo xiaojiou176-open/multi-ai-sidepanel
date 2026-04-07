@@ -11,8 +11,10 @@ import {
 
 const shouldRun = process.env.PROMPT_SWITCHBOARD_LIVE === '1';
 const browserProfile = resolveBrowserProfile();
-const browserChannel = process.env.PROMPT_SWITCHBOARD_LIVE_BROWSER_CHANNEL || 'chromium';
 const attachMode = process.env.PROMPT_SWITCHBOARD_LIVE_ATTACH_MODE || 'browser';
+const browserChannel =
+  process.env.PROMPT_SWITCHBOARD_LIVE_BROWSER_CHANNEL ||
+  (attachMode === 'browser' ? 'chrome' : 'chromium');
 const cdpUrl = process.env.PROMPT_SWITCHBOARD_LIVE_CDP_URL || 'http://127.0.0.1:9336';
 const strictMode = process.env.PROMPT_SWITCHBOARD_LIVE_STRICT === '1';
 const testPath = path.join('tests', 'e2e', 'live.smoke.spec.ts');
@@ -27,6 +29,33 @@ const exitSkippedOrFailed = (message) => {
   console.log(message);
   process.exit(strictMode ? 1 : 0);
 };
+
+const fetchJson = (targetUrl) =>
+  new Promise((resolve) => {
+    try {
+      const request = http.get(targetUrl, (response) => {
+        let body = '';
+        response.setEncoding('utf8');
+        response.on('data', (chunk) => {
+          body += chunk;
+        });
+        response.on('end', () => {
+          try {
+            resolve(JSON.parse(body || 'null'));
+          } catch {
+            resolve(null);
+          }
+        });
+      });
+      request.on('error', () => resolve(null));
+      request.setTimeout(1000, () => {
+        request.destroy();
+        resolve(null);
+      });
+    } catch {
+      resolve(null);
+    }
+  });
 
 const probeCdpReady = (targetUrl) =>
   new Promise((resolve) => {
@@ -71,6 +100,16 @@ pruneExternalRepoCache({
 });
 
 const cdpReachable = attachMode === 'browser' ? await probeCdpReady(cdpUrl) : false;
+const versionPayload =
+  attachMode === 'browser' && cdpReachable
+    ? await fetchJson(new URL('/json/version', cdpUrl))
+    : null;
+const browserMajorVersion = Number(String(versionPayload?.Browser || '').match(/\/(\d+)/)?.[1] || '0');
+const brandedChromeExtensionAutoloadUnsupported =
+  attachMode === 'browser' && browserChannel === 'chrome' && browserMajorVersion >= 137;
+const brandedChromeExtensionAutoloadBlocker = brandedChromeExtensionAutoloadUnsupported
+  ? `Official Google Chrome branded builds removed command-line unpacked extension autoload support starting in Chrome 137, and removed --disable-extensions-except in Chrome 139. The current attach lane reports ${versionPayload?.Browser || `Chrome/${browserMajorVersion}`}, so this real Chrome profile can preserve login state but cannot auto-load the unpacked Prompt Switchboard extension runtime. Manually use "Load unpacked" in this repo-owned Chrome profile, or move the automated extension-runtime proof lane to Chromium/Chrome for Testing.`
+  : null;
 if (attachMode === 'browser' && !cdpReachable) {
   console.error(
     `[test:live] failed: PROMPT_SWITCHBOARD_LIVE_CDP_URL is not attachable right now (${cdpUrl}). Launch the repo-owned browser first with npm run test:live:open-browser.`
@@ -115,6 +154,8 @@ const hasRecoverableRuntimeGapOnly =
   preflightBlockers.every(
     (blocker) => blocker.surface === 'probe' && blocker.kind === 'probe_blocker'
   );
+const hasRuntimeGapOnlyButChromeAutoloadIsUnsupported =
+  hasRecoverableRuntimeGapOnly && Boolean(brandedChromeExtensionAutoloadBlocker);
 
 if (preflightBlockers.length > 0 && !hasRecoverableRuntimeGapOnly) {
   console.error('[test:live] blocked before compare execution:');
@@ -127,6 +168,12 @@ if (preflightBlockers.length > 0 && !hasRecoverableRuntimeGapOnly) {
       console.error(`- ${action}`);
     }
   }
+  process.exit(1);
+}
+
+if (hasRuntimeGapOnlyButChromeAutoloadIsUnsupported) {
+  console.error('[test:live] blocked before compare execution:');
+  console.error(`- ${brandedChromeExtensionAutoloadBlocker}`);
   process.exit(1);
 }
 

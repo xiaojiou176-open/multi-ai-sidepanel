@@ -3,10 +3,7 @@ import http from 'node:http';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { inspectBrowserResourceState } from './browser-resource-hygiene.mjs';
-import {
-  buildRuntimeInspectionReport,
-  runLiveDiagnoseEnvelope,
-} from './live-runtime-gates.mjs';
+import { buildRuntimeInspectionReport, runLiveDiagnoseEnvelope } from './live-runtime-gates.mjs';
 import {
   formatBytes,
   getExternalCachePolicy,
@@ -19,15 +16,15 @@ import {
 } from '../shared/runtime-governance.mjs';
 
 const LIVE_FLAG = process.env.PROMPT_SWITCHBOARD_LIVE === '1';
-const BROWSER_CHANNEL = process.env.PROMPT_SWITCHBOARD_LIVE_BROWSER_CHANNEL || 'chromium';
 const ATTACH_MODE = process.env.PROMPT_SWITCHBOARD_LIVE_ATTACH_MODE || 'browser';
+const BROWSER_CHANNEL =
+  process.env.PROMPT_SWITCHBOARD_LIVE_BROWSER_CHANNEL ||
+  (ATTACH_MODE === 'browser' ? 'chrome' : 'chromium');
 const CDP_URL = process.env.PROMPT_SWITCHBOARD_LIVE_CDP_URL || 'http://127.0.0.1:9336';
 const EXTENSION_PATH_FROM_ENV = process.env.PROMPT_SWITCHBOARD_EXTENSION_PATH || '';
 const CLONE_PROFILE = process.env.PROMPT_SWITCHBOARD_CLONE_PROFILE === '1';
 const KEEP_LIVE_CLONE = process.env.PROMPT_SWITCHBOARD_KEEP_LIVE_CLONE === '1';
-const TARGET_MODELS = (
-  process.env.PROMPT_SWITCHBOARD_LIVE_MODELS || 'ChatGPT'
-)
+const TARGET_MODELS = (process.env.PROMPT_SWITCHBOARD_LIVE_MODELS || 'ChatGPT')
   .split(',')
   .map((value) => value.trim())
   .filter(Boolean);
@@ -76,6 +73,33 @@ const probeCdpReady = (targetUrl) =>
     }
   });
 
+const fetchJson = (targetUrl) =>
+  new Promise((resolve) => {
+    try {
+      const request = http.get(targetUrl, (response) => {
+        let body = '';
+        response.setEncoding('utf8');
+        response.on('data', (chunk) => {
+          body += chunk;
+        });
+        response.on('end', () => {
+          try {
+            resolve(JSON.parse(body || 'null'));
+          } catch {
+            resolve(null);
+          }
+        });
+      });
+      request.on('error', () => resolve(null));
+      request.setTimeout(1000, () => {
+        request.destroy();
+        resolve(null);
+      });
+    } catch {
+      resolve(null);
+    }
+  });
+
 const inspectAttachBrowserOwnership = () => {
   const result = spawnSync('ps', ['-axo', 'pid=,args='], { encoding: 'utf8' });
 
@@ -107,13 +131,14 @@ const inspectAttachBrowserOwnership = () => {
 };
 
 const cdpReachable = ATTACH_MODE === 'persistent' ? false : await probeCdpReady(CDP_URL);
+const versionPayload =
+  ATTACH_MODE === 'persistent' || !cdpReachable
+    ? null
+    : await fetchJson(new URL('/json/version', CDP_URL));
+const browserMajorVersion = Number(String(versionPayload?.Browser || '').match(/\/(\d+)/)?.[1] || '0');
 const attachOwnership = inspectAttachBrowserOwnership();
 const attachModeResolved =
-  ATTACH_MODE === 'browser'
-    ? 'browser'
-    : ATTACH_MODE === 'persistent'
-      ? 'persistent'
-      : 'browser';
+  ATTACH_MODE === 'browser' ? 'browser' : ATTACH_MODE === 'persistent' ? 'persistent' : 'browser';
 const canInspectRuntime =
   attachModeResolved === 'browser' && cdpReachable && attachOwnership.repoOwned.length > 0;
 const runtimeInspectionEnv = canInspectRuntime
@@ -138,6 +163,13 @@ const runtimeDiagnosisEnvelope = runtimeInspectionEnv
   : null;
 const runtimeInspection = buildRuntimeInspectionReport(runtimeDiagnosisEnvelope);
 const runtimeBlocker = runtimeInspection?.laneBlocked ? runtimeInspection.errorMessage : null;
+const brandedChromeExtensionAutoloadBlocker =
+  attachModeResolved === 'browser' &&
+  BROWSER_CHANNEL === 'chrome' &&
+  browserMajorVersion >= 137 &&
+  runtimeInspection?.laneBlocked
+    ? `Official Google Chrome branded builds removed command-line unpacked extension autoload support starting in Chrome 137, and removed --disable-extensions-except in Chrome 139. The current attach lane reports ${versionPayload?.Browser || `Chrome/${browserMajorVersion}`}, so this real Chrome profile can preserve login state but will not auto-load the unpacked Prompt Switchboard extension runtime. Manually use "Load unpacked" in the repo-owned Chrome profile, or switch automated extension-runtime proof to Chromium/Chrome for Testing.`
+    : null;
 
 const missingRequiredEnv = [!LIVE_FLAG ? 'PROMPT_SWITCHBOARD_LIVE=1' : null].filter(Boolean);
 
@@ -157,6 +189,7 @@ const blockers = [
   ...browserExecutable.blockers,
   unsupportedChannelBlocker,
   attachModeBlocker,
+  brandedChromeExtensionAutoloadBlocker,
   !extensionPathExists
     ? `Extension build path is missing: ${sanitizePathForReport(extensionPath)}`
     : null,

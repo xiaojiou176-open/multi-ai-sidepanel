@@ -1,10 +1,12 @@
 import {
   type CompareAnalysisResponsePayload,
+  type ExecuteSubstrateActionMessage,
   MSG_TYPES,
   type RunCompareAnalysisPayload,
   SEND_ERROR_CODES,
   type BroadcastPromptPayload,
   type CheckModelsReadyPayload,
+  hasMessageType,
   type MessagePayload,
   type StreamResponsePayload,
 } from '../utils/types';
@@ -39,13 +41,13 @@ SelectorService.fetchAndCacheSelectors();
 startMcpBridgeClient({ executeCommand: executeBridgeCommand });
 
 chrome.runtime.onMessage.addListener((message: MessagePayload, _sender, sendResponse) => {
-  if (message.type === MSG_TYPES.BROADCAST_PROMPT) {
+  if (hasMessageType(message, MSG_TYPES.BROADCAST_PROMPT)) {
     void broadcastPrompt(message.payload as BroadcastPromptPayload);
     sendResponse({ status: 'processing' });
     return true; // Async response
   }
 
-  if (message.type === MSG_TYPES.CHECK_MODELS_READY) {
+  if (hasMessageType(message, MSG_TYPES.CHECK_MODELS_READY)) {
     withTimeout(
       checkModelsReady(message.payload as CheckModelsReadyPayload),
       BACKGROUND_CHECK_READY_TIMEOUT_MS,
@@ -63,11 +65,8 @@ chrome.runtime.onMessage.addListener((message: MessagePayload, _sender, sendResp
     return true;
   }
 
-  if (message.type === MSG_TYPES.EXECUTE_SUBSTRATE_ACTION) {
-    const payload = (message.payload ?? {}) as {
-      action?: string;
-      args?: unknown;
-    };
+  if (hasMessageType(message, MSG_TYPES.EXECUTE_SUBSTRATE_ACTION)) {
+    const payload = (message as ExecuteSubstrateActionMessage).payload ?? {};
     if (!payload.action) {
       sendResponse({
         version: 'v2alpha1',
@@ -76,7 +75,8 @@ chrome.runtime.onMessage.addListener((message: MessagePayload, _sender, sendResp
         error: {
           kind: 'validation',
           code: 'missing_action',
-          message: 'Prompt Switchboard could not execute a substrate action without an action name.',
+          message:
+            'Prompt Switchboard could not execute a substrate action without an action name.',
           retryable: false,
         },
       });
@@ -111,7 +111,7 @@ chrome.runtime.onMessage.addListener((message: MessagePayload, _sender, sendResp
     return true;
   }
 
-  if (message.type === MSG_TYPES.RUN_COMPARE_ANALYSIS) {
+  if (hasMessageType(message, MSG_TYPES.RUN_COMPARE_ANALYSIS)) {
     withTimeout(
       runCompareAnalysis(message.payload as RunCompareAnalysisPayload),
       BACKGROUND_ANALYSIS_TIMEOUT_MS,
@@ -124,8 +124,8 @@ chrome.runtime.onMessage.addListener((message: MessagePayload, _sender, sendResp
           code: 'background_run_compare_analysis_failed',
           error: toErrorMessage(error),
         });
-      const payload = message.payload as RunCompareAnalysisPayload;
-      sendResponse({
+        const payload = message.payload as RunCompareAnalysisPayload;
+        sendResponse({
           ok: false,
           model: payload.model,
           turnId: payload.turnId,
@@ -141,7 +141,7 @@ chrome.runtime.onMessage.addListener((message: MessagePayload, _sender, sendResp
     return true;
   }
 
-  if (message.type === MSG_TYPES.GET_BUFFERED_UPDATES) {
+  if (hasMessageType(message, MSG_TYPES.GET_BUFFERED_UPDATES)) {
     StorageService.consumeBufferedStreamUpdates()
       .then((updates) => sendResponse({ updates }))
       .catch((error) => {
@@ -156,7 +156,7 @@ chrome.runtime.onMessage.addListener((message: MessagePayload, _sender, sendResp
   }
 
   // Forward stream responses from Content Script to Side Panel
-  if (message.type === MSG_TYPES.STREAM_RESPONSE) {
+  if (hasMessageType(message, MSG_TYPES.STREAM_RESPONSE)) {
     void forwardResponseUpdate(message.payload as StreamResponsePayload);
   }
 });

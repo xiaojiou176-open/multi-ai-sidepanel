@@ -4,7 +4,7 @@ import path from 'node:path';
 import { getModelConfig } from '../../src/utils/modelConfig';
 import { withExistingExtensionTarget } from '../../scripts/verify/live-extension-target';
 import {
-  resolvePreferredExtensionId,
+  waitForPromptSwitchboardExtensionId,
   resolveLiveProbeConfig,
   scoreLiveSiteCandidateSnapshot,
   withLiveProbeContext,
@@ -154,87 +154,6 @@ const persistExtensionId = (extensionId: string) => {
   fs.writeFileSync(EXTENSION_ID_CACHE_PATH, extensionId, 'utf8');
 };
 
-const resolveExtensionId = async (context: BrowserContext) => {
-  const currentWorker = context
-    .serviceWorkers()
-    .find((worker) => worker.url().startsWith('chrome-extension://'));
-  if (currentWorker) {
-    return new URL(currentWorker.url()).host;
-  }
-
-  const existingExtensionPages = context
-    .pages()
-    .filter((page) => page.url().startsWith('chrome-extension://'));
-  if (existingExtensionPages.length > 0) {
-    const scoredPages = await Promise.all(
-      existingExtensionPages.map(async (page) => {
-        try {
-          const snapshot = await page.evaluate(() => ({
-            runtimeId: chrome?.runtime?.id ?? null,
-            localType: typeof chrome?.storage?.local,
-          }));
-          return {
-            runtimeId: snapshot.runtimeId,
-            localType: snapshot.localType,
-          };
-        } catch {
-          return {
-            runtimeId: null,
-            localType: 'undefined',
-          };
-        }
-      })
-    );
-
-    const livePage = scoredPages.find(
-      (entry) => typeof entry.runtimeId === 'string' && entry.localType === 'object'
-    );
-    if (livePage?.runtimeId) {
-      return livePage.runtimeId;
-    }
-
-    const detectedRuntimeIds = existingExtensionPages
-      .map((page) => {
-        try {
-          return new URL(page.url()).host;
-        } catch {
-          return '';
-        }
-      })
-      .filter(Boolean);
-    const cachedExtensionId = readCachedExtensionId();
-    const preferredRuntimeId = resolvePreferredExtensionId({
-      resolvedExtensionId: cachedExtensionId,
-      detectedRuntimeIds,
-    });
-    if (preferredRuntimeId) {
-      return preferredRuntimeId;
-    }
-  }
-
-  const cachedExtensionId = readCachedExtensionId();
-  if (cachedExtensionId) {
-    return cachedExtensionId;
-  }
-
-  let extensionWorker;
-  try {
-    extensionWorker = await context.waitForEvent('serviceworker', {
-      predicate: (worker) => worker.url().startsWith('chrome-extension://'),
-      timeout: 30_000,
-    });
-  } catch (error) {
-    const message = error instanceof Error ? error.message : String(error);
-    throw new Error(
-      `Prompt Switchboard could not detect its extension worker in the current live browser lane. This usually means the extension never surfaced in that browser/profile, or the browser exited before the extension finished loading. ${message}`
-    );
-  }
-  return resolvePreferredExtensionId({
-    resolvedExtensionId: new URL(extensionWorker.url()).host,
-    detectedRuntimeIds: [],
-  });
-};
-
 const buildExecuteSubstrateActionExpression = (action: string, args: Record<string, unknown>) =>
   `(() => chrome.runtime.sendMessage({
     type: 'EXECUTE_SUBSTRATE_ACTION',
@@ -354,8 +273,6 @@ test.describe('live smoke', () => {
         attachModeRequested: ATTACH_MODE === 'persistent' ? 'persistent' : 'browser',
       },
       async (context, effectiveRun) => {
-        const extensionId = await resolveExtensionId(context);
-        persistExtensionId(extensionId);
         const chatGptSessionState = await inspectChatGptSessionState(context);
         if (chatGptSessionState.loginButtons.length > 0) {
           throw new Error(
@@ -364,6 +281,14 @@ test.describe('live smoke', () => {
         }
 
         await ensureModelTabsOpen(context, TARGET_MODELS);
+        const extensionId = await waitForPromptSwitchboardExtensionId(context, 10_000);
+        if (!extensionId) {
+          const cachedExtensionId = readCachedExtensionId();
+          throw new Error(
+            `Prompt Switchboard live smoke could not detect a repo-owned extension runtime after opening the target model tabs. Cached extension id: ${cachedExtensionId ?? 'none'}. This usually means the current browser lane surfaced the site but not the Prompt Switchboard extension runtime.`
+          );
+        }
+        persistExtensionId(extensionId);
 
         if (effectiveRun.attachModeResolved === 'browser') {
           await withExistingExtensionTarget(effectiveRun.cdpUrl!, extensionId, async (client) => {
