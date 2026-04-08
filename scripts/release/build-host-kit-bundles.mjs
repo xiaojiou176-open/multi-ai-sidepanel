@@ -4,7 +4,18 @@ import { spawnSync } from 'node:child_process';
 
 const repoRoot = process.cwd();
 const distDir = path.join(repoRoot, 'dist', 'public-bundles');
-const matrixPath = path.join(repoRoot, 'mcp', 'integration-kits', 'public-distribution-matrix.json');
+const matrixPath = path.join(
+  repoRoot,
+  'mcp',
+  'integration-kits',
+  'public-distribution-matrix.json'
+);
+const subjectMapPath = path.join(
+  repoRoot,
+  'mcp',
+  'integration-kits',
+  'distribution-subject-map.json'
+);
 const rootPackage = JSON.parse(readFileSync(path.join(repoRoot, 'package.json'), 'utf8'));
 
 const packets = [
@@ -38,6 +49,7 @@ const manifest = {
   version: rootPackage.version,
   generated_at: new Date().toISOString(),
   source_matrix: path.relative(repoRoot, matrixPath),
+  source_subject_map: path.relative(repoRoot, subjectMapPath),
   artifacts: [],
 };
 
@@ -51,6 +63,8 @@ for (const entry of readdirSync(repoRoot)) {
 }
 
 for (const packet of packets) {
+  const packetManifestPath = path.join(packet.dir, 'manifest.json');
+  const packetManifest = JSON.parse(readFileSync(packetManifestPath, 'utf8'));
   const pack = spawnSync('npm', ['pack', packet.dir, '--pack-destination', distDir], {
     cwd: repoRoot,
     encoding: 'utf8',
@@ -73,9 +87,15 @@ for (const packet of packets) {
     id: packet.id,
     package_name: packet.packageName,
     filename,
+    kind: packetManifest.kind,
+    support_tier: packetManifest.supportTier,
+    publication_status: packetManifest.publicationStatus,
+    source_manifest: path.relative(repoRoot, packetManifestPath),
   });
 }
 
 writeFileSync(path.join(distDir, 'manifest.json'), JSON.stringify(manifest, null, 2) + '\n');
 
-console.log(`[host-kits] wrote ${manifest.artifacts.length} public bundle artifact(s) to ${distDir}`);
+console.log(
+  `[host-kits] wrote ${manifest.artifacts.length} public bundle artifact(s) to ${distDir}`
+);

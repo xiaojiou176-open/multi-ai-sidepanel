@@ -13,17 +13,30 @@
     "prompt_switchboard.list_workflow_runs",
     "prompt_switchboard.resume_workflow"
   ],
+  "container_entry": {
+    "support_tier": "repo_owned_container_helper",
+    "dockerfile": "../../Dockerfile",
+    "dockerignore": "../../.dockerignore",
+    "doc_page": "../../docs/mcp-docker-sidecar.html",
+    "purpose": "Containerized local Prompt Switchboard MCP sidecar and operator helper for builder-facing flows.",
+    "not_a": [
+      "browser_extension_install_surface",
+      "hosted_compare_service",
+      "public_http_api",
+      "glama_or_marketplace_listing"
+    ],
+    "bridge_requirement": "For host-browser bridge attach, publish loopback port 48123 and set PROMPT_SWITCHBOARD_BRIDGE_HOST=0.0.0.0 inside the container."
+  },
   "hosts": {
     "codex": {
       "label": "Codex",
       "support_tier": "supported_now",
       "proof_class": "repo_specific_host_binding",
-      "official_docs": [
-        "https://developers.openai.com/codex/mcp"
-      ],
+      "official_docs": ["https://developers.openai.com/codex/mcp"],
       "placement_hint": "Paste the snippet into your Codex MCP server section inside config.toml.",
       "sample_config_path": "codex.config.toml.example",
       "public_bundle_dir": "public-bundles/codex-bundle",
+      "manifest_path": "public-bundles/codex-bundle/manifest.json",
       "public_bundle_artifact": "dist/public-bundles/prompt-switchboard-codex-bundle-<version>.tgz",
       "packet_page": "../../docs/codex-mcp-setup.html",
       "minimal_flow": [
@@ -37,23 +50,21 @@
         "prompt_switchboard.get_workflow_run"
       ],
       "smoke_proof": "npm run mcp:operator -- smoke",
-      "config_assets": [
-        "codex.config.toml.example"
-      ],
-      "skill_assets": [
-        "codex.skill.prompt-switchboard.md.example"
+      "config_assets": ["codex.config.toml.example"],
+      "skill_assets": ["codex.skill.prompt-switchboard.md.example"],
+      "skill_manifest_paths": [
+        "public-bundles/codex-bundle/skills/prompt-switchboard/manifest.yaml"
       ]
     },
     "claude_code": {
       "label": "Claude Code",
       "support_tier": "supported_now",
       "proof_class": "repo_specific_host_binding",
-      "official_docs": [
-        "https://docs.anthropic.com/en/docs/claude-code/mcp"
-      ],
+      "official_docs": ["https://docs.anthropic.com/en/docs/claude-code/mcp"],
       "placement_hint": "Paste the snippet into your Claude Code MCP config file such as .mcp.json.",
       "sample_config_path": "claude.mcp.json.example",
       "public_bundle_dir": "public-bundles/claude-code-bundle",
+      "manifest_path": "public-bundles/claude-code-bundle/manifest.json",
       "public_bundle_artifact": "dist/public-bundles/prompt-switchboard-claude-code-bundle-<version>.tgz",
       "packet_page": "../../docs/claude-code-mcp-setup.html",
       "minimal_flow": [
@@ -67,24 +78,18 @@
         "prompt_switchboard.get_workflow_run"
       ],
       "smoke_proof": "npm run mcp:operator -- smoke",
-      "config_assets": [
-        "claude.mcp.json.example"
-      ],
-      "skill_assets": [
-        "claude.skill.prompt-switchboard.md.example"
-      ]
+      "config_assets": ["claude.mcp.json.example"],
+      "skill_assets": ["claude.skill.prompt-switchboard.md.example"]
     },
     "opencode": {
       "label": "OpenCode",
       "support_tier": "public_bundle_ready_unverified_host_lane",
       "proof_class": "generic_mcp_client_public_bundle_ready",
-      "official_docs": [
-        "https://opencode.ai/docs/config",
-        "https://opencode.ai/docs/cli/"
-      ],
+      "official_docs": ["https://opencode.ai/docs/config", "https://opencode.ai/docs/cli/"],
       "placement_hint": "Save the example as a project-root opencode.jsonc inside your Prompt Switchboard clone.",
       "sample_config_path": "opencode.jsonc.example",
       "public_bundle_dir": "public-bundles/opencode-plugin",
+      "manifest_path": "public-bundles/opencode-plugin/manifest.json",
       "public_bundle_artifact": "dist/public-bundles/prompt-switchboard-opencode-plugin-<version>.tgz",
       "packet_page": "../../docs/opencode-mcp-setup.html",
       "minimal_flow": [
@@ -98,12 +103,8 @@
         "prompt_switchboard.resume_workflow"
       ],
       "smoke_proof": "npm run mcp:operator -- smoke",
-      "config_assets": [
-        "opencode.jsonc.example"
-      ],
-      "skill_assets": [
-        "opencode.skill.prompt-switchboard.md.example"
-      ]
+      "config_assets": ["opencode.jsonc.example"],
+      "skill_assets": ["opencode.skill.prompt-switchboard.md.example"]
     },
     "openclaw": {
       "label": "OpenClaw",
@@ -117,6 +118,7 @@
       "placement_hint": "Register the JSON with openclaw mcp set or place the server definition under mcp.servers.",
       "sample_config_path": "openclaw.prompt-switchboard.json.example",
       "public_bundle_dir": "public-bundles/openclaw-bundle",
+      "manifest_path": "public-bundles/openclaw-bundle/manifest.json",
       "public_bundle_artifact": "dist/public-bundles/prompt-switchboard-openclaw-bundle-<version>.tgz",
       "packet_page": "../../docs/openclaw-mcp-setup.html",
       "minimal_flow": [
@@ -135,8 +137,9 @@
         "openclaw.mcp.servers.json.example",
         "openclaw.mcp.set.example.sh"
       ],
-      "skill_assets": [
-        "openclaw.skill.prompt-switchboard.md.example"
+      "skill_assets": ["openclaw.skill.prompt-switchboard.md.example"],
+      "skill_manifest_paths": [
+        "public-bundles/openclaw-bundle/skills/prompt-switchboard/manifest.yaml"
       ]
     }
   },

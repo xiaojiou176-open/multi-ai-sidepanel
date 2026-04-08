@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { createDoctorMessage, probeBridgeHealth, runDoctor } from './doctor';
+import { createDoctorMessage, probeBridgeHealth, resolveDoctorContext, runDoctor } from './doctor';
 
 describe('mcp/doctor entry runner', () => {
   it('reports a connected bridge when the health endpoint succeeds', async () => {
@@ -58,5 +58,16 @@ describe('mcp/doctor entry runner', () => {
       'npm run mcp:operator -- server',
       'npm run mcp:operator -- smoke',
     ]);
+  });
+
+  it('resolves the bridge base URL from environment overrides', () => {
+    expect(
+      resolveDoctorContext({
+        PROMPT_SWITCHBOARD_BRIDGE_HOST: '0.0.0.0',
+        PROMPT_SWITCHBOARD_BRIDGE_PORT: '49111',
+      })
+    ).toEqual({
+      bridgeBaseUrl: 'http://0.0.0.0:49111',
+    });
   });
 });

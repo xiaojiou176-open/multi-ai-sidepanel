@@ -1,0 +1,40 @@
+schemaVersion: "1.0.0"
+kind: skill_packet
+id: prompt-switchboard-openclaw-skill
+name: prompt-switchboard
+description: Use Prompt Switchboard as a compare-first local MCP workspace during OpenClaw sessions.
+version: "0.2.2"
+license: MIT
+homepage: https://github.com/xiaojiou176-open/multi-ai-sidepanel/tree/main/mcp/integration-kits/public-bundles/openclaw-bundle
+repository:
+  type: git
+  url: git+https://github.com/xiaojiou176-open/multi-ai-sidepanel.git
+  directory: mcp/integration-kits/public-bundles/openclaw-bundle
+supportTier: public_bundle_ready_unverified_host_lane
+publicationStatus: embedded_skill_only_not_independently_published
+host: OpenClaw
+placement:
+  relativePath: skills/prompt-switchboard/SKILL.md
+  discoveryRoots:
+    - skills/<name>/SKILL.md
+capabilities:
+  - prompt_switchboard.bridge_status
+  - prompt_switchboard.check_readiness
+  - prompt_switchboard.compare
+  - prompt_switchboard.analyze_compare
+  - prompt_switchboard.run_workflow
+  - prompt_switchboard.get_workflow_run
+  - prompt_switchboard.list_workflow_runs
+  - prompt_switchboard.resume_workflow
+smoke:
+  path: ../../SMOKE.md
+  minimalFlow:
+    - prompt_switchboard.bridge_status
+    - prompt_switchboard.check_readiness
+    - prompt_switchboard.compare
+  preferredFlow:
+    - prompt_switchboard.analyze_compare
+    - prompt_switchboard.run_workflow
+    - prompt_switchboard.get_workflow_run
+    - prompt_switchboard.list_workflow_runs
+    - prompt_switchboard.resume_workflow

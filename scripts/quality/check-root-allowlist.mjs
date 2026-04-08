@@ -7,6 +7,7 @@ const allowedTopLevelEntries = new Set([
   '.agents',
   '.env.example',
   '.eslintrc.json',
+  '.dockerignore',
   '.git',
   '.gitignore',
   '.github',
@@ -21,7 +22,9 @@ const allowedTopLevelEntries = new Set([
   'CODE_OF_CONDUCT.md',
   'CODEOWNERS',
   'CONTRIBUTING.md',
+  'Dockerfile',
   'docs',
+  'docker',
   'LICENSE',
   'PRIVACY.md',
   'README.md',
@@ -52,9 +55,7 @@ const allowedTopLevelEntries = new Set([
   'vitest.config.ts',
 ]);
 
-const ignoredLocalCacheEntries = new Set([
-  '.serena',
-]);
+const ignoredLocalCacheEntries = new Set(['.serena']);
 
 const disallowedEntries = new Set([
   '.DS_Store',

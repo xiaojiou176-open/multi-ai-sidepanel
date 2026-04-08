@@ -9,6 +9,8 @@ import {
 export const PROMPT_SWITCHBOARD_BRIDGE_HOST = '127.0.0.1';
 export const PROMPT_SWITCHBOARD_BRIDGE_PORT = 48123;
 export const PROMPT_SWITCHBOARD_BRIDGE_VERSION = 1;
+export const PROMPT_SWITCHBOARD_BRIDGE_HOST_ENV = 'PROMPT_SWITCHBOARD_BRIDGE_HOST';
+export const PROMPT_SWITCHBOARD_BRIDGE_PORT_ENV = 'PROMPT_SWITCHBOARD_BRIDGE_PORT';
 
 export const BRIDGE_HEADER_EXTENSION_ID = 'x-prompt-switchboard-extension-id';
 export const BRIDGE_HEADER_KEY = 'x-prompt-switchboard-bridge-key';
@@ -161,6 +163,21 @@ export const BridgeStateSnapshotSchema = z.object({
 });
 
 export type BridgeStateSnapshot = z.infer<typeof BridgeStateSnapshotSchema>;
+
+export const resolveBridgeHost = (env: NodeJS.ProcessEnv = process.env) =>
+  env[PROMPT_SWITCHBOARD_BRIDGE_HOST_ENV]?.trim() || PROMPT_SWITCHBOARD_BRIDGE_HOST;
+
+export const resolveBridgePort = (env: NodeJS.ProcessEnv = process.env) => {
+  const rawPort = env[PROMPT_SWITCHBOARD_BRIDGE_PORT_ENV];
+  if (!rawPort) {
+    return PROMPT_SWITCHBOARD_BRIDGE_PORT;
+  }
+
+  const parsedPort = Number(rawPort);
+  return Number.isInteger(parsedPort) && parsedPort > 0
+    ? parsedPort
+    : PROMPT_SWITCHBOARD_BRIDGE_PORT;
+};
 
 export const createBridgeBaseUrl = (
   host = PROMPT_SWITCHBOARD_BRIDGE_HOST,

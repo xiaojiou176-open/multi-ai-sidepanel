@@ -23,6 +23,8 @@
   "files": [
     ".codex-plugin",
     ".mcp.json",
+    "manifest.json",
+    "manifest.yaml",
     "skills",
     "README.md",
     "SMOKE.md"

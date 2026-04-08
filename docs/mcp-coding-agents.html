@@ -3,7 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Prompt Switchboard MCP setup for Codex and Claude Code, plus OpenCode / OpenClaw public packets</title>
+    <title>
+      Prompt Switchboard MCP setup for Codex and Claude Code, plus OpenCode / OpenClaw public
+      packets
+    </title>
     <meta
       name="description"
       content="See how Prompt Switchboard works with Codex and Claude Code through a governed MCP compare, retry, export, analysis, and next-step workflow surface, plus public-bundle-ready MCP paths for OpenCode and OpenClaw."
@@ -13,10 +16,7 @@
       href="https://xiaojiou176-open.github.io/multi-ai-sidepanel/mcp-coding-agents.html"
     />
     <meta property="og:type" content="article" />
-    <meta
-      property="og:title"
-      content="Prompt Switchboard for Codex and Claude Code via MCP"
-    />
+    <meta property="og:title" content="Prompt Switchboard for Codex and Claude Code via MCP" />
     <meta
       property="og:description"
       content="Prompt Switchboard exposes a local MCP sidecar so Codex and Claude Code can compare answers, retry failed models, export results, run AI Compare Analyst, and inspect the built-in next-step workflow inside browser workflows, while OpenCode and OpenClaw now get public-bundle-ready MCP paths without being overclaimed as verified host lanes."
@@ -274,365 +274,418 @@
       </nav>
 
       <main>
-	      <section class="card">
-	        <span class="chip">Builder surface</span>
-	        <h1>Use Prompt Switchboard with Codex and Claude Code MCP workflows, plus OpenCode / OpenClaw public packets.</h1>
-	        <p>
-          Prompt Switchboard is not a generic AI assistant and not a raw browser
-          automation port. It is a local-first compare workspace that exposes a
-          governed MCP surface for compare, retry, export, session, analyst,
-          and next-step workflow
-          actions inside the browser workflow you already trust.
-        </p>
-        <p>
-          Codex and Claude Code are the strongest repo-specific bindings in this
-          release. OpenCode and OpenClaw can now use repo-shipped public-ready packets
-          through their generic MCP client surfaces, but they still stay
-          outside the main verified-host story.
-        </p>
-        <p>
-          The public distribution matrix now separates public bundle truth from
-          official marketplace or registry truth, so this page does not have to
-          blur "public packet shipped" with "official listing shipped."
-        </p>
-        <p>
-          When you want the shortest exact install packet for one host instead
-          of the full matrix, use <a href="./mcp-host-packets.html">the host packets page</a>.
-        </p>
+        <section class="card">
+          <span class="chip">Builder surface</span>
+          <h1>
+            Use Prompt Switchboard with Codex and Claude Code MCP workflows, plus OpenCode /
+            OpenClaw public packets.
+          </h1>
+          <p>
+            Prompt Switchboard is not a generic AI assistant and not a raw browser automation port.
+            It is a local-first compare workspace that exposes a governed MCP surface for compare,
+            retry, export, session, analyst, and next-step workflow actions inside the browser
+            workflow you already trust.
+          </p>
+          <p>
+            Codex and Claude Code are the strongest repo-specific bindings in this release. OpenCode
+            and OpenClaw can now use repo-shipped public-ready packets through their generic MCP
+            client surfaces, but they still stay outside the main verified-host story.
+          </p>
+          <p>
+            The public distribution matrix now separates public bundle truth from official
+            marketplace or registry truth, so this page does not have to blur "public packet
+            shipped" with "official listing shipped."
+          </p>
+          <p>
+            When you want the shortest exact install packet for one host instead of the full matrix,
+            use <a href="./mcp-host-packets.html">the host packets page</a>.
+          </p>
 
-	        <div class="grid">
-          <section class="subcard">
-            <h2>What local agents can do here</h2>
-            <ul>
-              <li>Check whether supported model tabs are ready before a compare run</li>
-              <li>Queue one compare turn from a single prompt</li>
-              <li>Retry only the failed model cards</li>
-              <li>Export compare results as Markdown or summary text</li>
-              <li>Read session state, run AI Compare Analyst, and inspect the built-in next-step workflow</li>
-            </ul>
-          </section>
-          <section class="subcard">
-            <h2>What this surface does not become</h2>
-            <ul>
-              <li>Not arbitrary browser automation</li>
-              <li>Not a provider-neutral SDK</li>
-              <li>Not a hosted relay</li>
-              <li>Not a write-capable MCP control plane for unrelated sites</li>
-            </ul>
-          </section>
-	        </div>
-	      </section>
+          <div class="grid">
+            <section class="subcard">
+              <h2>What local agents can do here</h2>
+              <ul>
+                <li>Check whether supported model tabs are ready before a compare run</li>
+                <li>Queue one compare turn from a single prompt</li>
+                <li>Retry only the failed model cards</li>
+                <li>Export compare results as Markdown or summary text</li>
+                <li>
+                  Read session state, run AI Compare Analyst, and inspect the built-in next-step
+                  workflow
+                </li>
+              </ul>
+            </section>
+            <section class="subcard">
+              <h2>What this surface does not become</h2>
+              <ul>
+                <li>Not arbitrary browser automation</li>
+                <li>Not a provider-neutral SDK</li>
+                <li>Not a hosted relay</li>
+                <li>Not a write-capable MCP control plane for unrelated sites</li>
+              </ul>
+            </section>
+          </div>
+        </section>
 
-	      <section class="card">
-	        <h2>See the builder surface</h2>
-	        <p>
-	          These screenshots are not generic concept art. They are repo-owned proof that the current builder lane is
-	          grounded in a real browser-side compare product, a real workflow panel, and a real analyst surface.
-	        </p>
-	        <div class="grid">
-	          <section class="subcard">
-	            <img
-	              src="./assets/prompt-switchboard-builder-surface.png"
-	              alt="Prompt Switchboard builder surface showing compare-first MCP entrypoints."
-	              style="width: 100%; border-radius: 18px; display: block"
-	            />
-	          </section>
-	          <section class="subcard">
-	            <img
-	              src="./assets/prompt-switchboard-workflow-panel.png"
-	              alt="Prompt Switchboard workflow panel showing next-step workflow state."
-	              style="width: 100%; border-radius: 18px; display: block"
-	            />
-	          </section>
-	        </div>
-	      </section>
+        <section class="card">
+          <h2>See the builder surface</h2>
+          <p>
+            These screenshots are not generic concept art. They are repo-owned proof that the
+            current builder lane is grounded in a real browser-side compare product, a real workflow
+            panel, and a real analyst surface.
+          </p>
+          <div class="grid">
+            <section class="subcard">
+              <img
+                src="./assets/prompt-switchboard-builder-surface.png"
+                alt="Prompt Switchboard builder surface showing compare-first MCP entrypoints."
+                style="width: 100%; border-radius: 18px; display: block"
+              />
+            </section>
+            <section class="subcard">
+              <img
+                src="./assets/prompt-switchboard-workflow-panel.png"
+                alt="Prompt Switchboard workflow panel showing next-step workflow state."
+                style="width: 100%; border-radius: 18px; display: block"
+              />
+            </section>
+          </div>
+        </section>
 
-	      <section class="card">
-	        <h2>Know the boundary at a glance</h2>
-        <p>
-          Codex and Claude Code are the official coding products. Prompt
-          Switchboard is the browser-side orchestration layer that helps those
-          workflows stay compare-first and local-first.
-        </p>
-        <table aria-label="Official coding agent surface compared with Prompt Switchboard">
-          <thead>
-            <tr>
-              <th>Surface</th>
-              <th>What it is strongest at</th>
-              <th>What Prompt Switchboard adds</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Official coding agent surface</td>
-              <td>Reading repos, editing files, running commands, and owning the coding task loop.</td>
-              <td>Prompt Switchboard does not replace that layer.</td>
-            </tr>
-            <tr>
-              <td>Prompt Switchboard browser orchestration layer</td>
-              <td>Managing already-open browser sessions, compare turns, retries, exports, and analyst runs.</td>
-              <td>Codex and Claude Code can call this governed product surface over MCP.</td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
+        <section class="card">
+          <h2>Know the boundary at a glance</h2>
+          <p>
+            Codex and Claude Code are the official coding products. Prompt Switchboard is the
+            browser-side orchestration layer that helps those workflows stay compare-first and
+            local-first.
+          </p>
+          <table aria-label="Official coding agent surface compared with Prompt Switchboard">
+            <thead>
+              <tr>
+                <th>Surface</th>
+                <th>What it is strongest at</th>
+                <th>What Prompt Switchboard adds</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Official coding agent surface</td>
+                <td>
+                  Reading repos, editing files, running commands, and owning the coding task loop.
+                </td>
+                <td>Prompt Switchboard does not replace that layer.</td>
+              </tr>
+              <tr>
+                <td>Prompt Switchboard browser orchestration layer</td>
+                <td>
+                  Managing already-open browser sessions, compare turns, retries, exports, and
+                  analyst runs.
+                </td>
+                <td>Codex and Claude Code can call this governed product surface over MCP.</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
 
-      <section class="card">
-        <h2>Current builder-facing contract</h2>
-        <p>
-          Today the builder-facing contract is the local MCP sidecar plus the
-          shared bridge protocol inside this repository. Prompt Switchboard does
-          <strong>not</strong> ship a public HTTP API or a general-purpose SDK
-          in this release.
-        </p>
-        <p>
-          The current transport is <code>stdio</code> for the MCP client and a
-          localhost bridge for the extension runtime. Native Messaging remains a
-          scaffold and future hardening path, not the active transport in this
-          release.
-        </p>
-        <div class="grid">
-          <section class="subcard">
-            <h2>Current MCP tools</h2>
-            <ul>
-              <li><code>prompt_switchboard.check_readiness</code></li>
-              <li><code>prompt_switchboard.open_model_tabs</code></li>
-              <li><code>prompt_switchboard.compare</code></li>
-              <li><code>prompt_switchboard.retry_failed</code></li>
-              <li><code>prompt_switchboard.get_session</code></li>
-              <li><code>prompt_switchboard.list_sessions</code></li>
-              <li><code>prompt_switchboard.export_compare</code></li>
-              <li><code>prompt_switchboard.analyze_compare</code></li>
-              <li><code>prompt_switchboard.run_workflow</code></li>
-              <li><code>prompt_switchboard.list_workflow_runs</code></li>
-              <li><code>prompt_switchboard.get_workflow_run</code></li>
-              <li><code>prompt_switchboard.resume_workflow</code></li>
-              <li><code>prompt_switchboard.bridge_status</code></li>
-            </ul>
-          </section>
-          <section class="subcard">
-            <h2>Current MCP resources</h2>
-            <ul>
-              <li><code>prompt-switchboard://analysis/providers</code></li>
-              <li><code>prompt-switchboard://builder/public-distribution</code></li>
-              <li><code>prompt-switchboard://builder/support-matrix</code></li>
-              <li><code>prompt-switchboard://models/catalog</code></li>
-              <li><code>prompt-switchboard://models/readiness</code></li>
-              <li><code>prompt-switchboard://sessions/current</code></li>
-              <li><code>prompt-switchboard://sites/capabilities</code></li>
-              <li><code>prompt-switchboard://workflows/templates</code></li>
-            </ul>
-          </section>
-        </div>
-        <p>
-          If you are evaluating the real integration contract, start with
-          <code>mcp/server.ts</code> for the public tool and resource surface,
-          then read <code>src/bridge/protocol.ts</code> for the shared command
-          and payload contract that the extension and sidecar both use.
-        </p>
-        <p>
-          The resource layer now tells the same truth as the docs: use
-          <code>prompt-switchboard://analysis/providers</code> when you need the
-          current analyst-lane catalog and runtime boundary, use
-          <code>prompt-switchboard://builder/public-distribution</code> when you
-          need the machine-readable split between public bundle truth and official
-          marketplace or registry truth, use
-          <code>prompt-switchboard://builder/support-matrix</code> when you need
-          the machine-readable host tiers, starter asset paths, official host docs, placement hints, placeholder path,
-          and first-call sequence, and use
-          <code>prompt-switchboard://sites/capabilities</code> when you need the
-          current per-site DOM/readiness/private-API boundary notes, and use
-          <code>prompt-switchboard://workflows/templates</code> when you need the
-          built-in workflow template order, supported tool flow, and
-          session-scoped durability note without guessing from prose.
-        </p>
-        <p>
-          Prompt Switchboard now also ships starter integration kits for the
-          strongest current host bindings. Use
-          <a href="https://github.com/xiaojiou176-open/multi-ai-sidepanel/blob/main/mcp/integration-kits/README.md">the integration-kits folder</a>
-          when you want repo-owned Codex, Claude Code, OpenCode, or OpenClaw
-          starter assets instead of building those snippets from scratch. That
-          folder now also includes companion starter skill templates for all four
-          documented hosts.
-        </p>
-        <p>
-          Use <a href="./public-distribution-matrix.html">the public distribution matrix</a>
-          when you need the honest public answer to a different question:
-          which host bundle is already public now, and which official listing
-          has still not happened.
-        </p>
-        <p>
-          If the product lane itself is not proven yet, use
-          <a href="./first-compare-guide.html">the first compare guide</a>
-          before you spend time on the builder lane.
-        </p>
-        <p>
-          A healthy agent loop is simple: call <code>prompt_switchboard.bridge_status</code>,
-          then <code>prompt_switchboard.check_readiness</code>, then queue a turn with
-          <code>prompt_switchboard.compare</code>, then use
-          <code>prompt_switchboard.analyze_compare</code> and
-          <code>prompt_switchboard.run_workflow</code> when you want the built-in
-          <code>compare-analyze-follow-up</code> path, inspect the latest
-          session-scoped workflow snapshot with <code>prompt_switchboard.get_workflow_run</code>,
-          list recent workflow snapshots with <code>prompt_switchboard.list_workflow_runs</code>,
-          and continue a waiting run with <code>prompt_switchboard.resume_workflow</code> once you
-          have the external step result.
-        </p>
-        <p>
-          The workflow tools stay product-bound. They stage or inspect the built-in local
-          compare follow-up path; they do <strong>not</strong> turn Prompt Switchboard into a DAG
-          engine, a hosted orchestrator, or a generic browser automation plane.
-        </p>
-      </section>
+        <section class="card">
+          <h2>Current builder-facing contract</h2>
+          <p>
+            Today the builder-facing contract is the local MCP sidecar plus the shared bridge
+            protocol inside this repository. Prompt Switchboard does
+            <strong>not</strong> ship a public HTTP API or a general-purpose SDK in this release.
+          </p>
+          <p>
+            The current transport is <code>stdio</code> for the MCP client and a localhost bridge
+            for the extension runtime. Native Messaging remains a scaffold and future hardening
+            path, not the active transport in this release.
+          </p>
+          <div class="grid">
+            <section class="subcard">
+              <h2>Current MCP tools</h2>
+              <ul>
+                <li><code>prompt_switchboard.check_readiness</code></li>
+                <li><code>prompt_switchboard.open_model_tabs</code></li>
+                <li><code>prompt_switchboard.compare</code></li>
+                <li><code>prompt_switchboard.retry_failed</code></li>
+                <li><code>prompt_switchboard.get_session</code></li>
+                <li><code>prompt_switchboard.list_sessions</code></li>
+                <li><code>prompt_switchboard.export_compare</code></li>
+                <li><code>prompt_switchboard.analyze_compare</code></li>
+                <li><code>prompt_switchboard.run_workflow</code></li>
+                <li><code>prompt_switchboard.list_workflow_runs</code></li>
+                <li><code>prompt_switchboard.get_workflow_run</code></li>
+                <li><code>prompt_switchboard.resume_workflow</code></li>
+                <li><code>prompt_switchboard.bridge_status</code></li>
+              </ul>
+            </section>
+            <section class="subcard">
+              <h2>Current MCP resources</h2>
+              <ul>
+                <li><code>prompt-switchboard://analysis/providers</code></li>
+                <li><code>prompt-switchboard://builder/public-distribution</code></li>
+                <li><code>prompt-switchboard://builder/support-matrix</code></li>
+                <li><code>prompt-switchboard://models/catalog</code></li>
+                <li><code>prompt-switchboard://models/readiness</code></li>
+                <li><code>prompt-switchboard://sessions/current</code></li>
+                <li><code>prompt-switchboard://sites/capabilities</code></li>
+                <li><code>prompt-switchboard://workflows/templates</code></li>
+              </ul>
+            </section>
+          </div>
+          <p>
+            If you are evaluating the real integration contract, start with
+            <code>mcp/server.ts</code> for the public tool and resource surface, then read
+            <code>src/bridge/protocol.ts</code> for the shared command and payload contract that the
+            extension and sidecar both use.
+          </p>
+          <p>
+            The resource layer now tells the same truth as the docs: use
+            <code>prompt-switchboard://analysis/providers</code> when you need the current
+            analyst-lane catalog and runtime boundary, use
+            <code>prompt-switchboard://builder/public-distribution</code> when you need the
+            machine-readable split between public bundle truth and official marketplace or registry
+            truth, use <code>prompt-switchboard://builder/support-matrix</code> when you need the
+            machine-readable host tiers, starter asset paths, official host docs, placement hints,
+            placeholder path, and first-call sequence, and use
+            <code>prompt-switchboard://sites/capabilities</code> when you need the current per-site
+            DOM/readiness/private-API boundary notes, and use
+            <code>prompt-switchboard://workflows/templates</code> when you need the built-in
+            workflow template order, supported tool flow, and session-scoped durability note without
+            guessing from prose.
+          </p>
+          <p>
+            Prompt Switchboard now also ships starter integration kits for the strongest current
+            host bindings. Use
+            <a
+              href="https://github.com/xiaojiou176-open/multi-ai-sidepanel/blob/main/mcp/integration-kits/README.md"
+              >the integration-kits folder</a
+            >
+            when you want repo-owned Codex, Claude Code, OpenCode, or OpenClaw starter assets
+            instead of building those snippets from scratch. That folder now also includes companion
+            starter skill templates for all four documented hosts.
+          </p>
+          <p>
+            If you want a containerized builder lane, use
+            <a href="./mcp-docker-sidecar.html">the Docker sidecar guide</a>. That Docker surface
+            packages the local sidecar and operator helper only. It does not turn Prompt Switchboard
+            into a hosted compare service or a public HTTP API.
+          </p>
+          <p>
+            Use <a href="./public-distribution-matrix.html">the public distribution matrix</a>
+            when you need the honest public answer to a different question: which host bundle is
+            already public now, and which official listing has still not happened.
+          </p>
+          <p>
+            If the product lane itself is not proven yet, use
+            <a href="./first-compare-guide.html">the first compare guide</a>
+            before you spend time on the builder lane.
+          </p>
+          <p>
+            A healthy agent loop is simple: call <code>prompt_switchboard.bridge_status</code>, then
+            <code>prompt_switchboard.check_readiness</code>, then queue a turn with
+            <code>prompt_switchboard.compare</code>, then use
+            <code>prompt_switchboard.analyze_compare</code> and
+            <code>prompt_switchboard.run_workflow</code> when you want the built-in
+            <code>compare-analyze-follow-up</code> path, inspect the latest session-scoped workflow
+            snapshot with <code>prompt_switchboard.get_workflow_run</code>, list recent workflow
+            snapshots with <code>prompt_switchboard.list_workflow_runs</code>, and continue a
+            waiting run with <code>prompt_switchboard.resume_workflow</code> once you have the
+            external step result.
+          </p>
+          <p>
+            The workflow tools stay product-bound. They stage or inspect the built-in local compare
+            follow-up path; they do <strong>not</strong> turn Prompt Switchboard into a DAG engine,
+            a hosted orchestrator, or a generic browser automation plane.
+          </p>
+        </section>
 
-      <section class="card">
-        <h2>How to think about ecosystem fit</h2>
-        <p>
-          The strongest public bindings are <strong>MCP</strong>,
-          <strong>OpenAI Codex</strong>, and <strong>Claude Code</strong>,
-          because current repo evidence and official docs line up there.
-        </p>
-        <p>
-          OpenCode, OpenClaw, and other MCP-capable agent runtimes can still
-          connect, but Prompt Switchboard should describe them as
-          public-bundle-ready generic MCP paths, not as the core verified-host story.
-        </p>
-        <p>
-          That also means names like <strong>OpenCode</strong> and
-          <strong>OpenClaw</strong> stay in the generic-MCP lane for now. They
-          are real MCP-capable ecosystem surfaces, and this repo now ships
-          public-ready packets and starter assets for them, but Prompt Switchboard
-          still does not claim a fully verified repo-owned host lane there.
-        </p>
-        <table aria-label="Prompt Switchboard builder support matrix">
-          <thead>
-            <tr>
-              <th>Surface</th>
-              <th>Current truth</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Local MCP sidecar + product actions</td>
-              <td>Supported now</td>
-            </tr>
-            <tr>
-              <td>Codex / Claude Code browser workflow lane</td>
-              <td>Supported now as the strongest repo-specific host flow</td>
-            </tr>
-            <tr>
-              <td>Repo-shipped integration kits</td>
-              <td>Supported now for Codex and Claude Code, with public bundle-ready MCP packets for OpenCode and OpenClaw</td>
-            </tr>
-            <tr>
-              <td>OpenCode / OpenClaw host paths</td>
-              <td>Public-bundle-ready generic MCP client flows until a tested repo-owned host lane exists</td>
-            </tr>
-            <tr>
-              <td>Repo-local operator helper</td>
-              <td>Maintainer-only and intentionally not a public CLI</td>
-            </tr>
-            <tr>
-              <td>Workflow snapshots</td>
-              <td>Session-scoped runtime cache with explicit run/list/get/resume tools, not a durable workflow ledger</td>
-            </tr>
-            <tr>
-              <td>Switchyard runtime-backed model source</td>
-              <td>Maintainer-local / partial for the analyst lane when a local Switchyard service is reachable; it does not replace browser-tab compare</td>
-            </tr>
-            <tr>
-              <td>Public HTTP API / SDK / plugin ecosystem</td>
-              <td>Planned only, not supported now</td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
+        <section class="card">
+          <h2>How to think about ecosystem fit</h2>
+          <p>
+            The strongest public bindings are <strong>MCP</strong>, <strong>OpenAI Codex</strong>,
+            and <strong>Claude Code</strong>, because current repo evidence and official docs line
+            up there.
+          </p>
+          <p>
+            OpenCode, OpenClaw, and other MCP-capable agent runtimes can still connect, but Prompt
+            Switchboard should describe them as public-bundle-ready generic MCP paths, not as the
+            core verified-host story.
+          </p>
+          <p>
+            That also means names like <strong>OpenCode</strong> and <strong>OpenClaw</strong> stay
+            in the generic-MCP lane for now. They are real MCP-capable ecosystem surfaces, and this
+            repo now ships public-ready packets and starter assets for them, but Prompt Switchboard
+            still does not claim a fully verified repo-owned host lane there.
+          </p>
+          <table aria-label="Prompt Switchboard builder support matrix">
+            <thead>
+              <tr>
+                <th>Surface</th>
+                <th>Current truth</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Local MCP sidecar + product actions</td>
+                <td>Supported now</td>
+              </tr>
+              <tr>
+                <td>Codex / Claude Code browser workflow lane</td>
+                <td>Supported now as the strongest repo-specific host flow</td>
+              </tr>
+              <tr>
+                <td>Repo-shipped integration kits</td>
+                <td>
+                  Supported now for Codex and Claude Code, with public bundle-ready MCP packets for
+                  OpenCode and OpenClaw
+                </td>
+              </tr>
+              <tr>
+                <td>OpenCode / OpenClaw host paths</td>
+                <td>
+                  Public-bundle-ready generic MCP client flows until a tested repo-owned host lane
+                  exists
+                </td>
+              </tr>
+              <tr>
+                <td>Repo-local operator helper</td>
+                <td>Maintainer-only and intentionally not a public CLI</td>
+              </tr>
+              <tr>
+                <td>Workflow snapshots</td>
+                <td>
+                  Session-scoped runtime cache with explicit run/list/get/resume tools, not a
+                  durable workflow ledger
+                </td>
+              </tr>
+              <tr>
+                <td>Switchyard runtime-backed model source</td>
+                <td>
+                  Maintainer-local / partial for the analyst lane when a local Switchyard service is
+                  reachable; it does not replace browser-tab compare
+                </td>
+              </tr>
+              <tr>
+                <td>Public HTTP API / SDK / plugin ecosystem</td>
+                <td>Planned only, not supported now</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
 
-      <section class="card">
-        <h2>Current host setup routes</h2>
-        <p>
-          Keep this page focused on the builder contract, not the copy-paste setup
-          steps for every host. The exact packet for one host now lives on the
-          <a href="./mcp-host-packets.html">host packets page</a>, while the
-          machine-readable placement hints, starter assets, public-ready packets, and first-call flow
-          live in
-          <a href="https://github.com/xiaojiou176-open/multi-ai-sidepanel/blob/main/mcp/integration-kits/support-matrix.json">support-matrix.json</a>.
-        </p>
-        <p>
-          Use <a href="./mcp-starter-kits.html">the MCP starter kits guide</a> when you
-          want the copy-paste starter assets, and use
-          <a href="./public-distribution-matrix.html">the public distribution matrix</a>
-          when you need the honest split between repo-owned packets and official
-          published listings.
-        </p>
-        <p>
-          The short version stays the same: Codex and Claude Code are the strongest
-          repo-specific lanes today; OpenCode and OpenClaw remain narrower
-          public-bundle-ready / unverified-host paths until a verified repo-owned host
-          lane is proven there.
-        </p>
-      </section>
+        <section class="card">
+          <h2>Current host setup routes</h2>
+          <p>
+            Keep this page focused on the builder contract, not the copy-paste setup steps for every
+            host. The exact packet for one host now lives on the
+            <a href="./mcp-host-packets.html">host packets page</a>, while the machine-readable
+            placement hints, starter assets, public-ready packets, and first-call flow live in
+            <a
+              href="https://github.com/xiaojiou176-open/multi-ai-sidepanel/blob/main/mcp/integration-kits/support-matrix.json"
+              >support-matrix.json</a
+            >.
+          </p>
+          <p>
+            Use <a href="./mcp-starter-kits.html">the MCP starter kits guide</a> when you want the
+            copy-paste starter assets, and use
+            <a href="./public-distribution-matrix.html">the public distribution matrix</a>
+            when you need the honest split between repo-owned packets and official published
+            listings.
+          </p>
+          <p>
+            The short version stays the same: Codex and Claude Code are the strongest repo-specific
+            lanes today; OpenCode and OpenClaw remain narrower public-bundle-ready / unverified-host
+            paths until a verified repo-owned host lane is proven there.
+          </p>
+        </section>
 
-      <section class="card">
-        <h2>Repo-local operator helper</h2>
-        <ol>
-          <li>Run <code>npm run mcp:operator -- doctor</code> to inspect the local bridge state.</li>
-          <li>Start the sidecar with <code>npm run mcp:operator -- server</code>.</li>
-          <li>Use <code>npm run mcp:operator -- smoke</code> to prove the tool and resource surface, including the workflow tools.</li>
-          <li>Use <code>npm run mcp:operator -- live-probe</code> or <code>live-diagnose</code> when the maintainer-local live browser lane needs structure instead of ad hoc inspection.</li>
-          <li>Use <code>npm run mcp:operator -- live-support-bundle</code> when a live compare still needs screenshots, HTML, and diagnosis captured together.</li>
-        </ol>
-        <p>
-          The operator helper is mixed on purpose: <code>doctor</code>, <code>server</code>, and
-          <code>smoke</code> are executable maintainer commands, while bridge status and workflow
-          staging templates stay inside the governed MCP tool contract instead of inventing a
-          second operator protocol or a public CLI surface.
-        </p>
-        <ul>
-          <li><code>npm run mcp:operator -- bridge-status</code></li>
-          <li><code>npm run mcp:operator -- readiness --models ChatGPT,Gemini</code> (cached readiness snapshot)</li>
-          <li><code>npm run mcp:operator -- workflow-run --session-id session-1 --turn-id turn-1 --prompt "Stage the next move" --models ChatGPT,Gemini</code></li>
-          <li><code>npm run mcp:operator -- workflow-list</code></li>
-          <li><code>npm run mcp:operator -- workflow-get --run-id workflow-run-123</code></li>
-          <li><code>npm run mcp:operator -- workflow-resume --run-id workflow-run-123 --external-update-json '{"stepId":"compare","status":"completed","output":{...}}'</code></li>
-        </ul>
-        <p>
-          Workflow snapshots stay session-scoped. If <code>prompt_switchboard.get_workflow_run</code>
-          or <code>prompt_switchboard.list_workflow_runs</code> stops returning a snapshot after
-          the browser session ends, restage the workflow from the compare turn instead of assuming
-          durable cold-start resumability. Use <code>prompt_switchboard.resume_workflow</code> only
-          while that session-scoped run still exists.
-        </p>
-        <p>
-          `workflow-list`, `workflow-get`, and `workflow-resume` now return a normalized workflow
-          interpretation next to the raw MCP payload, so maintainers can see the current step,
-          staged seed, and next external action without hand-decoding the full workflow snapshot.
-        </p>
-        <p>
-          For Codex and Claude Code setup details, use their official MCP
-          documentation as the source of truth for client-side configuration:
-        </p>
-        <ul>
-          <li>
-            <a href="https://developers.openai.com/codex/mcp">OpenAI Codex MCP setup</a>
-          </li>
-          <li>
-            <a href="https://docs.anthropic.com/en/docs/claude-code/mcp">Claude Code MCP setup</a>
-          </li>
-        </ul>
-        <p>
-          The repo-specific rule of thumb is simple: Codex uses the official
-          <code>config.toml</code> flow, Claude Code uses the official
-          <code>.mcp.json</code> / <code>claude mcp add</code> flow, and Prompt Switchboard stays
-          the local MCP server plus browser-side product surface.
-        </p>
-        <p>
-          For the exact trust boundary and transport story, keep the
-          <a href="./trust-boundary.html">trust boundary</a> page and the
-          <a href="https://github.com/xiaojiou176-open/multi-ai-sidepanel#readme">README</a>
-          as the canonical public references.
-        </p>
-      </section>
+        <section class="card">
+          <h2>Repo-local operator helper</h2>
+          <ol>
+            <li>
+              Run <code>npm run mcp:operator -- doctor</code> to inspect the local bridge state.
+            </li>
+            <li>Start the sidecar with <code>npm run mcp:operator -- server</code>.</li>
+            <li>
+              Use <code>npm run mcp:operator -- smoke</code> to prove the tool and resource surface,
+              including the workflow tools.
+            </li>
+            <li>
+              Use <code>npm run mcp:operator -- live-probe</code> or <code>live-diagnose</code> when
+              the maintainer-local live browser lane needs structure instead of ad hoc inspection.
+            </li>
+            <li>
+              Use <code>npm run mcp:operator -- live-support-bundle</code> when a live compare still
+              needs screenshots, HTML, and diagnosis captured together.
+            </li>
+          </ol>
+          <p>
+            The operator helper is mixed on purpose: <code>doctor</code>, <code>server</code>, and
+            <code>smoke</code> are executable maintainer commands, while bridge status and workflow
+            staging templates stay inside the governed MCP tool contract instead of inventing a
+            second operator protocol or a public CLI surface.
+          </p>
+          <ul>
+            <li><code>npm run mcp:operator -- bridge-status</code></li>
+            <li>
+              <code>npm run mcp:operator -- readiness --models ChatGPT,Gemini</code> (cached
+              readiness snapshot)
+            </li>
+            <li>
+              <code
+                >npm run mcp:operator -- workflow-run --session-id session-1 --turn-id turn-1
+                --prompt "Stage the next move" --models ChatGPT,Gemini</code
+              >
+            </li>
+            <li><code>npm run mcp:operator -- workflow-list</code></li>
+            <li><code>npm run mcp:operator -- workflow-get --run-id workflow-run-123</code></li>
+            <li>
+              <code
+                >npm run mcp:operator -- workflow-resume --run-id workflow-run-123
+                --external-update-json
+                '{"stepId":"compare","status":"completed","output":{...}}'</code
+              >
+            </li>
+          </ul>
+          <p>
+            Workflow snapshots stay session-scoped. If
+            <code>prompt_switchboard.get_workflow_run</code> or
+            <code>prompt_switchboard.list_workflow_runs</code> stops returning a snapshot after the
+            browser session ends, restage the workflow from the compare turn instead of assuming
+            durable cold-start resumability. Use
+            <code>prompt_switchboard.resume_workflow</code> only while that session-scoped run still
+            exists.
+          </p>
+          <p>
+            `workflow-list`, `workflow-get`, and `workflow-resume` now return a normalized workflow
+            interpretation next to the raw MCP payload, so maintainers can see the current step,
+            staged seed, and next external action without hand-decoding the full workflow snapshot.
+          </p>
+          <p>
+            For Codex and Claude Code setup details, use their official MCP documentation as the
+            source of truth for client-side configuration:
+          </p>
+          <ul>
+            <li>
+              <a href="https://developers.openai.com/codex/mcp">OpenAI Codex MCP setup</a>
+            </li>
+            <li>
+              <a href="https://docs.anthropic.com/en/docs/claude-code/mcp">Claude Code MCP setup</a>
+            </li>
+          </ul>
+          <p>
+            The repo-specific rule of thumb is simple: Codex uses the official
+            <code>config.toml</code> flow, Claude Code uses the official <code>.mcp.json</code> /
+            <code>claude mcp add</code> flow, and Prompt Switchboard stays the local MCP server plus
+            browser-side product surface.
+          </p>
+          <p>
+            For the exact trust boundary and transport story, keep the
+            <a href="./trust-boundary.html">trust boundary</a> page and the
+            <a href="https://github.com/xiaojiou176-open/multi-ai-sidepanel#readme">README</a>
+            as the canonical public references.
+          </p>
+        </section>
       </main>
     </div>
   </body>

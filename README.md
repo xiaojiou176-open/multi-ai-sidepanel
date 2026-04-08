@@ -2,9 +2,9 @@
 
 One prompt, many AI chats, one side panel.
 
-Prompt Switchboard is a **compare-first, local-first, browser-native AI compare workspace** and **browser-side control tower** for multi-model compare runs. It lets you send one prompt to ChatGPT, Gemini, Perplexity, Qwen, and Grok, then compare the replies in one browser side panel instead of bouncing between tabs.
+Prompt Switchboard is a **compare-first, local-first, browser-native AI compare workspace**. It lets you send one prompt to ChatGPT, Gemini, Perplexity, Qwen, and Grok, then compare the replies in one side panel instead of bouncing between tabs.
 
-It also ships a governed local MCP sidecar for **Codex and Claude Code browser workflows** while OpenCode and OpenClaw stay on public starter-bundle lanes until stronger host proof exists.
+It also ships a governed local MCP sidecar for **Codex and Claude Code browser workflows**. OpenCode and OpenClaw stay on repo-owned public packet lanes until stronger host proof or official listing proof exists.
 
 > **Trust boundary**
 >
@@ -12,11 +12,20 @@ It also ships a governed local MCP sidecar for **Codex and Claude Code browser w
 > The supported repo build also does **not** rely on OS-level desktop
 > automation, Force Quit helpers, or host-wide process cleanup.
 
-[Install the latest build](https://github.com/xiaojiou176-open/multi-ai-sidepanel/releases/latest) • [Landing page](./docs/index.html) • [Install guide](./docs/install.html) • [First compare guide](./docs/first-compare-guide.html) • [Supported sites](./docs/supported-sites.html) • [Trust boundary](./docs/trust-boundary.html) • [FAQ guide](./docs/faq.html) • [Prompt packs](./docs/prompt-packs.html) • [Releases](https://github.com/xiaojiou176-open/multi-ai-sidepanel/releases) • [Discussions](https://github.com/xiaojiou176-open/multi-ai-sidepanel/discussions) • [Privacy](./PRIVACY.md) • [Security](./SECURITY.md) • [Building locally](./CONTRIBUTING.md)
+[Install the latest build](https://github.com/xiaojiou176-open/multi-ai-sidepanel/releases/latest) • [Landing page](./docs/index.html) • [Install guide](./docs/install.html) • [First compare guide](./docs/first-compare-guide.html) • [MCP agents](./docs/mcp-coding-agents.html) • [Docker sidecar](./docs/mcp-docker-sidecar.html) • [Distribution truth](./docs/public-distribution-matrix.html) • [FAQ guide](./docs/faq.html) • [Privacy](./PRIVACY.md) • [Security](./SECURITY.md) • [Building locally](./CONTRIBUTING.md)
 
 ![Prompt Switchboard hero showing one prompt and multiple AI answers side by side.](./docs/assets/prompt-switchboard-hero.png)
 
 The shortest way to evaluate Prompt Switchboard is simple: install the latest packaged build, keep the AI tabs you already use open, then ask once from the side panel and compare the answers in one place.
+
+## What Is Real Today
+
+| Surface         | Current truth                                                                                                                                                    |
+| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Product install | **GitHub Release zip is the supported install path today.**                                                                                                      |
+| Core product    | **Browser extension + compare-first side panel** with your existing signed-in tabs.                                                                              |
+| Builder lane    | **Local MCP sidecar** for Codex and Claude Code, plus repo-owned starter packets for OpenCode and OpenClaw, and an optional Docker wrapper for the same sidecar. |
+| Not live yet    | **Browser store, official registries, official marketplaces, and any Glama listing**.                                                                            |
 
 The supported install path today is the packaged GitHub Release zip. Browser-store submission materials are being kept ready, but GitHub Releases remains the supported install surface today.
 
@@ -68,11 +77,18 @@ Before you start:
 
 Today the public install path is the packaged GitHub Release zip. A lower-friction store distribution path is being prepared, but it is not live yet.
 
-If you are validating the real Chrome proof lane, keep one extra rule in mind: official Google Chrome branded builds 137+ / 139+ no longer reliably auto-load unpacked extensions from command-line flags. Automated runtime proof should use Chromium or Chrome for Testing. Real Chrome proof keeps the same signed-in profile, then uses `chrome://extensions` -> **Developer Mode** -> **Load unpacked** manually.
+If you are validating the real Chrome proof lane, keep one extra rule in mind:
+official Google Chrome branded builds 137+ / 139+ no longer reliably auto-load
+unpacked extensions from command-line flags. Automated runtime proof should use
+Chromium or Chrome for Testing. Real Chrome proof keeps the same signed-in
+profile, then uses `chrome://extensions` -> **Developer Mode** -> **Load unpacked**
+manually.
 
-Need the local build path, release workflow, or front-door maintenance steps? Read [`CONTRIBUTING.md`](./CONTRIBUTING.md).
+Need the local build path, release workflow, Docker sidecar lane, or front-door
+maintenance steps? Read [`CONTRIBUTING.md`](./CONTRIBUTING.md) and the dedicated
+[Docker sidecar page](./docs/mcp-docker-sidecar.html).
 
-Maintainer-only cleanup and runtime hygiene commands live in
+Maintainer-only cleanup and runtime hygiene commands stay in
 [`CONTRIBUTING.md`](./CONTRIBUTING.md) so this README can stay focused on the
 public product surface.
 
@@ -104,6 +120,7 @@ If you already use MCP-capable coding agents, come here **after** the first comp
 
 - [Prompt Switchboard for Codex, Claude Code, and MCP agents](./docs/mcp-coding-agents.html)
 - [Prompt Switchboard MCP starter kits](./docs/mcp-starter-kits.html)
+- [Prompt Switchboard MCP Docker sidecar](./docs/mcp-docker-sidecar.html)
 - [Prompt Switchboard host packets](./docs/mcp-host-packets.html)
 - [Prompt Switchboard public distribution matrix](./docs/public-distribution-matrix.html)
 
@@ -138,6 +155,8 @@ The default story is still: install, run one compare, then export or retry from 
 - The extension bridge stays local on `127.0.0.1`.
 - The exposed surface stays product-specific: readiness, compare, retry,
   export, session reads, the analyst lane, and workflow helpers.
+- The optional Docker sidecar wraps the same local MCP surface; it does **not**
+  turn Prompt Switchboard into a hosted compare service or public HTTP API.
 - The MCP surface does **not** expose arbitrary DOM selectors or generic
   website automation.
 

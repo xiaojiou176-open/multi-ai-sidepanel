@@ -4,11 +4,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { z } from 'zod';
-import {
-  BRIDGE_COMMAND_NAMES,
-  PROMPT_SWITCHBOARD_BRIDGE_HOST,
-  type BridgeStateSnapshot,
-} from '../src/bridge/protocol.js';
+import { BRIDGE_COMMAND_NAMES, type BridgeStateSnapshot } from '../src/bridge/protocol.js';
 import { WorkflowExternalUpdateSchema } from '../src/substrate/api/index.js';
 import { SITE_CAPABILITY_MATRIX } from '../src/utils/siteCapabilityMatrix.js';
 import { MCP_ANALYSIS_PROVIDER_CATALOG } from './analysisCatalog.js';
@@ -24,7 +20,10 @@ const builderSupportMatrix = JSON.parse(
   readFileSync(path.resolve(__dirname, './integration-kits/support-matrix.json'), 'utf8')
 ) as Record<string, unknown>;
 const publicDistributionMatrix = JSON.parse(
-  readFileSync(path.resolve(__dirname, './integration-kits/public-distribution-matrix.json'), 'utf8')
+  readFileSync(
+    path.resolve(__dirname, './integration-kits/public-distribution-matrix.json'),
+    'utf8'
+  )
 ) as Record<string, unknown>;
 
 const BridgeToolEnvelopeSchema = z.object({
@@ -62,7 +61,10 @@ type BridgeRuntime = Pick<
   PromptSwitchboardBridgeServer,
   'dispatchCommand' | 'getPort' | 'getState' | 'start' | 'close'
 >;
-type ServerLifecycleBridge = Pick<PromptSwitchboardBridgeServer, 'getPort' | 'start' | 'close'>;
+type ServerLifecycleBridge = Pick<
+  PromptSwitchboardBridgeServer,
+  'getHost' | 'getPort' | 'start' | 'close'
+>;
 type ConnectableMcpServer = Pick<McpServer, 'connect'>;
 type ServerRunOptions = {
   createTransport?: () => unknown;
@@ -253,9 +255,7 @@ export const registerPromptSwitchboardMcpSurface = (
     {
       description: 'Check readiness for selected Prompt Switchboard model tabs.',
       inputSchema: {
-        models: z
-          .array(z.enum(['ChatGPT', 'Gemini', 'Perplexity', 'Qwen', 'Grok']))
-          .optional(),
+        models: z.array(z.enum(['ChatGPT', 'Gemini', 'Perplexity', 'Qwen', 'Grok'])).optional(),
       },
       outputSchema: BridgeToolEnvelopeSchema,
     },
@@ -272,9 +272,7 @@ export const registerPromptSwitchboardMcpSurface = (
     {
       description: 'Open or reuse supported model tabs inside Prompt Switchboard.',
       inputSchema: {
-        models: z
-          .array(z.enum(['ChatGPT', 'Gemini', 'Perplexity', 'Qwen', 'Grok']))
-          .optional(),
+        models: z.array(z.enum(['ChatGPT', 'Gemini', 'Perplexity', 'Qwen', 'Grok'])).optional(),
       },
       outputSchema: BridgeToolEnvelopeSchema,
     },
@@ -294,9 +292,7 @@ export const registerPromptSwitchboardMcpSurface = (
       inputSchema: {
         prompt: z.string().min(1),
         sessionId: z.string().optional(),
-        models: z
-          .array(z.enum(['ChatGPT', 'Gemini', 'Perplexity', 'Qwen', 'Grok']))
-          .optional(),
+        models: z.array(z.enum(['ChatGPT', 'Gemini', 'Perplexity', 'Qwen', 'Grok'])).optional(),
       },
       outputSchema: BridgeToolEnvelopeSchema,
     },
@@ -316,9 +312,7 @@ export const registerPromptSwitchboardMcpSurface = (
       inputSchema: {
         turnId: z.string().min(1),
         sessionId: z.string().optional(),
-        models: z
-          .array(z.enum(['ChatGPT', 'Gemini', 'Perplexity', 'Qwen', 'Grok']))
-          .optional(),
+        models: z.array(z.enum(['ChatGPT', 'Gemini', 'Perplexity', 'Qwen', 'Grok'])).optional(),
       },
       outputSchema: BridgeToolEnvelopeSchema,
     },
@@ -366,8 +360,7 @@ export const registerPromptSwitchboardMcpSurface = (
   mcpServer.registerTool(
     'prompt_switchboard.export_compare',
     {
-      description:
-        'Export one compare turn as Markdown or as a compact local-first share summary.',
+      description: 'Export one compare turn as Markdown or as a compact local-first share summary.',
       inputSchema: {
         turnId: z.string().optional(),
         sessionId: z.string().optional(),
@@ -434,11 +427,9 @@ export const registerPromptSwitchboardMcpSurface = (
       outputSchema: BridgeToolEnvelopeSchema,
     },
     async ({ limit }) =>
-      callBridge(
-        'Prompt Switchboard workflow run list',
-        BRIDGE_COMMAND_NAMES.LIST_WORKFLOW_RUNS,
-        { limit }
-      )
+      callBridge('Prompt Switchboard workflow run list', BRIDGE_COMMAND_NAMES.LIST_WORKFLOW_RUNS, {
+        limit,
+      })
   );
 
   mcpServer.registerTool(
@@ -535,7 +526,7 @@ export async function runServerMain(options: ServerRunOptions = {}) {
     const transport = createTransport();
     await mcpServer.connect(transport as never);
     writeError(
-      `Prompt Switchboard MCP sidecar listening on stdio with loopback bridge http://${PROMPT_SWITCHBOARD_BRIDGE_HOST}:${bridgeServer.getPort()}`
+      `Prompt Switchboard MCP sidecar listening on stdio with loopback bridge http://${bridgeServer.getHost()}:${bridgeServer.getPort()}`
     );
   } catch (error) {
     await bridgeServer.close().catch(() => undefined);

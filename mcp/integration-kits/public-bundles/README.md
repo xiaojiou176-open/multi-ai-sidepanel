@@ -7,6 +7,7 @@ They are intentionally stronger than the raw starter snippets under
 `mcp/integration-kits/`:
 
 - each packet keeps config, placement, smoke proof, and truthful support notes together
+- each packet now carries a canonical `manifest.json` for repo-owned registry prep
 - each packet is packable through `npm run release:host-kits`
 - each packet keeps public-bundle truth separate from official marketplace or registry truth
 

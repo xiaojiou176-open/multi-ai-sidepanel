@@ -22,6 +22,8 @@
   },
   "files": [
     ".codex-plugin",
+    "manifest.json",
+    "manifest.yaml",
     "openclaw.prompt-switchboard.json",
     "mcp.servers.json",
     "openclaw.mcp.set.sh",

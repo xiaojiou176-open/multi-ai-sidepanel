@@ -1,0 +1,28 @@
+schema_version: 1
+kind: prompt_switchboard_plugin_packet
+id: prompt-switchboard-opencode-plugin
+name: Prompt Switchboard OpenCode Plugin Packet
+description: Repo-owned OpenCode plugin packet for the Prompt Switchboard local MCP sidecar.
+version: "0.2.2"
+license: MIT
+homepage: https://xiaojiou176-open.github.io/multi-ai-sidepanel/
+repository: https://github.com/xiaojiou176-open/multi-ai-sidepanel
+supportTier: public_bundle_ready_unverified_host_lane
+publicationStatus: repo_owned_packet_not_published
+install:
+  shape: npm_plugin_packet
+  host: OpenCode
+  placement: Publish the package later or copy the local opencode.jsonc packet into a project-root OpenCode config.
+smoke:
+  guide: SMOKE.md
+  smallest_useful_flow:
+    - prompt_switchboard.bridge_status
+    - prompt_switchboard.check_readiness
+    - prompt_switchboard.compare
+capabilities:
+  - compare
+  - readiness
+  - retry_failed
+  - export_compare
+  - analyze_compare
+  - workflow_followthrough

@@ -109,6 +109,14 @@
               "@type": "Answer",
               "text": "No. Chrome Native Messaging remains an optional future hardening path, not the active runtime transport in this release."
             }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I run the MCP sidecar in Docker?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes, for the local sidecar/helper lane. The Docker image packages the local MCP sidecar and operator helper, but it does not turn Prompt Switchboard into a hosted compare service. The browser extension, login state, and compare-first trust boundary still stay on the host."
+            }
           }
         ]
       }
@@ -284,7 +292,9 @@
         <div class="faq">
           <section class="item">
             <h3>Do I need to build Prompt Switchboard locally?</h3>
-            <p>No. The shortest evaluation path is the packaged release zip from GitHub Releases.</p>
+            <p>
+              No. The shortest evaluation path is the packaged release zip from GitHub Releases.
+            </p>
           </section>
           <section class="item">
             <h3>Is there a browser-store install today?</h3>
@@ -320,8 +330,8 @@
           <section class="item">
             <h3>Where should I go for support or onboarding?</h3>
             <p>
-              Start with the install guide, first compare guide, supported sites page, and trust boundary page. For
-              follow-up questions, use GitHub Discussions.
+              Start with the install guide, first compare guide, supported sites page, and trust
+              boundary page. For follow-up questions, use GitHub Discussions.
             </p>
           </section>
           <section class="item">
@@ -335,9 +345,9 @@
           <section class="item">
             <h3>What are prompt packs?</h3>
             <p>
-              Prompt packs are reusable compare starters for writing, research, coding
-              explanations, and rewriting. They exist to get you to the first useful compare run
-              faster than a blank input box.
+              Prompt packs are reusable compare starters for writing, research, coding explanations,
+              and rewriting. They exist to get you to the first useful compare run faster than a
+              blank input box.
             </p>
           </section>
           <section class="item">
@@ -359,10 +369,10 @@
           <section class="item">
             <h3>What does the AI Compare Analyst actually add?</h3>
             <p>
-              It adds an optional decision-assist lane on top of the core compare board. The
-              analyst can summarize consensus, explain disagreement, recommend the best-fit answer
-              to continue from, and draft the next follow-up question, but it does not pretend to
-              be an absolute automatic judge.
+              It adds an optional decision-assist lane on top of the core compare board. The analyst
+              can summarize consensus, explain disagreement, recommend the best-fit answer to
+              continue from, and draft the next follow-up question, but it does not pretend to be an
+              absolute automatic judge.
             </p>
           </section>
           <section class="item">
@@ -391,10 +401,10 @@
           <section class="item">
             <h3>Which coding agents are the main MCP bindings today?</h3>
             <p>
-              The strongest repo-specific MCP bindings today are OpenAI Codex and Claude Code.
-              This repo now also ships public bundle-ready MCP packets for OpenCode and OpenClaw,
-              but those paths are still narrower and less verified than the Codex and Claude Code
-              host lanes.
+              The strongest repo-specific MCP bindings today are OpenAI Codex and Claude Code. This
+              repo now also ships public bundle-ready MCP packets for OpenCode and OpenClaw, but
+              those paths are still narrower and less verified than the Codex and Claude Code host
+              lanes.
             </p>
             <p>
               If you want the actual copy-paste setup snippets, open
@@ -410,7 +420,9 @@
             </p>
           </section>
           <section class="item">
-            <h3>Where do the MCP starter files go for Codex, Claude Code, OpenCode, and OpenClaw?</h3>
+            <h3>
+              Where do the MCP starter files go for Codex, Claude Code, OpenCode, and OpenClaw?
+            </h3>
             <p>
               Codex uses a <code>config.toml</code> MCP block, Claude Code uses a Claude MCP config
               such as <code>.mcp.json</code>, OpenCode uses a project-root
@@ -424,7 +436,10 @@
             </p>
           </section>
           <section class="item">
-            <h3>Is Prompt Switchboard already listed on an official marketplace or registry for every documented host?</h3>
+            <h3>
+              Is Prompt Switchboard already listed on an official marketplace or registry for every
+              documented host?
+            </h3>
             <p>
               No. Prompt Switchboard now ships repo-owned public bundles for Codex, Claude Code,
               OpenCode, and OpenClaw, but that is not the same thing as an official marketplace or
@@ -456,6 +471,19 @@
             </p>
           </section>
           <section class="item">
+            <h3>Can I run the MCP sidecar in Docker?</h3>
+            <p>
+              Yes, for the local sidecar/helper lane. The Docker image packages the local MCP
+              sidecar and repo-local operator helper, but it does not turn Prompt Switchboard into a
+              hosted compare service.
+            </p>
+            <p>
+              The browser extension, login state, and compare-first trust boundary still stay on the
+              host. Use <a href="./mcp-docker-sidecar.html">the Docker sidecar page</a> when you
+              want the exact build, run, and bridge-port story.
+            </p>
+          </section>
+          <section class="item">
             <h3>Are workflow runs durable after the browser session ends?</h3>
             <p>
               No. Workflow run snapshots are session-scoped runtime cache. They are useful for the
@@ -467,9 +495,9 @@
           <section class="item">
             <h3>Does the Switchyard runtime replace the browser-tab compare lane?</h3>
             <p>
-              No. The optional local Switchyard runtime lane only powers the analyst execution
-              path. Prompt Switchboard still keeps the compare-first side panel, tab readiness,
-              compare fan-out, and workflow shell inside the browser.
+              No. The optional local Switchyard runtime lane only powers the analyst execution path.
+              Prompt Switchboard still keeps the compare-first side panel, tab readiness, compare
+              fan-out, and workflow shell inside the browser.
             </p>
           </section>
           <section class="item">
@@ -483,13 +511,15 @@
           <section class="item">
             <h3>Does this release use Chrome Native Messaging?</h3>
             <p>
-              No. The shipped transport is the local stdio sidecar plus the localhost bridge.
-              Native Messaging remains an optional future hardening path, not the active runtime
-              transport in this build.
+              No. The shipped transport is the local stdio sidecar plus the localhost bridge. Native
+              Messaging remains an optional future hardening path, not the active runtime transport
+              in this build.
             </p>
           </section>
           <section class="item">
-            <h3>What belongs in Discussions, what belongs in Issues, and where do security reports go?</h3>
+            <h3>
+              What belongs in Discussions, what belongs in Issues, and where do security reports go?
+            </h3>
             <p>
               Use Discussions for onboarding, workflow ideas, and open-ended product questions. Use
               Issues for reproducible bugs on the supported surfaces. Use SECURITY.md for
@@ -551,7 +581,9 @@
           </section>
           <section class="item">
             <h3>Discussions</h3>
-            <p>Use this when you want onboarding help, product discussion, or compare-first feedback.</p>
+            <p>
+              Use this when you want onboarding help, product discussion, or compare-first feedback.
+            </p>
             <p>
               <a
                 class="nav-link"
@@ -563,8 +595,8 @@
           <section class="item">
             <h3>MCP-capable coding agents</h3>
             <p>
-              Use this when you want the shortest explanation of how Prompt Switchboard fits
-              OpenAI Codex and Claude Code through the governed MCP sidecar, while keeping other
+              Use this when you want the shortest explanation of how Prompt Switchboard fits OpenAI
+              Codex and Claude Code through the governed MCP sidecar, while keeping other
               MCP-capable local coding agents in the compatibility-note layer instead of turning
               Prompt Switchboard into generic browser automation.
             </p>

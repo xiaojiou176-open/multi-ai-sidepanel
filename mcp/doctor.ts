@@ -1,9 +1,9 @@
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import {
-  PROMPT_SWITCHBOARD_BRIDGE_HOST,
-  PROMPT_SWITCHBOARD_BRIDGE_PORT,
   createBridgeBaseUrl,
+  resolveBridgeHost,
+  resolveBridgePort,
 } from '../src/bridge/protocol.js';
 
 type BridgeHealth = {
@@ -28,25 +28,23 @@ type DoctorRunOptions = {
 };
 
 export const resolveDoctorContext = (env: NodeJS.ProcessEnv = process.env): DoctorContext => {
-  const configuredPort = Number(env.PROMPT_SWITCHBOARD_BRIDGE_PORT || PROMPT_SWITCHBOARD_BRIDGE_PORT);
+  const configuredHost = resolveBridgeHost(env);
+  const configuredPort = resolveBridgePort(env);
   return {
-    bridgeBaseUrl: createBridgeBaseUrl(PROMPT_SWITCHBOARD_BRIDGE_HOST, configuredPort),
+    bridgeBaseUrl: createBridgeBaseUrl(configuredHost, configuredPort),
   };
 };
 
-export const probeBridgeHealth = async (
-  {
-    bridgeBaseUrl,
-    env = process.env,
-    fetchImpl = fetch,
-  }: {
-    bridgeBaseUrl?: string;
-    env?: NodeJS.ProcessEnv;
-    fetchImpl?: typeof fetch;
-  } = {}
-): Promise<BridgeHealth> => {
-  const resolvedBridgeBaseUrl =
-    bridgeBaseUrl ?? resolveDoctorContext(env).bridgeBaseUrl;
+export const probeBridgeHealth = async ({
+  bridgeBaseUrl,
+  env = process.env,
+  fetchImpl = fetch,
+}: {
+  bridgeBaseUrl?: string;
+  env?: NodeJS.ProcessEnv;
+  fetchImpl?: typeof fetch;
+} = {}): Promise<BridgeHealth> => {
+  const resolvedBridgeBaseUrl = bridgeBaseUrl ?? resolveDoctorContext(env).bridgeBaseUrl;
 
   try {
     const response = await fetchImpl(`${resolvedBridgeBaseUrl}/health`);
@@ -114,8 +112,7 @@ export const createDoctorMessage = (bridgeBaseUrl: string, health: BridgeHealth)
       'npm run mcp:operator -- workflow-get --run-id <run-id>',
       'npm run mcp:operator -- live-support-bundle',
     ],
-    note:
-      'The local operator helper stays inside the governed MCP surface. It does not add a second public CLI protocol or HTTP API.',
+    note: 'The local operator helper stays inside the governed MCP surface. It does not add a second public CLI protocol or HTTP API.',
   },
   nativeMessaging: {
     shippedInCurrentRelease: false,

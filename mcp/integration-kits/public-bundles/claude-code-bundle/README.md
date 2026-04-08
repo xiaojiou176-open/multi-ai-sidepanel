@@ -11,6 +11,7 @@ It is meant for:
 
 - `.claude-plugin/plugin.json`
 - `.mcp.json`
+- `manifest.json`
 - `commands/prompt-switchboard.md`
 - `SMOKE.md`
 

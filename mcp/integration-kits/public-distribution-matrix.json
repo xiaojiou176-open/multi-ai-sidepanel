@@ -3,39 +3,102 @@
   "official_docs_inspected_at": "2026-04-07",
   "current_install_surface": "The supported install path today is the packaged GitHub Release zip.",
   "bundle_claim": "A Prompt Switchboard public bundle means repo-owned config, skill or prompt guidance, placement hints, smoke flow, and synced public docs.",
-  "official_registry_surface": {
-    "official_docs": [
-      "https://modelcontextprotocol.io/registry"
+  "distribution_subject_map": "mcp/integration-kits/distribution-subject-map.json",
+  "skill_registry": {
+    "canonical_manifest_schema": "mcp/integration-kits/skill-manifest.schema.json",
+    "publishable_skill_packets": [
+      {
+        "host": "codex",
+        "skill_path": "mcp/integration-kits/public-bundles/codex-bundle/skills/prompt-switchboard/SKILL.md",
+        "manifest_path": "mcp/integration-kits/public-bundles/codex-bundle/skills/prompt-switchboard/manifest.yaml",
+        "status": "repo_owned_manifest_ready_not_marketplace_published"
+      },
+      {
+        "host": "openclaw",
+        "skill_path": "mcp/integration-kits/public-bundles/openclaw-bundle/skills/prompt-switchboard/SKILL.md",
+        "manifest_path": "mcp/integration-kits/public-bundles/openclaw-bundle/skills/prompt-switchboard/manifest.yaml",
+        "status": "repo_owned_manifest_ready_not_marketplace_published"
+      }
     ],
+    "docs_only_skill_examples": [
+      "mcp/integration-kits/codex.skill.prompt-switchboard.md.example",
+      "mcp/integration-kits/claude.skill.prompt-switchboard.md.example",
+      "mcp/integration-kits/opencode.skill.prompt-switchboard.md.example",
+      "mcp/integration-kits/openclaw.skill.prompt-switchboard.md.example"
+    ],
+    "official_surfaces": {
+      "opencode": {
+        "status": "official_skill_markdown_surface_verified",
+        "summary": "OpenCode documents Agent Skills as SKILL.md definitions and explicitly calls out frontmatter name and description.",
+        "minimum_verified_fields": ["name", "description"]
+      },
+      "codex": {
+        "status": "no_official_skill_registry_surface_verified",
+        "summary": "Official Codex MCP docs were verified, but no separate Prompt Switchboard skill registry or marketplace manifest surface was verified from those docs."
+      },
+      "claude_code": {
+        "status": "no_official_skill_registry_surface_verified",
+        "summary": "Official Claude Code MCP docs were verified, but no separate skill registry or marketplace manifest surface was verified from those docs."
+      },
+      "openclaw": {
+        "status": "bundle_and_saved_server_definition_surface_verified",
+        "summary": "OpenClaw official docs verify plugin bundle and saved MCP server definition flows, but no separate Prompt Switchboard skill marketplace schema was verified."
+      }
+    }
+  },
+  "docker_glama_surface": {
+    "docker_status": "repo_owned_container_entry_ready",
+    "dockerfile": "Dockerfile",
+    "dockerignore": ".dockerignore",
+    "doc_page": "docs/mcp-docker-sidecar.html",
+    "purpose": "Containerized local Prompt Switchboard MCP sidecar and operator helper for builder-facing flows.",
+    "not_a": [
+      "hosted_compare_service",
+      "public_http_api",
+      "browser_extension_store_surface",
+      "official_glama_listing"
+    ],
+    "bridge_requirement": "When the container hosts the live sidecar, publish loopback port 48123 on the host and set PROMPT_SWITCHBOARD_BRIDGE_HOST=0.0.0.0 inside the container so the host browser can still reach 127.0.0.1:48123.",
+    "glama_surface": {
+      "status": "catalog_and_connector_surfaces_verified_no_prompt_switchboard_listing",
+      "official_pages": ["https://glama.ai/mcp/servers", "https://glama.ai/mcp/connectors"],
+      "summary": "Current accessible Glama pages verify a public MCP server catalog and a connector surface that says connectors browse the official MCP Registry and connect without local installation. No official Prompt Switchboard listing or Docker-specific submission requirement was verified from those pages in this run.",
+      "external_publish_packet": {
+        "surface": "glama_listing_or_connector_submission",
+        "missing": [
+          "an owner-controlled Prompt Switchboard listing or connector entry",
+          "official listing URL",
+          "post-submit read-back proof"
+        ],
+        "verify_after": [
+          "public Glama listing URL",
+          "listed install surface",
+          "claim alignment with README and public distribution docs"
+        ]
+      }
+    }
+  },
+  "official_registry_surface": {
+    "official_docs": ["https://modelcontextprotocol.io/registry"],
     "status": "official_registry_exists_not_published",
     "summary": "Official MCP Registry docs exist, but this repo does not yet claim a published Prompt Switchboard registry entry.",
     "external_publish_packet": {
       "surface": "official_mcp_registry_submission",
-      "missing": [
-        "registry submission",
-        "namespace authentication",
-        "public listing proof"
-      ],
+      "missing": ["registry submission", "namespace authentication", "public listing proof"],
       "steps": [
         "Choose the exact registry surface the repo will claim and keep it aligned with the public distribution matrix.",
         "Complete the official namespace authentication flow for the chosen registry entry.",
         "Submit the Prompt Switchboard listing with the same install path this repo already documents.",
         "Verify the public registry URL, namespace proof, and one install read-back path before changing public claims."
       ],
-      "verify_after": [
-        "registry URL",
-        "namespace proof",
-        "install surface"
-      ]
+      "verify_after": ["registry URL", "namespace proof", "install surface"]
     }
   },
   "hosts": {
     "codex": {
       "label": "Codex",
       "support_tier": "supported_now",
-      "official_docs": [
-        "https://developers.openai.com/codex/mcp"
-      ],
+      "official_docs": ["https://developers.openai.com/codex/mcp"],
       "official_public_surface": {
         "status": "official_docs_verified_no_listing_surface_verified",
         "summary": "Official Codex MCP setup docs are verified. No official Prompt Switchboard marketplace or registry listing surface was verified from current official Codex docs."
@@ -45,8 +108,12 @@
         "mcp/integration-kits/codex.config.toml.example",
         "mcp/integration-kits/codex.skill.prompt-switchboard.md.example",
         "mcp/integration-kits/public-bundles/codex-bundle/",
+        "mcp/integration-kits/public-bundles/codex-bundle/package.json",
+        "mcp/integration-kits/public-bundles/codex-bundle/manifest.json",
+        "mcp/integration-kits/public-bundles/codex-bundle/skills/prompt-switchboard/manifest.yaml",
         "mcp/integration-kits/support-matrix.json",
         "mcp/integration-kits/public-distribution-matrix.json",
+        "mcp/integration-kits/distribution-subject-map.json",
         "docs/codex-mcp-setup.html",
         "docs/mcp-host-packets.html",
         "docs/mcp-coding-agents.html",
@@ -74,9 +141,7 @@
     "claude_code": {
       "label": "Claude Code",
       "support_tier": "supported_now",
-      "official_docs": [
-        "https://docs.anthropic.com/en/docs/claude-code/mcp"
-      ],
+      "official_docs": ["https://docs.anthropic.com/en/docs/claude-code/mcp"],
       "official_public_surface": {
         "status": "official_docs_verified_no_listing_surface_verified",
         "summary": "Official Claude Code MCP setup docs are verified. No official Prompt Switchboard marketplace or registry listing surface was verified from current official Claude Code MCP docs."
@@ -86,8 +151,11 @@
         "mcp/integration-kits/claude.mcp.json.example",
         "mcp/integration-kits/claude.skill.prompt-switchboard.md.example",
         "mcp/integration-kits/public-bundles/claude-code-bundle/",
+        "mcp/integration-kits/public-bundles/claude-code-bundle/package.json",
+        "mcp/integration-kits/public-bundles/claude-code-bundle/manifest.json",
         "mcp/integration-kits/support-matrix.json",
         "mcp/integration-kits/public-distribution-matrix.json",
+        "mcp/integration-kits/distribution-subject-map.json",
         "docs/claude-code-mcp-setup.html",
         "docs/mcp-host-packets.html",
         "docs/mcp-coding-agents.html",
@@ -115,10 +183,7 @@
     "opencode": {
       "label": "OpenCode",
       "support_tier": "public_bundle_ready_unverified_host_lane",
-      "official_docs": [
-        "https://opencode.ai/docs/config",
-        "https://opencode.ai/docs/plugins"
-      ],
+      "official_docs": ["https://opencode.ai/docs/config", "https://opencode.ai/docs/plugins"],
       "official_public_surface": {
         "status": "official_plugin_surface_exists",
         "summary": "Official OpenCode docs expose a plugin system and public plugin distribution shape, but this repo does not yet ship a published OpenCode plugin package."
@@ -128,8 +193,11 @@
         "mcp/integration-kits/opencode.jsonc.example",
         "mcp/integration-kits/opencode.skill.prompt-switchboard.md.example",
         "mcp/integration-kits/public-bundles/opencode-plugin/",
+        "mcp/integration-kits/public-bundles/opencode-plugin/package.json",
+        "mcp/integration-kits/public-bundles/opencode-plugin/manifest.json",
         "mcp/integration-kits/support-matrix.json",
         "mcp/integration-kits/public-distribution-matrix.json",
+        "mcp/integration-kits/distribution-subject-map.json",
         "docs/opencode-mcp-setup.html",
         "docs/mcp-host-packets.html",
         "docs/mcp-coding-agents.html",
@@ -164,11 +232,7 @@
           "Publish mcp/integration-kits/public-bundles/opencode-plugin/ to npm.",
           "Install it through the official OpenCode plugin flow and verify one compare-first smoke path."
         ],
-        "verify_after": [
-          "package URL",
-          "plugin install flow",
-          "docs link"
-        ]
+        "verify_after": ["package URL", "plugin install flow", "docs link"]
       }
     },
     "openclaw": {
@@ -190,10 +254,14 @@
         "mcp/integration-kits/openclaw.mcp.set.example.sh",
         "mcp/integration-kits/openclaw.skill.prompt-switchboard.md.example",
         "mcp/integration-kits/public-bundles/openclaw-bundle/",
+        "mcp/integration-kits/public-bundles/openclaw-bundle/package.json",
+        "mcp/integration-kits/public-bundles/openclaw-bundle/manifest.json",
+        "mcp/integration-kits/public-bundles/openclaw-bundle/skills/prompt-switchboard/manifest.yaml",
         "mcp/integration-kits/public-bundles/codex-bundle/",
         "mcp/integration-kits/public-bundles/claude-code-bundle/",
         "mcp/integration-kits/support-matrix.json",
         "mcp/integration-kits/public-distribution-matrix.json",
+        "mcp/integration-kits/distribution-subject-map.json",
         "docs/openclaw-mcp-setup.html",
         "docs/mcp-host-packets.html",
         "docs/mcp-coding-agents.html",
@@ -228,11 +296,7 @@
           "Publish the repo-owned OpenClaw packet and keep the MCP registry JSON, shell helper, and install docs aligned to that exact surface.",
           "Verify the listing URL or bundle URL and one compare-first smoke path after publish."
         ],
-        "verify_after": [
-          "listing or package URL",
-          "install flow",
-          "official listing proof"
-        ]
+        "verify_after": ["listing or package URL", "install flow", "official listing proof"]
       }
     }
   }

@@ -50,6 +50,19 @@ the loopback bridge today. If you want to prepare a future Native Messaging
 experiment, start from `mcp/native-messaging/README.md` and the scaffold helper
 under `scripts/mcp/native-messaging-manifest.mjs`.
 
+## Containerized Sidecar
+
+This repo now also ships a Docker entry for the local MCP sidecar and operator
+helper.
+
+- public builder-facing guide: `docs/mcp-docker-sidecar.html`
+- container truth boundary: local sidecar helper only
+- not a hosted compare service
+- not a public HTTP API
+- when the container hosts the bridge for a browser on the same machine, set
+  `PROMPT_SWITCHBOARD_BRIDGE_HOST=0.0.0.0` in the container and publish
+  `127.0.0.1:48123:48123`
+
 ## Host Safety Boundary
 
 Prompt Switchboard must not grow OS-level desktop automation or host-wide
@@ -211,13 +224,13 @@ remains the documented hook contract.
 
 Treat Prompt Switchboard as a five-layer verification repo:
 
-| Layer | What it owns | Default command |
-| --- | --- | --- |
-| `pre-commit` | fast hygiene, root allowlist, host safety, sensitive-surface, placebo guard, brand guard | `git commit` runs the hook automatically, or use `npm run test:pre-commit` / `npm run precommit:run` to replay it |
-| `pre-push` | deterministic fast repo gate before sharing work; heavier packet/docs drift checks stay off this local default lane | `npm run test:pre-push` |
-| `hosted` | GitHub-hosted reproduction of the default repo verification pack | `npm run test:hosted` |
-| `nightly` | heavier deterministic audits that should stay off the normal local push path | `npm run test:nightly` |
-| `manual` | login-state-sensitive live proof, host-side GitHub truth, release closure, marketing captures, and store packets | see the manual wrapper commands below |
+| Layer        | What it owns                                                                                                        | Default command                                                                                                   |
+| ------------ | ------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| `pre-commit` | fast hygiene, root allowlist, host safety, sensitive-surface, placebo guard, brand guard                            | `git commit` runs the hook automatically, or use `npm run test:pre-commit` / `npm run precommit:run` to replay it |
+| `pre-push`   | deterministic fast repo gate before sharing work; heavier packet/docs drift checks stay off this local default lane | `npm run test:pre-push`                                                                                           |
+| `hosted`     | GitHub-hosted reproduction of the default repo verification pack                                                    | `npm run test:hosted`                                                                                             |
+| `nightly`    | heavier deterministic audits that should stay off the normal local push path                                        | `npm run test:nightly`                                                                                            |
+| `manual`     | login-state-sensitive live proof, host-side GitHub truth, release closure, marketing captures, and store packets    | see the manual wrapper commands below                                                                             |
 
 The fast local contract before a pull request is:
 

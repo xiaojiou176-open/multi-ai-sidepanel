@@ -1,0 +1,28 @@
+schema_version: 1
+kind: prompt_switchboard_host_packet
+id: prompt-switchboard-claude-code-bundle
+name: Prompt Switchboard Claude Code Bundle
+description: Repo-owned Claude Code bundle packet for the Prompt Switchboard local MCP sidecar.
+version: "0.2.2"
+license: MIT
+homepage: https://xiaojiou176-open.github.io/multi-ai-sidepanel/
+repository: https://github.com/xiaojiou176-open/multi-ai-sidepanel
+supportTier: supported_now
+publicationStatus: repo_owned_bundle_not_officially_listed
+install:
+  shape: bundle_packet
+  host: Claude Code
+  placement: Copy the MCP block into .mcp.json or consume the packed archive through a compatible bundle installer.
+smoke:
+  guide: SMOKE.md
+  smallest_useful_flow:
+    - prompt_switchboard.bridge_status
+    - prompt_switchboard.check_readiness
+    - prompt_switchboard.compare
+capabilities:
+  - compare
+  - readiness
+  - retry_failed
+  - export_compare
+  - analyze_compare
+  - workflow_followthrough

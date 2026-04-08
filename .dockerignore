@@ -1,0 +1,16 @@
+.git
+.github
+.agents
+.agent
+.codex
+.claude
+.serena
+.runtime-cache
+node_modules
+dist
+coverage
+mcp-dist
+playwright-report
+test-results
+*.log
+.DS_Store
