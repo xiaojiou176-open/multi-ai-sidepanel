@@ -12,6 +12,8 @@ export const PROMPT_SWITCHBOARD_BRIDGE_VERSION = 1;
 export const PROMPT_SWITCHBOARD_BRIDGE_HOST_ENV = 'PROMPT_SWITCHBOARD_BRIDGE_HOST';
 export const PROMPT_SWITCHBOARD_BRIDGE_PORT_ENV = 'PROMPT_SWITCHBOARD_BRIDGE_PORT';
 
+export type BridgeRuntimeEnv = Record<string, string | undefined>;
+
 export const BRIDGE_HEADER_EXTENSION_ID = 'x-prompt-switchboard-extension-id';
 export const BRIDGE_HEADER_KEY = 'x-prompt-switchboard-bridge-key';
 
@@ -164,10 +166,17 @@ export const BridgeStateSnapshotSchema = z.object({
 
 export type BridgeStateSnapshot = z.infer<typeof BridgeStateSnapshotSchema>;
 
-export const resolveBridgeHost = (env: NodeJS.ProcessEnv = process.env) =>
+const defaultBridgeRuntimeEnv: BridgeRuntimeEnv = (() => {
+  const maybeProcess = globalThis as typeof globalThis & {
+    process?: { env?: BridgeRuntimeEnv };
+  };
+  return maybeProcess.process?.env ?? {};
+})();
+
+export const resolveBridgeHost = (env: BridgeRuntimeEnv = defaultBridgeRuntimeEnv) =>
   env[PROMPT_SWITCHBOARD_BRIDGE_HOST_ENV]?.trim() || PROMPT_SWITCHBOARD_BRIDGE_HOST;
 
-export const resolveBridgePort = (env: NodeJS.ProcessEnv = process.env) => {
+export const resolveBridgePort = (env: BridgeRuntimeEnv = defaultBridgeRuntimeEnv) => {
   const rawPort = env[PROMPT_SWITCHBOARD_BRIDGE_PORT_ENV];
   if (!rawPort) {
     return PROMPT_SWITCHBOARD_BRIDGE_PORT;

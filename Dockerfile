@@ -13,12 +13,16 @@ RUN if [ -f package-lock.json ]; then npm ci --ignore-scripts; else npm install 
 
 COPY . .
 
+RUN chown -R node:node /app
+
 ENV PROMPT_SWITCHBOARD_BRIDGE_HOST=0.0.0.0
 ENV PROMPT_SWITCHBOARD_BRIDGE_PORT=48123
 
 EXPOSE 48123
 
 HEALTHCHECK --interval=30s --timeout=5s --retries=3 CMD ["node", "docker/healthcheck.mjs"]
+
+USER node
 
 ENTRYPOINT ["node", "docker/entrypoint.mjs"]
 CMD ["server"]
