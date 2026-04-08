@@ -162,6 +162,8 @@
     "vitest": "^4.0.13"
   },
   "overrides": {
+    "@hono/node-server": "1.19.13",
+    "hono": "4.12.12",
     "picomatch@^2.2.2": "2.3.2",
     "picomatch@^2.3.1": "2.3.2",
     "picomatch@^4.0.3": "4.0.4",
