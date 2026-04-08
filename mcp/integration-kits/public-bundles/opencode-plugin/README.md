@@ -18,6 +18,7 @@ It does two things:
 ## Public install shape
 
 - current repo-owned packet:
+  - `manifest.json`
   - `opencode.jsonc`
   - `plugin.js`
   - `SMOKE.md`

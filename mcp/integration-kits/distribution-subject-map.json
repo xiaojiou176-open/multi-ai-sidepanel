@@ -1,0 +1,135 @@
+{
+  "schemaVersion": "1.0.0",
+  "releaseVersion": "0.2.2",
+  "rootPackage": {
+    "name": "multi-ai-sidepanel",
+    "kind": "repo_identity_only",
+    "private": true,
+    "publishable": false,
+    "reason": "This root package is the repo identity and build workspace for the browser extension plus local MCP sidecar. It should keep complete public-facing metadata, but it is not the current publish target."
+  },
+  "primaryPublishableUnits": [
+    {
+      "id": "prompt-switchboard-browser-extension-release",
+      "kind": "release_artifact",
+      "path": "dist/",
+      "manifest": "manifest.json",
+      "currentStatus": "published_via_github_releases"
+    },
+    {
+      "id": "prompt-switchboard-mcp-sidecar-container",
+      "kind": "container_image",
+      "path": "Dockerfile",
+      "manifest": "docs/mcp-docker-sidecar.html",
+      "currentStatus": "repo_owned_container_entry_not_published_to_any_registry"
+    },
+    {
+      "id": "prompt-switchboard-opencode-plugin",
+      "kind": "package_shaped_host_packet",
+      "path": "mcp/integration-kits/public-bundles/opencode-plugin",
+      "manifest": "mcp/integration-kits/public-bundles/opencode-plugin/manifest.json",
+      "currentStatus": "repo_owned_npm_plugin_scaffold_not_published"
+    },
+    {
+      "id": "prompt-switchboard-codex-bundle-packet",
+      "kind": "bundle_packet",
+      "path": "mcp/integration-kits/public-bundles/codex-bundle",
+      "manifest": "mcp/integration-kits/public-bundles/codex-bundle/manifest.json",
+      "currentStatus": "repo_owned_bundle_packet_not_published_on_a_marketplace"
+    },
+    {
+      "id": "prompt-switchboard-claude-code-bundle-packet",
+      "kind": "bundle_packet",
+      "path": "mcp/integration-kits/public-bundles/claude-code-bundle",
+      "manifest": "mcp/integration-kits/public-bundles/claude-code-bundle/manifest.json",
+      "currentStatus": "repo_owned_bundle_packet_not_published_on_a_marketplace"
+    },
+    {
+      "id": "prompt-switchboard-openclaw-bundle-packet",
+      "kind": "bundle_packet",
+      "path": "mcp/integration-kits/public-bundles/openclaw-bundle",
+      "manifest": "mcp/integration-kits/public-bundles/openclaw-bundle/manifest.json",
+      "currentStatus": "repo_owned_bundle_packet_not_published_on_a_marketplace"
+    }
+  ],
+  "embeddedSkillPackets": [
+    {
+      "id": "prompt-switchboard-codex-skill",
+      "kind": "skill_packet",
+      "path": "mcp/integration-kits/public-bundles/codex-bundle/skills/prompt-switchboard",
+      "manifest": "mcp/integration-kits/public-bundles/codex-bundle/skills/prompt-switchboard/manifest.yaml",
+      "currentStatus": "embedded_skill_only_not_independently_published"
+    },
+    {
+      "id": "prompt-switchboard-openclaw-skill",
+      "kind": "skill_packet",
+      "path": "mcp/integration-kits/public-bundles/openclaw-bundle/skills/prompt-switchboard",
+      "manifest": "mcp/integration-kits/public-bundles/openclaw-bundle/skills/prompt-switchboard/manifest.yaml",
+      "currentStatus": "embedded_skill_only_not_independently_published"
+    }
+  ],
+  "supportingPacketsOnly": [
+    {
+      "path": "mcp/integration-kits/codex.config.toml.example",
+      "role": "starter_config_example"
+    },
+    {
+      "path": "mcp/integration-kits/claude.mcp.json.example",
+      "role": "starter_config_example"
+    },
+    {
+      "path": "mcp/integration-kits/opencode.jsonc.example",
+      "role": "starter_config_example"
+    },
+    {
+      "path": "mcp/integration-kits/openclaw.prompt-switchboard.json.example",
+      "role": "starter_config_example"
+    },
+    {
+      "path": "mcp/integration-kits/openclaw.mcp.servers.json.example",
+      "role": "starter_config_example"
+    },
+    {
+      "path": "mcp/integration-kits/openclaw.mcp.set.example.sh",
+      "role": "starter_shell_helper"
+    },
+    {
+      "path": "mcp/integration-kits/support-matrix.json",
+      "role": "machine_readable_support_truth"
+    },
+    {
+      "path": "mcp/integration-kits/public-distribution-matrix.json",
+      "role": "machine_readable_public_distribution_truth"
+    },
+    {
+      "path": "Dockerfile",
+      "role": "containerized_sidecar_entry"
+    },
+    {
+      "path": "docs/mcp-docker-sidecar.html",
+      "role": "container_truth_doc"
+    },
+    {
+      "path": "docker/README.md",
+      "role": "detailed_container_operator_doc"
+    }
+  ],
+  "docsOnlyOrRepoInternal": [
+    {
+      "path": "README.md",
+      "role": "front_door"
+    },
+    {
+      "path": "docs/",
+      "role": "public_docs_surface"
+    },
+    {
+      "path": "mcp/server.ts",
+      "role": "runtime_source"
+    },
+    {
+      "path": "mcp/doctor.ts",
+      "role": "local_operator_helper"
+    }
+  ]
+}

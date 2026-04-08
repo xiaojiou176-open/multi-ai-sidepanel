@@ -1,0 +1,29 @@
+schema_version: 1
+kind: prompt_switchboard_host_packet
+id: prompt-switchboard-openclaw-bundle
+name: Prompt Switchboard OpenClaw Bundle
+description: Repo-owned OpenClaw bundle packet for the Prompt Switchboard local MCP sidecar.
+version: "0.2.2"
+license: MIT
+homepage: https://xiaojiou176-open.github.io/multi-ai-sidepanel/
+repository: https://github.com/xiaojiou176-open/multi-ai-sidepanel
+supportTier: public_bundle_ready_unverified_host_lane
+publicationStatus: repo_owned_bundle_not_officially_listed
+install:
+  shape: bundle_packet
+  host: OpenClaw
+  placement: Register the MCP JSON with openclaw mcp set or consume the packed archive through the official bundle flow.
+  skillManifest: skills/prompt-switchboard/manifest.yaml
+smoke:
+  guide: SMOKE.md
+  smallest_useful_flow:
+    - prompt_switchboard.bridge_status
+    - prompt_switchboard.check_readiness
+    - prompt_switchboard.compare
+capabilities:
+  - compare
+  - readiness
+  - retry_failed
+  - export_compare
+  - analyze_compare
+  - workflow_followthrough

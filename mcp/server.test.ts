@@ -6,6 +6,7 @@ describe('mcp/server entry runner', () => {
     const events: string[] = [];
     const transport = { kind: 'fake-stdio' };
     const currentBridgeServer = {
+      getHost: vi.fn(() => '127.0.0.1'),
       start: vi.fn(async () => {
         events.push('start');
       }),
@@ -39,6 +40,7 @@ describe('mcp/server entry runner', () => {
   it('logs startup failure, closes the bridge, and exits with code 1', async () => {
     const startupError = new Error('bridge_start_failed');
     const currentBridgeServer = {
+      getHost: vi.fn(() => '127.0.0.1'),
       start: vi.fn(async () => {
         throw startupError;
       }),

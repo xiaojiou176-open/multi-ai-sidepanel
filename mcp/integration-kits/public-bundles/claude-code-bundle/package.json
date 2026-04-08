@@ -23,6 +23,8 @@
   "files": [
     ".claude-plugin",
     ".mcp.json",
+    "manifest.json",
+    "manifest.yaml",
     "commands",
     "README.md",
     "SMOKE.md"

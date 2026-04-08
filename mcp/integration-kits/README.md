@@ -13,12 +13,12 @@ Keep the claims narrow and honest:
 
 ## Current Truth By Host
 
-| Host | Current truth | Repo-owned asset | Where it goes |
-| --- | --- | --- | --- |
-| Codex | strongest repo-specific host binding | `codex.config.toml.example`, `codex.skill.prompt-switchboard.md.example`, `public-bundles/codex-bundle/` | paste the MCP block into your Codex `config.toml` |
-| Claude Code | strongest repo-specific host binding | `claude.mcp.json.example`, `claude.skill.prompt-switchboard.md.example`, `public-bundles/claude-code-bundle/` | paste the MCP block into your Claude Code config such as `.mcp.json` |
-| OpenCode | public-bundle-ready generic MCP lane, but no verified official listing yet | `opencode.jsonc.example`, `opencode.skill.prompt-switchboard.md.example`, `public-bundles/opencode-plugin/` | save as project-root `opencode.jsonc` in your Prompt Switchboard clone or publish the plugin package later |
-| OpenClaw | public-bundle-ready generic MCP registry lane, but no verified official listing yet | `openclaw.prompt-switchboard.json.example`, `openclaw.mcp.servers.json.example`, `openclaw.mcp.set.example.sh`, `openclaw.skill.prompt-switchboard.md.example`, `public-bundles/openclaw-bundle/` | register with `openclaw mcp set`, drop the definition under `mcp.servers`, or publish the bundle later |
+| Host        | Current truth                                                                       | Repo-owned asset                                                                                                                                                                                  | Where it goes                                                                                              |
+| ----------- | ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| Codex       | strongest repo-specific host binding                                                | `codex.config.toml.example`, `codex.skill.prompt-switchboard.md.example`, `public-bundles/codex-bundle/`                                                                                          | paste the MCP block into your Codex `config.toml`                                                          |
+| Claude Code | strongest repo-specific host binding                                                | `claude.mcp.json.example`, `claude.skill.prompt-switchboard.md.example`, `public-bundles/claude-code-bundle/`                                                                                     | paste the MCP block into your Claude Code config such as `.mcp.json`                                       |
+| OpenCode    | public-bundle-ready generic MCP lane, but no verified official listing yet          | `opencode.jsonc.example`, `opencode.skill.prompt-switchboard.md.example`, `public-bundles/opencode-plugin/`                                                                                       | save as project-root `opencode.jsonc` in your Prompt Switchboard clone or publish the plugin package later |
+| OpenClaw    | public-bundle-ready generic MCP registry lane, but no verified official listing yet | `openclaw.prompt-switchboard.json.example`, `openclaw.mcp.servers.json.example`, `openclaw.mcp.set.example.sh`, `openclaw.skill.prompt-switchboard.md.example`, `public-bundles/openclaw-bundle/` | register with `openclaw mcp set`, drop the definition under `mcp.servers`, or publish the bundle later     |
 
 ## Public Distribution Layer
 
@@ -28,6 +28,7 @@ Use these files together:
 - host packet page: `docs/mcp-host-packets.html`
 - machine-readable host setup truth: `support-matrix.json`
 - machine-readable public listing truth: `public-distribution-matrix.json`
+- machine-readable publish-subject split: `distribution-subject-map.json`
 - bundle packet directories: `public-bundles/`
 - release-ready packet command: `npm run release:host-kits`
 
@@ -36,6 +37,26 @@ That layer answers three separate questions:
 1. Which repo-owned public bundle exists now?
 2. Which official marketplace or registry surface exists in the host ecosystem?
 3. Which of those surfaces has Prompt Switchboard actually published to?
+
+## Canonical Skill Manifests
+
+Actual repo-owned skill packets now carry a canonical `manifest.yaml` next to the
+published `SKILL.md`.
+
+- canonical schema: `skill-manifest.schema.json`
+- current manifest-bearing skill packets:
+  - `public-bundles/codex-bundle/skills/prompt-switchboard/manifest.yaml`
+  - `public-bundles/openclaw-bundle/skills/prompt-switchboard/manifest.yaml`
+- starter skill examples under `mcp/integration-kits/*.skill.prompt-switchboard.md.example`
+  remain docs-only examples, not registry objects
+
+These manifests are repo-owned truth packets. They help future registry or market
+adapters stay aligned without pretending Prompt Switchboard is already listed on
+an official skill marketplace.
+
+Each publishable packet now also carries a repo-owned canonical `manifest.json`
+next to the packet files so registry prep can stay machine-readable without
+pretending publication already happened.
 
 ## Usage Pattern
 

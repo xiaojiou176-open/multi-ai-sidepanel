@@ -6,16 +6,19 @@ import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
 import {
   createBridgeBaseUrl,
-  PROMPT_SWITCHBOARD_BRIDGE_HOST,
-  PROMPT_SWITCHBOARD_BRIDGE_PORT,
+  resolveBridgeHost,
+  resolveBridgePort,
 } from '../src/bridge/protocol.js';
-import { presentWorkflowRun, type WorkflowPresentableRun } from '../src/substrate/workflow/presentation.js';
+import {
+  presentWorkflowRun,
+  type WorkflowPresentableRun,
+} from '../src/substrate/workflow/presentation.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '..');
-const packageJson = JSON.parse(
-  readFileSync(path.resolve(repoRoot, 'package.json'), 'utf8')
-) as { version: string };
+const packageJson = JSON.parse(readFileSync(path.resolve(repoRoot, 'package.json'), 'utf8')) as {
+  version: string;
+};
 const tsxCliPath = path.resolve(repoRoot, 'node_modules/tsx/dist/cli.mjs');
 const serverEntrypoint = path.resolve(__dirname, 'server.ts');
 
@@ -119,7 +122,8 @@ const commandDescriptions: Record<OperatorCommandName, string> = {
   'switchyard-runtime-probe':
     'Probe the optional local Switchyard runtime-backed analyst lane through the current helper path.',
   'bridge-status': 'Alias for bridge health/status output through the local helper.',
-  'support-matrix': 'Read the machine-readable builder support matrix through the MCP resource surface.',
+  'support-matrix':
+    'Read the machine-readable builder support matrix through the MCP resource surface.',
   readiness: 'Read cached readiness state through the MCP resource surface.',
   'workflow-run': 'Print the exact governed MCP tool-call template for the built-in workflow.',
   'workflow-resume':
@@ -145,20 +149,20 @@ const usageExamples = [
   'node node_modules/tsx/dist/cli.mjs mcp/operator.ts workflow-get --run-id <workflow-run-id>',
 ];
 
-const resolveBridgePort = (override?: number) =>
-  override ?? Number(process.env.PROMPT_SWITCHBOARD_BRIDGE_PORT || PROMPT_SWITCHBOARD_BRIDGE_PORT);
+const resolveOperatorBridgePort = (override?: number) => override ?? resolveBridgePort(process.env);
 
 const createMetadata = (
   command: OperatorCommandName | 'help',
   transport: OperatorTransport | 'none',
   options: OperatorOptions = {}
 ) => {
-  const bridgePort = resolveBridgePort(options.bridgePort);
+  const bridgeHost = resolveBridgeHost(process.env);
+  const bridgePort = resolveOperatorBridgePort(options.bridgePort);
   return {
     command,
     transport,
     bridgePort,
-    bridgeBaseUrl: createBridgeBaseUrl(PROMPT_SWITCHBOARD_BRIDGE_HOST, bridgePort),
+    bridgeBaseUrl: createBridgeBaseUrl(bridgeHost, bridgePort),
     maintainerEntry: 'npm run mcp:operator -- <subcommand>',
     publicCliProduct: false,
     rationale:
@@ -299,7 +303,7 @@ export const getHelpEnvelope = () =>
 
 export const runOperatorServer = async (options: OperatorOptions = {}) =>
   new Promise<number>((resolve, reject) => {
-    const bridgePort = resolveBridgePort(options.bridgePort);
+    const bridgePort = resolveOperatorBridgePort(options.bridgePort);
     const child = spawn(process.execPath, [tsxCliPath, serverEntrypoint], {
       cwd: repoRoot,
       env: {
@@ -355,7 +359,7 @@ const runJsonTsxScript = async (
   options: OperatorOptions = {},
   envOverrides?: NodeJS.ProcessEnv
 ) => {
-  const bridgePort = resolveBridgePort(options.bridgePort);
+  const bridgePort = resolveOperatorBridgePort(options.bridgePort);
   const result = await runTsxScript(scriptPath, args, {
     ...process.env,
     PROMPT_SWITCHBOARD_BRIDGE_PORT: String(bridgePort),
@@ -401,14 +405,13 @@ const runJsonTsxScript = async (
 };
 
 const readBridgeHealth = async (options: OperatorOptions) => {
-  const bridgePort = resolveBridgePort(options.bridgePort);
-  const bridgeBaseUrl = createBridgeBaseUrl(PROMPT_SWITCHBOARD_BRIDGE_HOST, bridgePort);
+  const bridgeHost = resolveBridgeHost(process.env);
+  const bridgePort = resolveOperatorBridgePort(options.bridgePort);
+  const bridgeBaseUrl = createBridgeBaseUrl(bridgeHost, bridgePort);
 
   try {
     const response = await fetch(`${bridgeBaseUrl}/health`);
-    const payload = response.headers
-      .get('content-type')
-      ?.includes('application/json')
+    const payload = response.headers.get('content-type')?.includes('application/json')
       ? await response.json()
       : null;
 
@@ -458,14 +461,13 @@ const createToolTemplateResult = (
   );
 
 const probeBridgeHealth = async (options: OperatorOptions) => {
-  const bridgePort = resolveBridgePort(options.bridgePort);
-  const bridgeBaseUrl = createBridgeBaseUrl(PROMPT_SWITCHBOARD_BRIDGE_HOST, bridgePort);
+  const bridgeHost = resolveBridgeHost(process.env);
+  const bridgePort = resolveOperatorBridgePort(options.bridgePort);
+  const bridgeBaseUrl = createBridgeBaseUrl(bridgeHost, bridgePort);
 
   try {
     const response = await fetch(`${bridgeBaseUrl}/health`);
-    const payload = response.headers
-      .get('content-type')
-      ?.includes('application/json')
+    const payload = response.headers.get('content-type')?.includes('application/json')
       ? ((await response.json()) as {
           ok?: boolean;
           connected?: boolean;
@@ -496,7 +498,7 @@ const probeBridgeHealth = async (options: OperatorOptions) => {
 };
 
 const createMcpClient = async (options: OperatorOptions) => {
-  const bridgePort = resolveBridgePort(options.bridgePort);
+  const bridgePort = resolveOperatorBridgePort(options.bridgePort);
   const client = new Client({
     name: 'prompt-switchboard-local-operator',
     version: packageJson.version,
@@ -821,7 +823,7 @@ export const runOperatorCommand = async (
         path.resolve(repoRoot, 'scripts/verify/live-site-probe.ts'),
         [],
         options,
-        createLiveCommandEnv(resolveBridgePort(options.bridgePort))
+        createLiveCommandEnv(resolveOperatorBridgePort(options.bridgePort))
       );
     case 'live-diagnose':
       return runJsonTsxScript(
@@ -829,7 +831,7 @@ export const runOperatorCommand = async (
         path.resolve(repoRoot, 'scripts/verify/live-diagnose.ts'),
         [],
         options,
-        createLiveCommandEnv(resolveBridgePort(options.bridgePort))
+        createLiveCommandEnv(resolveOperatorBridgePort(options.bridgePort))
       );
     case 'live-support-bundle':
       return runJsonTsxScript(
@@ -837,7 +839,7 @@ export const runOperatorCommand = async (
         path.resolve(repoRoot, 'scripts/verify/live-support-bundle.ts'),
         [],
         options,
-        createLiveCommandEnv(resolveBridgePort(options.bridgePort))
+        createLiveCommandEnv(resolveOperatorBridgePort(options.bridgePort))
       );
     case 'switchyard-runtime-probe':
       return runJsonTsxScript(

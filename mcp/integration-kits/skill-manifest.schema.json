@@ -1,0 +1,124 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://xiaojiou176-open.github.io/multi-ai-sidepanel/mcp/integration-kits/skill-manifest.schema.json",
+  "title": "Prompt Switchboard skill manifest",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "kind",
+    "id",
+    "name",
+    "description",
+    "version",
+    "license",
+    "homepage",
+    "repository",
+    "supportTier",
+    "publicationStatus",
+    "host",
+    "placement",
+    "capabilities",
+    "smoke"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "string"
+    },
+    "kind": {
+      "const": "skill_packet"
+    },
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "license": {
+      "type": "string"
+    },
+    "homepage": {
+      "type": "string",
+      "format": "uri"
+    },
+    "repository": {
+      "type": "object",
+      "required": ["type", "url", "directory"],
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "directory": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "supportTier": {
+      "type": "string"
+    },
+    "publicationStatus": {
+      "type": "string"
+    },
+    "host": {
+      "type": "string"
+    },
+    "placement": {
+      "type": "object",
+      "required": ["relativePath", "discoveryRoots"],
+      "properties": {
+        "relativePath": {
+          "type": "string"
+        },
+        "discoveryRoots": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "capabilities": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "smoke": {
+      "type": "object",
+      "required": ["path", "minimalFlow", "preferredFlow"],
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "minimalFlow": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "preferredFlow": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

@@ -13,6 +13,7 @@ It is meant for:
 - `openclaw.prompt-switchboard.json`
 - `mcp.servers.json`
 - `openclaw.mcp.set.sh`
+- `manifest.json`
 - `.codex-plugin/plugin.json`
 - `skills/prompt-switchboard/SKILL.md`
 - `SMOKE.md`

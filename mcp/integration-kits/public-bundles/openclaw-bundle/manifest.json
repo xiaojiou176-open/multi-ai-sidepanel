@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1.0.0",
+  "kind": "prompt_switchboard_host_packet",
+  "id": "prompt-switchboard-openclaw-bundle",
+  "name": "Prompt Switchboard OpenClaw Bundle",
+  "description": "Repo-owned OpenClaw bundle packet for the Prompt Switchboard local MCP sidecar.",
+  "version": "0.2.2",
+  "license": "MIT",
+  "homepage": "https://xiaojiou176-open.github.io/multi-ai-sidepanel/",
+  "repository": "https://github.com/xiaojiou176-open/multi-ai-sidepanel",
+  "supportTier": "public_bundle_ready_unverified_host_lane",
+  "publicationStatus": "repo_owned_bundle_not_officially_listed",
+  "host": "OpenClaw",
+  "upstreamInstallShape": "bundle_packet",
+  "officialDocs": [
+    "https://docs.openclaw.ai/cli/mcp",
+    "https://docs.openclaw.ai/plugins",
+    "https://docs.openclaw.ai/plugins/bundles"
+  ],
+  "install": {
+    "shape": "bundle_packet",
+    "host": "OpenClaw",
+    "placement": "Register the MCP JSON with openclaw mcp set or consume the packed archive through the official bundle flow.",
+    "skillManifest": "skills/prompt-switchboard/manifest.yaml"
+  },
+  "smoke": {
+    "guide": "SMOKE.md",
+    "smallestUsefulFlow": [
+      "prompt_switchboard.bridge_status",
+      "prompt_switchboard.check_readiness",
+      "prompt_switchboard.compare"
+    ]
+  },
+  "capabilities": [
+    "compare",
+    "readiness",
+    "retry_failed",
+    "export_compare",
+    "analyze_compare",
+    "workflow_followthrough"
+  ],
+  "truth": {
+    "currentClaim": "Repo-owned OpenClaw bundle available now. No official OpenClaw listing claim.",
+    "publishState": "repo_owned_bundle_not_officially_listed"
+  }
+}

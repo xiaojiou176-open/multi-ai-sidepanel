@@ -25,6 +25,8 @@
     "@opencode-ai/plugin": "*"
   },
   "files": [
+    "manifest.json",
+    "manifest.yaml",
     "plugin.js",
     "opencode.jsonc",
     "README.md",

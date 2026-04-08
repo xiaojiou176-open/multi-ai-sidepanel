@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prompt Switchboard Docker MCP sidecar</title>
+    <meta
+      name="description"
+      content="Run the local Prompt Switchboard MCP sidecar in Docker without pretending the compare-first browser product became a hosted service."
+    />
+    <link
+      rel="canonical"
+      href="https://xiaojiou176-open.github.io/multi-ai-sidepanel/mcp-docker-sidecar.html"
+    />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Prompt Switchboard Docker MCP sidecar" />
+    <meta
+      property="og:description"
+      content="Containerized local MCP sidecar for Prompt Switchboard builder flows. The browser extension still runs on the host, and no hosted compare service is claimed."
+    />
+    <meta
+      property="og:image"
+      content="https://xiaojiou176-open.github.io/multi-ai-sidepanel/assets/prompt-switchboard-social-preview.png"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #fffaf6;
+        --ink: #0f172a;
+        --muted: #475569;
+        --line: rgba(251, 113, 133, 0.16);
+        --panel: rgba(255, 255, 255, 0.9);
+        --shadow: 0 24px 64px rgba(15, 23, 42, 0.08);
+        --brand-a: #d946ef;
+        --brand-b: #f43f5e;
+        --brand-c: #f59e0b;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at top left, rgba(244, 114, 182, 0.22), transparent 24%),
+          radial-gradient(circle at bottom right, rgba(251, 191, 36, 0.18), transparent 20%),
+          linear-gradient(180deg, #fffaf6 0%, #ffffff 45%, #fff5e9 100%);
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      code,
+      pre {
+        font-family: ui-monospace, SFMono-Regular, monospace;
+      }
+
+      code {
+        background: #fff1f6;
+        border-radius: 10px;
+        padding: 3px 7px;
+      }
+
+      pre {
+        margin: 0;
+        overflow-x: auto;
+        background: #0f172a;
+        color: #f8fafc;
+        padding: 18px;
+        border-radius: 22px;
+        line-height: 1.6;
+      }
+
+      .shell {
+        width: min(960px, calc(100vw - 32px));
+        margin: 0 auto;
+        padding: 28px 0 64px;
+      }
+
+      .nav,
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .nav {
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .wordmark {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 700;
+      }
+
+      .chip,
+      .nav-link,
+      .cta {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        padding: 12px 18px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.82);
+        font-size: 14px;
+        font-weight: 600;
+      }
+
+      .chip {
+        padding: 10px 14px;
+        background: #fff1f6;
+        border-color: #fbcfe8;
+        color: #be185d;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      .cta {
+        color: white;
+        border: none;
+        background: linear-gradient(135deg, var(--brand-a), var(--brand-b), var(--brand-c));
+        box-shadow: 0 16px 40px rgba(244, 114, 182, 0.24);
+      }
+
+      .card {
+        margin-top: 28px;
+        padding: 28px;
+        border-radius: 28px;
+        background: var(--panel);
+        box-shadow: var(--shadow);
+        border: 1px solid rgba(255, 255, 255, 0.88);
+      }
+
+      h1 {
+        margin: 18px 0 0;
+        font-size: clamp(38px, 6vw, 60px);
+        line-height: 1.02;
+        letter-spacing: -0.05em;
+      }
+
+      h2 {
+        margin: 0;
+        font-size: 28px;
+        letter-spacing: -0.03em;
+      }
+
+      p,
+      li {
+        color: var(--muted);
+        font-size: 18px;
+        line-height: 1.7;
+      }
+
+      ul,
+      ol {
+        margin: 16px 0 0;
+        padding-left: 24px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <nav class="nav">
+        <div class="wordmark">
+          <img
+            src="./assets/prompt-switchboard-nav-icon.svg"
+            alt="Prompt Switchboard logo"
+            width="32"
+            height="32"
+          />
+          <span>Prompt Switchboard</span>
+        </div>
+        <div class="actions">
+          <a class="nav-link" href="./index.html">Landing page</a>
+          <a class="nav-link" href="./mcp-coding-agents.html">MCP agents</a>
+          <a class="nav-link" href="./mcp-host-packets.html">Host packets</a>
+          <a class="nav-link" href="./public-distribution-matrix.html">Distribution</a>
+          <a class="cta" href="https://github.com/xiaojiou176-open/multi-ai-sidepanel/tree/main/docker"
+            >Open Docker files</a
+          >
+        </div>
+      </nav>
+
+      <main class="card">
+        <span class="chip">Docker sidecar</span>
+        <h1>Containerize the local MCP sidecar, not the whole compare-first product.</h1>
+        <p>
+          This Docker entry wraps the local Prompt Switchboard MCP sidecar so builder-facing flows
+          can launch it from a container. The browser extension still runs on the host machine, and
+          Prompt Switchboard does not turn into a hosted compare service here.
+        </p>
+        <h2 style="margin-top: 24px">What it is</h2>
+        <ul>
+          <li>a containerized wrapper around <code>npm run mcp:server</code></li>
+          <li>a local <code>stdio</code> MCP surface for Codex / Claude Code style clients</li>
+          <li>a published host port for the loopback bridge when you run <code>-p 48123:48123</code></li>
+        </ul>
+        <h2 style="margin-top: 24px">What it is not</h2>
+        <ul>
+          <li>not a hosted compare service</li>
+          <li>not a public HTTP API</li>
+          <li>not proof of a Glama, Chrome Web Store, or registry listing</li>
+        </ul>
+        <h2 style="margin-top: 24px">Build and run</h2>
+        <pre><code>docker build -t prompt-switchboard-mcp .
+docker run --rm -i -p 48123:48123 prompt-switchboard-mcp server</code></pre>
+        <p>
+          Use <code>docker run --rm prompt-switchboard-mcp doctor</code> for the repo-owned doctor
+          envelope, and check <code>http://127.0.0.1:48123/health</code> for runtime bridge
+          readiness once the container is up.
+        </p>
+        <p>
+          Full operator notes live in <code>docker/README.md</code>. The short truthful split is:
+          containerized sidecar now, external listing later.
+        </p>
+        <p>
+          Current public Glama pages verify a server catalog and connector surfaces, but this repo
+          does not claim a Prompt Switchboard listing there yet.
+        </p>
+      </main>
+    </div>
+  </body>
+</html>

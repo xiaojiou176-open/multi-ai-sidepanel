@@ -3,7 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Prompt Switchboard MCP starter kits for Codex, Claude Code, OpenCode, and OpenClaw</title>
+    <title>
+      Prompt Switchboard MCP starter kits for Codex, Claude Code, OpenCode, and OpenClaw
+    </title>
     <meta
       name="description"
       content="Use repo-owned Prompt Switchboard MCP starter kits for Codex, Claude Code, OpenCode, and OpenClaw. See which bindings are strongest today, which remain compatibility notes, and copy the right local config snippet."
@@ -73,7 +75,9 @@
         --brand-b: #f43f5e;
         --brand-c: #f59e0b;
       }
-      * { box-sizing: border-box; }
+      * {
+        box-sizing: border-box;
+      }
       body {
         margin: 0;
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -83,9 +87,19 @@
           radial-gradient(circle at bottom right, rgba(251, 191, 36, 0.18), transparent 20%),
           linear-gradient(180deg, #fffaf6 0%, #ffffff 45%, #fff5e9 100%);
       }
-      a { color: inherit; text-decoration: none; }
-      code, pre { font-family: ui-monospace, SFMono-Regular, monospace; }
-      code { background: #fff1f6; border-radius: 10px; padding: 3px 7px; }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      code,
+      pre {
+        font-family: ui-monospace, SFMono-Regular, monospace;
+      }
+      code {
+        background: #fff1f6;
+        border-radius: 10px;
+        padding: 3px 7px;
+      }
       pre {
         margin: 0;
         overflow-x: auto;
@@ -95,39 +109,121 @@
         border-radius: 22px;
         line-height: 1.6;
       }
-      .shell { width: min(1040px, calc(100vw - 32px)); margin: 0 auto; padding: 28px 0 64px; }
-      .nav, .actions { display: flex; flex-wrap: wrap; gap: 12px; }
-      .nav { align-items: center; justify-content: space-between; }
-      .wordmark { display: flex; align-items: center; gap: 12px; font-weight: 700; }
-      .chip, .nav-link, .cta {
-        display: inline-flex; align-items: center; border-radius: 999px; padding: 12px 18px;
-        border: 1px solid var(--line); background: rgba(255,255,255,0.82); font-size: 14px; font-weight: 600;
+      .shell {
+        width: min(1040px, calc(100vw - 32px));
+        margin: 0 auto;
+        padding: 28px 0 64px;
+      }
+      .nav,
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+      .nav {
+        align-items: center;
+        justify-content: space-between;
+      }
+      .wordmark {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 700;
+      }
+      .chip,
+      .nav-link,
+      .cta {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        padding: 12px 18px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.82);
+        font-size: 14px;
+        font-weight: 600;
       }
       .chip {
-        padding: 10px 14px; background: #fff1f6; border-color: #fbcfe8; color: #be185d;
-        letter-spacing: 0.1em; text-transform: uppercase;
+        padding: 10px 14px;
+        background: #fff1f6;
+        border-color: #fbcfe8;
+        color: #be185d;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
       }
       .cta {
-        color: white; border: none; background: linear-gradient(135deg, var(--brand-a), var(--brand-b), var(--brand-c));
-        box-shadow: 0 16px 40px rgba(244,114,182,0.24);
+        color: white;
+        border: none;
+        background: linear-gradient(135deg, var(--brand-a), var(--brand-b), var(--brand-c));
+        box-shadow: 0 16px 40px rgba(244, 114, 182, 0.24);
       }
-      .card { margin-top: 28px; padding: 28px; border-radius: 28px; background: var(--panel); box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,0.88); }
-      h1 { margin: 18px 0 0; font-size: clamp(38px, 6vw, 60px); line-height: 1.02; letter-spacing: -0.05em; }
-      h2 { margin: 0; font-size: 28px; letter-spacing: -0.03em; }
-      h3 { margin: 0; font-size: 22px; }
-      p, li { color: var(--muted); font-size: 18px; line-height: 1.7; }
-      ul, ol { margin: 16px 0 0; padding-left: 24px; }
-      table { width: 100%; border-collapse: collapse; margin-top: 18px; }
-      th, td { text-align: left; padding: 14px 16px; border-bottom: 1px solid var(--line); vertical-align: top; }
-      th { font-size: 14px; text-transform: uppercase; letter-spacing: 0.08em; color: #be185d; }
-      .stack { display: grid; gap: 16px; }
+      .card {
+        margin-top: 28px;
+        padding: 28px;
+        border-radius: 28px;
+        background: var(--panel);
+        box-shadow: var(--shadow);
+        border: 1px solid rgba(255, 255, 255, 0.88);
+      }
+      h1 {
+        margin: 18px 0 0;
+        font-size: clamp(38px, 6vw, 60px);
+        line-height: 1.02;
+        letter-spacing: -0.05em;
+      }
+      h2 {
+        margin: 0;
+        font-size: 28px;
+        letter-spacing: -0.03em;
+      }
+      h3 {
+        margin: 0;
+        font-size: 22px;
+      }
+      p,
+      li {
+        color: var(--muted);
+        font-size: 18px;
+        line-height: 1.7;
+      }
+      ul,
+      ol {
+        margin: 16px 0 0;
+        padding-left: 24px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 18px;
+      }
+      th,
+      td {
+        text-align: left;
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--line);
+        vertical-align: top;
+      }
+      th {
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #be185d;
+      }
+      .stack {
+        display: grid;
+        gap: 16px;
+      }
     </style>
   </head>
   <body>
     <div class="shell">
       <nav class="nav">
         <div class="wordmark">
-          <img src="./assets/prompt-switchboard-nav-icon.svg" alt="Prompt Switchboard logo" width="32" height="32" />
+          <img
+            src="./assets/prompt-switchboard-nav-icon.svg"
+            alt="Prompt Switchboard logo"
+            width="32"
+            height="32"
+          />
           <span>Prompt Switchboard</span>
         </div>
         <div class="actions">
@@ -137,22 +233,51 @@
           <a class="nav-link" href="./mcp-host-packets.html">Host packets</a>
           <a class="nav-link" href="./public-distribution-matrix.html">Distribution</a>
           <a class="nav-link" href="./faq.html">FAQ</a>
-          <a class="cta" href="https://github.com/xiaojiou176-open/multi-ai-sidepanel/tree/main/mcp/integration-kits">Open starter kits</a>
+          <a
+            class="cta"
+            href="https://github.com/xiaojiou176-open/multi-ai-sidepanel/tree/main/mcp/integration-kits"
+            >Open starter kits</a
+          >
         </div>
       </nav>
       <main class="stack">
         <section class="card">
           <span class="chip">Starter kits</span>
-          <h1>Copy the right MCP setup without guessing what Prompt Switchboard really supports.</h1>
-          <p>Prompt Switchboard is a compare-first browser workspace with a governed local MCP sidecar. These starter kits remove setup friction for the strongest current host flows and keep the weaker ecosystem paths honest.</p>
-          <p><strong>If you are brand new here, get one compare run working first, then come back for the builder lane.</strong> This page is meant to shorten host setup after the compare-first path already makes sense.</p>
-          <p><strong>The supported install path today is the packaged GitHub Release zip.</strong> Browser-store submission materials are being kept ready, but GitHub Releases remains the supported install surface today. Start with the <a href="./install.html">install guide</a> and keep the <a href="./trust-boundary.html">trust boundary</a> close when you wire a builder lane.</p>
+          <h1>
+            Copy the right MCP setup without guessing what Prompt Switchboard really supports.
+          </h1>
+          <p>
+            Prompt Switchboard is a compare-first browser workspace with a governed local MCP
+            sidecar. These starter kits remove setup friction for the strongest current host flows
+            and keep the weaker ecosystem paths honest.
+          </p>
+          <p>
+            <strong
+              >If you are brand new here, get one compare run working first, then come back for the
+              builder lane.</strong
+            >
+            This page is meant to shorten host setup after the compare-first path already makes
+            sense.
+          </p>
+          <p>
+            <strong>The supported install path today is the packaged GitHub Release zip.</strong>
+            Browser-store submission materials are being kept ready, but GitHub Releases remains the
+            supported install surface today. Start with the
+            <a href="./install.html">install guide</a> and keep the
+            <a href="./trust-boundary.html">trust boundary</a> close when you wire a builder lane.
+          </p>
+          <p>
+            If you need a containerized local helper instead of a host-native sidecar process, read
+            <a href="./mcp-docker-sidecar.html">the Docker sidecar guide</a>. It packages the local
+            MCP sidecar and operator helper, not a hosted Prompt Switchboard service.
+          </p>
         </section>
         <section class="card">
           <h2>What the kits connect to</h2>
           <p>
-            These kits are not just config snippets in a vacuum. They connect to a real builder-facing browser surface,
-            a real workflow panel, and the built-in analyst lane that already ships in the repo.
+            These kits are not just config snippets in a vacuum. They connect to a real
+            builder-facing browser surface, a real workflow panel, and the built-in analyst lane
+            that already ships in the repo.
           </p>
           <div class="stack">
             <img
@@ -171,55 +296,161 @@
           <h2>Current support matrix</h2>
           <table aria-label="Prompt Switchboard MCP starter kit support matrix">
             <thead>
-              <tr><th>Surface</th><th>Current truth</th><th>What to use</th><th>Where it goes</th></tr>
+              <tr>
+                <th>Surface</th>
+                <th>Current truth</th>
+                <th>What to use</th>
+                <th>Where it goes</th>
+              </tr>
             </thead>
             <tbody>
-              <tr><td>Codex</td><td>Strongest repo-specific host path today</td><td><code>codex.config.toml.example</code></td><td>Paste it into the Codex MCP server section in your <code>config.toml</code>.</td></tr>
-              <tr><td>Claude Code</td><td>Strongest repo-specific host path today</td><td><code>claude.mcp.json.example</code></td><td>Paste it into your Claude Code MCP config such as <code>.mcp.json</code>.</td></tr>
-              <tr><td>OpenCode</td><td>Compatibility-note setup plus a public-ready bundle packet through its generic MCP client flow</td><td><code>opencode.jsonc.example</code>, <code>opencode.skill.prompt-switchboard.md.example</code>, <code>public-bundles/opencode-plugin/</code></td><td>Save it as a project-root <code>opencode.jsonc</code> inside your Prompt Switchboard clone or publish the packet later.</td></tr>
-              <tr><td>OpenClaw</td><td>Starter-kit setup plus a public-ready bundle packet through generic MCP config or registry usage, not a verified repo-owned host lane</td><td><code>openclaw.mcp.servers.json.example</code>, <code>openclaw.mcp.set.example.sh</code>, <code>openclaw.skill.prompt-switchboard.md.example</code>, <code>public-bundles/openclaw-bundle/</code></td><td>Use <code>openclaw mcp set</code> or place the server definition under <code>mcp.servers</code>, or publish the packet later.</td></tr>
+              <tr>
+                <td>Codex</td>
+                <td>Strongest repo-specific host path today</td>
+                <td><code>codex.config.toml.example</code></td>
+                <td>
+                  Paste it into the Codex MCP server section in your <code>config.toml</code>.
+                </td>
+              </tr>
+              <tr>
+                <td>Claude Code</td>
+                <td>Strongest repo-specific host path today</td>
+                <td><code>claude.mcp.json.example</code></td>
+                <td>Paste it into your Claude Code MCP config such as <code>.mcp.json</code>.</td>
+              </tr>
+              <tr>
+                <td>OpenCode</td>
+                <td>
+                  Compatibility-note setup plus a public-ready bundle packet through its generic MCP
+                  client flow
+                </td>
+                <td>
+                  <code>opencode.jsonc.example</code>,
+                  <code>opencode.skill.prompt-switchboard.md.example</code>,
+                  <code>public-bundles/opencode-plugin/</code>
+                </td>
+                <td>
+                  Save it as a project-root <code>opencode.jsonc</code> inside your Prompt
+                  Switchboard clone or publish the packet later.
+                </td>
+              </tr>
+              <tr>
+                <td>OpenClaw</td>
+                <td>
+                  Starter-kit setup plus a public-ready bundle packet through generic MCP config or
+                  registry usage, not a verified repo-owned host lane
+                </td>
+                <td>
+                  <code>openclaw.mcp.servers.json.example</code>,
+                  <code>openclaw.mcp.set.example.sh</code>,
+                  <code>openclaw.skill.prompt-switchboard.md.example</code>,
+                  <code>public-bundles/openclaw-bundle/</code>
+                </td>
+                <td>
+                  Use <code>openclaw mcp set</code> or place the server definition under
+                  <code>mcp.servers</code>, or publish the packet later.
+                </td>
+              </tr>
             </tbody>
           </table>
-          <p>Codex and Claude Code remain the repo's strongest documented host bindings. OpenCode and OpenClaw are real MCP-capable ecosystem surfaces, and this repo now ships public-ready packets for them, but they still live below the “verified host lane” bar.</p>
-          <p>The machine-readable version of this matrix lives in <code>mcp/integration-kits/support-matrix.json</code> and is also exposed by the MCP resource <code>prompt-switchboard://builder/support-matrix</code>.</p>
-          <p>The public-facing bundle and listing truth now also lives on <a href="./public-distribution-matrix.html">the public distribution matrix</a> and the MCP resource <code>prompt-switchboard://builder/public-distribution</code>, so you can quickly tell the difference between “copyable now” and “officially listed already”.</p>
-          <p>When you want a one-host install packet instead of the whole matrix, use <a href="./mcp-host-packets.html">the host packets page</a>.</p>
-          <p>When host setup looks correct but a compare still feels brittle, use <code>prompt-switchboard://sites/capabilities</code> alongside <code>prompt-switchboard://builder/support-matrix</code>. One answers “which file goes where”; the other answers “which site surface is Prompt Switchboard really prepared to drive today.”</p>
+          <p>
+            Codex and Claude Code remain the repo's strongest documented host bindings. OpenCode and
+            OpenClaw are real MCP-capable ecosystem surfaces, and this repo now ships public-ready
+            packets for them, but they still live below the “verified host lane” bar.
+          </p>
+          <p>
+            The machine-readable version of this matrix lives in
+            <code>mcp/integration-kits/support-matrix.json</code> and is also exposed by the MCP
+            resource <code>prompt-switchboard://builder/support-matrix</code>.
+          </p>
+          <p>
+            The public-facing bundle and listing truth now also lives on
+            <a href="./public-distribution-matrix.html">the public distribution matrix</a> and the
+            MCP resource <code>prompt-switchboard://builder/public-distribution</code>, so you can
+            quickly tell the difference between “copyable now” and “officially listed already”.
+          </p>
+          <p>
+            When you want a one-host install packet instead of the whole matrix, use
+            <a href="./mcp-host-packets.html">the host packets page</a>.
+          </p>
+          <p>
+            When host setup looks correct but a compare still feels brittle, use
+            <code>prompt-switchboard://sites/capabilities</code> alongside
+            <code>prompt-switchboard://builder/support-matrix</code>. One answers “which file goes
+            where”; the other answers “which site surface is Prompt Switchboard really prepared to
+            drive today.”
+          </p>
         </section>
         <section class="card">
           <h2>Always start here</h2>
           <ol>
-            <li>Run <code>npm run mcp:operator -- doctor</code> to check the local bridge state.</li>
+            <li>
+              Run <code>npm run mcp:operator -- doctor</code> to check the local bridge state.
+            </li>
             <li>Start the sidecar with <code>npm run mcp:operator -- server</code>.</li>
             <li>Load the unpacked extension in the same browser profile.</li>
             <li>Use a client-specific starter kit only after the local sidecar path is healthy.</li>
-            <li>Run <code>npm run release:host-kits</code> when you need the current host packets packed into local artifacts.</li>
+            <li>
+              Run <code>npm run release:host-kits</code> when you need the current host packets
+              packed into local artifacts.
+            </li>
           </ol>
         </section>
         <section class="card">
           <h2>Smallest useful flow vs full follow-through</h2>
-          <p>If you are wiring Prompt Switchboard for the first time, do not force every tool into the very first test. Start with the shortest truthful loop, then layer workflow tools on top after compare is healthy.</p>
+          <p>
+            If you are wiring Prompt Switchboard for the first time, do not force every tool into
+            the very first test. Start with the shortest truthful loop, then layer workflow tools on
+            top after compare is healthy.
+          </p>
           <table aria-label="Prompt Switchboard MCP flow ladder">
             <thead>
-              <tr><th>Goal</th><th>Calls</th></tr>
+              <tr>
+                <th>Goal</th>
+                <th>Calls</th>
+              </tr>
             </thead>
             <tbody>
-              <tr><td>Smallest useful compare-first loop</td><td><code>prompt_switchboard.bridge_status</code> -> <code>prompt_switchboard.check_readiness</code> -> <code>prompt_switchboard.compare</code></td></tr>
-              <tr><td>Preferred full follow-through</td><td>Add <code>prompt_switchboard.analyze_compare</code>, then <code>prompt_switchboard.run_workflow</code>, then inspect or continue with <code>get_workflow_run</code>, <code>list_workflow_runs</code>, and <code>resume_workflow</code>.</td></tr>
+              <tr>
+                <td>Smallest useful compare-first loop</td>
+                <td>
+                  <code>prompt_switchboard.bridge_status</code> ->
+                  <code>prompt_switchboard.check_readiness</code> ->
+                  <code>prompt_switchboard.compare</code>
+                </td>
+              </tr>
+              <tr>
+                <td>Preferred full follow-through</td>
+                <td>
+                  Add <code>prompt_switchboard.analyze_compare</code>, then
+                  <code>prompt_switchboard.run_workflow</code>, then inspect or continue with
+                  <code>get_workflow_run</code>, <code>list_workflow_runs</code>, and
+                  <code>resume_workflow</code>.
+                </td>
+              </tr>
             </tbody>
           </table>
         </section>
         <section class="card">
           <h2>Codex and Claude Code</h2>
-          <p>These remain the repo's strongest host bindings because the current MCP surface, docs, and starter kits all line up here.</p>
-          <p>Replace <code>/absolute/path/to/multi-ai-sidepanel</code> with the real path to your own Prompt Switchboard clone before you save any of these snippets.</p>
+          <p>
+            These remain the repo's strongest host bindings because the current MCP surface, docs,
+            and starter kits all line up here.
+          </p>
+          <p>
+            Replace <code>/absolute/path/to/multi-ai-sidepanel</code> with the real path to your own
+            Prompt Switchboard clone before you save any of these snippets.
+          </p>
           <h3 style="margin-top: 18px">Codex snippet</h3>
-          <pre>[mcp_servers.prompt_switchboard]
+          <pre>
+[mcp_servers.prompt_switchboard]
 command = "npm"
 args = ["run", "mcp:server"]
-cwd = "/absolute/path/to/multi-ai-sidepanel"</pre>
+cwd = "/absolute/path/to/multi-ai-sidepanel"</pre
+          >
           <h3 style="margin-top: 18px">Claude Code snippet</h3>
-          <pre>{
+          <pre>
+{
   "mcpServers": {
     "prompt_switchboard": {
       "command": "npm",
@@ -227,13 +458,19 @@ cwd = "/absolute/path/to/multi-ai-sidepanel"</pre>
       "cwd": "/absolute/path/to/multi-ai-sidepanel"
     }
   }
-}</pre>
+}</pre
+          >
         </section>
         <section class="card">
           <h2>OpenCode and OpenClaw</h2>
-          <p>These are still compatibility-note paths, not verified repo-owned host lanes. The value of these examples is speed: they give you the right config shape faster, without pretending Prompt Switchboard already owns a first-class integration story there.</p>
+          <p>
+            These are still compatibility-note paths, not verified repo-owned host lanes. The value
+            of these examples is speed: they give you the right config shape faster, without
+            pretending Prompt Switchboard already owns a first-class integration story there.
+          </p>
           <h3 style="margin-top: 18px">OpenCode generic MCP client example</h3>
-          <pre>{
+          <pre>
+{
   "$schema": "https://opencode.ai/config.json",
   "mcp": {
     "prompt_switchboard": {
@@ -251,9 +488,11 @@ cwd = "/absolute/path/to/multi-ai-sidepanel"</pre>
   "permission": {
     "prompt_switchboard_*": "ask"
   }
-}</pre>
+}</pre
+          >
           <h3 style="margin-top: 18px">OpenClaw MCP registry example</h3>
-          <pre>{
+          <pre>
+{
   "mcp": {
     "servers": {
       "prompt_switchboard": {
@@ -267,22 +506,68 @@ cwd = "/absolute/path/to/multi-ai-sidepanel"</pre>
       }
     }
   }
-}</pre>
-          <p>OpenCode's official docs support local MCP server configuration under <code>mcp</code>. OpenClaw's official docs support both <code>openclaw mcp serve</code> and an OpenClaw-managed MCP registry under <code>mcp.servers</code>. These examples cover the generic config path, and the same folder also carries public-ready bundle packets plus companion skill templates for all four documented hosts. None of these files claim a verified Prompt Switchboard host lane, published plugin package, or deeper workflow proof.</p>
-          <p>If you want the quickest honest reading of current support, use the starter-kits README for prose and the support-matrix JSON or MCP resource for automation-friendly truth, including per-host asset paths, placement hints, and the first MCP calls to make after setup.</p>
+}</pre
+          >
+          <p>
+            OpenCode's official docs support local MCP server configuration under <code>mcp</code>.
+            OpenClaw's official docs support both <code>openclaw mcp serve</code> and an
+            OpenClaw-managed MCP registry under <code>mcp.servers</code>. These examples cover the
+            generic config path, and the same folder also carries public-ready bundle packets plus
+            companion skill templates for all four documented hosts. None of these files claim a
+            verified Prompt Switchboard host lane, published plugin package, or deeper workflow
+            proof.
+          </p>
+          <p>
+            If you want the quickest honest reading of current support, use the starter-kits README
+            for prose and the support-matrix JSON or MCP resource for automation-friendly truth,
+            including per-host asset paths, placement hints, and the first MCP calls to make after
+            setup.
+          </p>
         </section>
         <section class="card">
           <h2>Additional starter assets</h2>
           <table aria-label="Additional Prompt Switchboard starter assets">
             <thead>
-              <tr><th>Asset</th><th>Why it exists</th></tr>
+              <tr>
+                <th>Asset</th>
+                <th>Why it exists</th>
+              </tr>
             </thead>
             <tbody>
-              <tr><td><code>support-matrix.json</code></td><td>Machine-readable truth split for supported, partial, public-bundle-ready, and planned host surfaces.</td></tr>
-              <tr><td><code>codex.skill.prompt-switchboard.md.example</code></td><td>Starter skill prompt for Codex sessions that want the standard compare-first MCP loop.</td></tr>
-              <tr><td><code>claude.skill.prompt-switchboard.md.example</code></td><td>Starter skill prompt for Claude Code sessions that want the same compare-first flow.</td></tr>
-              <tr><td><code>opencode.skill.prompt-switchboard.md.example</code></td><td>Starter skill prompt for OpenCode sessions that want a compare-first MCP loop.</td></tr>
-              <tr><td><code>openclaw.skill.prompt-switchboard.md.example</code></td><td>Starter skill prompt for OpenClaw sessions once the MCP registry entry already exists.</td></tr>
+              <tr>
+                <td><code>support-matrix.json</code></td>
+                <td>
+                  Machine-readable truth split for supported, partial, public-bundle-ready, and
+                  planned host surfaces.
+                </td>
+              </tr>
+              <tr>
+                <td><code>codex.skill.prompt-switchboard.md.example</code></td>
+                <td>
+                  Starter skill prompt for Codex sessions that want the standard compare-first MCP
+                  loop.
+                </td>
+              </tr>
+              <tr>
+                <td><code>claude.skill.prompt-switchboard.md.example</code></td>
+                <td>
+                  Starter skill prompt for Claude Code sessions that want the same compare-first
+                  flow.
+                </td>
+              </tr>
+              <tr>
+                <td><code>opencode.skill.prompt-switchboard.md.example</code></td>
+                <td>
+                  Starter skill prompt for OpenCode sessions that want a compare-first MCP loop.
+                </td>
+              </tr>
+              <tr>
+                <td><code>openclaw.skill.prompt-switchboard.md.example</code></td>
+                <td>
+                  Starter skill prompt for OpenClaw sessions once the MCP registry entry already
+                  exists.
+                </td>
+              </tr>
             </tbody>
           </table>
         </section>
@@ -297,9 +582,9 @@ cwd = "/absolute/path/to/multi-ai-sidepanel"</pre>
           </ol>
           <p>
             Workflow follow-through stays on the same session-scoped lane:
-            <code>prompt_switchboard.get_workflow_run</code> reads the latest
-            snapshot, <code>prompt_switchboard.list_workflow_runs</code> lists
-            recent snapshots, and <code>prompt_switchboard.resume_workflow</code>
+            <code>prompt_switchboard.get_workflow_run</code> reads the latest snapshot,
+            <code>prompt_switchboard.list_workflow_runs</code> lists recent snapshots, and
+            <code>prompt_switchboard.resume_workflow</code>
             continues a waiting run once you have the external step result.
           </p>
         </section>

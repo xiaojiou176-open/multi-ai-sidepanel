@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "1.0.0",
+  "kind": "prompt_switchboard_host_packet",
+  "id": "prompt-switchboard-codex-bundle",
+  "name": "Prompt Switchboard Codex Bundle",
+  "description": "Repo-owned Codex bundle packet for the Prompt Switchboard local MCP sidecar.",
+  "version": "0.2.2",
+  "license": "MIT",
+  "homepage": "https://xiaojiou176-open.github.io/multi-ai-sidepanel/",
+  "repository": "https://github.com/xiaojiou176-open/multi-ai-sidepanel",
+  "supportTier": "supported_now",
+  "publicationStatus": "repo_owned_bundle_not_officially_listed",
+  "host": "Codex",
+  "upstreamInstallShape": "bundle_packet",
+  "officialDocs": [
+    "https://developers.openai.com/codex/mcp"
+  ],
+  "install": {
+    "shape": "bundle_packet",
+    "host": "Codex",
+    "placement": "Copy the MCP block into config.toml or consume the packed archive through a compatible bundle installer.",
+    "skillManifest": "skills/prompt-switchboard/manifest.yaml"
+  },
+  "smoke": {
+    "guide": "SMOKE.md",
+    "smallestUsefulFlow": [
+      "prompt_switchboard.bridge_status",
+      "prompt_switchboard.check_readiness",
+      "prompt_switchboard.compare"
+    ]
+  },
+  "capabilities": [
+    "compare",
+    "readiness",
+    "retry_failed",
+    "export_compare",
+    "analyze_compare",
+    "workflow_followthrough"
+  ],
+  "truth": {
+    "currentClaim": "Repo-owned Codex bundle available now. No official Codex marketplace listing claim.",
+    "publishState": "repo_owned_bundle_not_officially_listed"
+  }
+}
