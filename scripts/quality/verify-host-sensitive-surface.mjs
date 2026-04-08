@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 
-import { findOutputSurfaceFindings } from './sensitive-surface-rules.mjs';
+import { findOutputSurfaceFindingsWithContext } from './sensitive-surface-rules.mjs';
 
 const repo = 'xiaojiou176-open/multi-ai-sidepanel';
 const findings = [];
@@ -78,8 +78,8 @@ function loadArrayEndpoint(label, endpoint, allowStatuses = []) {
   return Array.isArray(parsed) ? parsed : [];
 }
 
-function addTextFindings(surface, identifier, text) {
-  for (const finding of findOutputSurfaceFindings(text)) {
+function addTextFindings(surface, identifier, text, sourcePath = null) {
+  for (const finding of findOutputSurfaceFindingsWithContext(text, { sourcePath })) {
     findings.push(`${surface}: ${identifier} -> ${finding.reason}`);
   }
 }
@@ -139,7 +139,7 @@ function scanArchiveMembers(archivePath, archiveType, label) {
       continue;
     }
 
-    addTextFindings(label, member, readResult.stdout);
+    addTextFindings(label, member, readResult.stdout, member);
   }
 }
 
@@ -189,7 +189,12 @@ for (const pull of loadArrayEndpoint('pulls', `repos/${repo}/pulls?state=all&per
     `pull files #${pullNumber}`,
     `repos/${repo}/pulls/${pullNumber}/files?per_page=100`,
   )) {
-    addTextFindings('pull-file-patch', `${pull.html_url || `#${pullNumber}`} :: ${file.filename}`, file.patch || '');
+    addTextFindings(
+      'pull-file-patch',
+      `${pull.html_url || `#${pullNumber}`} :: ${file.filename}`,
+      file.patch || '',
+      file.filename,
+    );
   }
 }
 
@@ -204,7 +209,7 @@ for (const release of loadArrayEndpoint('releases', `repos/${repo}/releases?per_
       continue;
     }
 
-    addTextFindings('release-asset', assetLabel, assetResult.data.toString('utf8'));
+    addTextFindings('release-asset', assetLabel, assetResult.data.toString('utf8'), asset.name);
 
     if (asset.name.endsWith('.zip') || asset.name.endsWith('.tgz') || asset.name.endsWith('.tar.gz')) {
       const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'prompt-switchboard-host-scan-'));
@@ -290,7 +295,13 @@ for (const artifact of artifacts) {
         }
 
         const text = fs.readFileSync(entryPath, 'utf8');
-        addTextFindings('actions-artifact', `${artifact.name} :: ${path.relative(tempRoot, entryPath)}`, text);
+        const relativeArtifactPath = path.relative(tempRoot, entryPath);
+        addTextFindings(
+          'actions-artifact',
+          `${artifact.name} :: ${relativeArtifactPath}`,
+          text,
+          relativeArtifactPath,
+        );
       }
     }
   } catch (error) {

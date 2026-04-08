@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import {
   findForbiddenTrackedPathFindings,
   findOutputSurfaceFindings,
+  findOutputSurfaceFindingsWithContext,
   findTextSurfaceFindings,
   shouldScanTextSurface,
 } from './sensitive-surface-rules.mjs';
@@ -44,6 +45,24 @@ describe('sensitive surface rules', () => {
     );
 
     expect(findings).toEqual([]);
+  });
+
+  it('allows known detector files to appear in output surfaces when the source path is explicit', () => {
+    const findings = findOutputSurfaceFindingsWithContext(
+      "const FORBIDDEN_LOCAL_PATH_PATTERNS = ['/Users/', '/home/', 'C:\\\\Users\\\\'];",
+      { sourcePath: 'scripts/quality/check-integration-kits.mjs' },
+    );
+
+    expect(findings).toEqual([]);
+  });
+
+  it('still flags local machine paths in non-carrier output surfaces', () => {
+    const findings = findOutputSurfaceFindingsWithContext(
+      "const FORBIDDEN_LOCAL_PATH_PATTERNS = ['/Users/', '/home/', 'C:\\\\Users\\\\'];",
+      { sourcePath: 'docs/example.md' },
+    );
+
+    expect(findings.map((entry) => entry.id)).toContain('local_machine_path');
   });
 
   it('flags raw preview fields in operational output and accepts redacted previews', () => {
