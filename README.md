@@ -128,6 +128,11 @@ If you already use MCP-capable coding agents, come here **after** the first comp
 
 These builder surfaces are intentionally second-ring pages. They are real and useful, but they should not outrank install, first compare, supported sites, and trust boundary in the first impression.
 
+If you need standalone skill folders for host-specific submission flows, use
+[public-skills/README.md](./public-skills/README.md). Those packets are
+repo-owned submission materials for OpenHands/extensions and ClawHub-style
+publish flows; they are not proof that any public listing is already live.
+
 ## Why It Beats Tab Juggling
 
 ![Prompt Switchboard before-and-after comparison showing manual multi-tab comparison versus one local side panel workspace.](./docs/assets/prompt-switchboard-before-after.svg)

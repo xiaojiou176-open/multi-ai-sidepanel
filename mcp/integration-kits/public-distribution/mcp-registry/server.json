@@ -1,0 +1,12 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.xiaojiou176-open/prompt-switchboard-mcp",
+  "title": "Prompt Switchboard MCP Sidecar",
+  "description": "Local compare-first MCP sidecar for Prompt Switchboard browser workflows across ChatGPT, Gemini, Perplexity, Qwen, and Grok.",
+  "repository": {
+    "url": "https://github.com/xiaojiou176-open/multi-ai-sidepanel",
+    "source": "github"
+  },
+  "websiteUrl": "https://github.com/xiaojiou176-open/multi-ai-sidepanel/blob/main/docs/mcp-coding-agents.html",
+  "version": "0.2.2"
+}

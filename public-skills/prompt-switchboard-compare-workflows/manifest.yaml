@@ -1,0 +1,35 @@
+schema_version: 1
+artifact: public-skill-listing-manifest
+
+skill:
+  name: prompt-switchboard-compare-workflows
+  display_name: Prompt Switchboard Compare Workflows
+  version: 1.0.0
+  entrypoint: SKILL.md
+  package_shape: skill-folder
+
+registry_targets:
+  clawhub:
+    status: ready-but-not-listed
+    package_shape: skill-folder
+    submit_via: clawhub publish . --slug prompt-switchboard-compare-workflows --name "Prompt Switchboard Compare Workflows" --version 1.0.0 --tags browser-extension,mcp,compare-first,productivity
+  openhands-extensions:
+    status: folder-ready
+    package_shape: skill-folder
+    submit_via: submit this folder as skills/prompt-switchboard-compare-workflows/ in OpenHands/extensions
+
+boundaries:
+  product_identity: Compare-first browser workspace with a local MCP sidecar for Prompt Switchboard.
+  canonical_repo_version: 0.2.2
+  official_listing_state: not-yet-listed
+  not_claimed:
+    - No live ClawHub listing exists yet
+    - No live OpenHands/extensions listing exists yet
+    - No live Official MCP Registry entry exists yet
+    - No hosted relay or public runtime is claimed
+
+pair_with:
+  - SKILL.md
+  - README.md
+  - ../../README.md
+  - ../../server.json
