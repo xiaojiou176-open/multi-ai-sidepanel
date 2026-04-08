@@ -164,10 +164,19 @@ export const findTextSurfaceFindings = (filePath, text) => {
   return findings;
 };
 
-export const findOutputSurfaceFindings = (text) => {
+export const findOutputSurfaceFindingsWithContext = (text, { sourcePath } = {}) => {
+  const normalizedSourcePath =
+    typeof sourcePath === 'string' && sourcePath.trim().length > 0
+      ? normalizeRepoPath(sourcePath)
+      : null;
   const findings = [];
 
-  if (LOCAL_MACHINE_PATH_PATTERNS.some((pattern) => pattern.test(text))) {
+  if (
+    !(
+      normalizedSourcePath && LOCAL_PATH_PATTERN_CARRIER_FILES.has(normalizedSourcePath)
+    ) &&
+    LOCAL_MACHINE_PATH_PATTERNS.some((pattern) => pattern.test(text))
+  ) {
     findings.push({
       id: 'local_machine_path',
       reason: 'output exposed a maintainer-local absolute path marker',
@@ -197,3 +206,5 @@ export const findOutputSurfaceFindings = (text) => {
 
   return findings;
 };
+
+export const findOutputSurfaceFindings = (text) => findOutputSurfaceFindingsWithContext(text);

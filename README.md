@@ -12,7 +12,7 @@ It also ships a governed local MCP sidecar for **Codex and Claude Code browser w
 > The supported repo build also does **not** rely on OS-level desktop
 > automation, Force Quit helpers, or host-wide process cleanup.
 
-[Install the latest build](https://github.com/xiaojiou176-open/multi-ai-sidepanel/releases/latest) • [Landing page](./docs/index.html) • [Install guide](./docs/install.html) • [First compare guide](./docs/first-compare-guide.html) • [MCP agents](./docs/mcp-coding-agents.html) • [Docker sidecar](./docs/mcp-docker-sidecar.html) • [Distribution truth](./docs/public-distribution-matrix.html) • [FAQ guide](./docs/faq.html) • [Privacy](./PRIVACY.md) • [Security](./SECURITY.md) • [Building locally](./CONTRIBUTING.md)
+[Install the latest build](https://github.com/xiaojiou176-open/multi-ai-sidepanel/releases/latest) • [Landing page](./docs/index.html) • [Install guide](./docs/install.html) • [First compare guide](./docs/first-compare-guide.html) • [Supported sites](./docs/supported-sites.html) • [Trust boundary](./docs/trust-boundary.html) • [FAQ guide](./docs/faq.html) • [Privacy](./PRIVACY.md) • [Security](./SECURITY.md) • [Building locally](./CONTRIBUTING.md)
 
 ![Prompt Switchboard hero showing one prompt and multiple AI answers side by side.](./docs/assets/prompt-switchboard-hero.png)
 
@@ -28,6 +28,8 @@ The shortest way to evaluate Prompt Switchboard is simple: install the latest pa
 | Not live yet    | **Browser store, official registries, official marketplaces, and any Glama listing**.                                                                            |
 
 The supported install path today is the packaged GitHub Release zip. Browser-store submission materials are being kept ready, but GitHub Releases remains the supported install surface today.
+
+The optional builder lane stays one step lower in the information hierarchy. Reach for MCP starter kits, host packets, Docker sidecar docs, and distribution truth only after the first compare path is already clear.
 
 Before the first compare run, make sure the supported AI tabs you want to use
 are already open and signed in inside the same browser profile.
@@ -123,6 +125,8 @@ If you already use MCP-capable coding agents, come here **after** the first comp
 - [Prompt Switchboard MCP Docker sidecar](./docs/mcp-docker-sidecar.html)
 - [Prompt Switchboard host packets](./docs/mcp-host-packets.html)
 - [Prompt Switchboard public distribution matrix](./docs/public-distribution-matrix.html)
+
+These builder surfaces are intentionally second-ring pages. They are real and useful, but they should not outrank install, first compare, supported sites, and trust boundary in the first impression.
 
 ## Why It Beats Tab Juggling
 
