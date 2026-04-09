@@ -14,7 +14,7 @@ registry_targets:
     package_shape: skill-folder
     submit_via: clawhub publish . --slug prompt-switchboard-compare-workflows --name "Prompt Switchboard Compare Workflows" --version 1.1.1 --tags browser-extension,mcp,compare-first,productivity
   openhands-extensions:
-    status: review-pending
+    status: changes-requested
     package_shape: skill-folder
     submission_url: https://github.com/OpenHands/extensions/pull/154
     submit_via: submit this folder as skills/prompt-switchboard-compare-workflows/ in OpenHands/extensions
@@ -22,7 +22,7 @@ registry_targets:
 boundaries:
   product_identity: Browser-first compare workspace companion skill for the local Prompt Switchboard MCP sidecar.
   canonical_repo_version: 0.2.2
-  official_listing_state: openhands-review-pending-only
+  official_listing_state: openhands-changes-requested-only
   not_claimed:
     - No live OpenHands/extensions listing exists yet
     - No live ClawHub listing is claimed from this packet alone

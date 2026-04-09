@@ -48,7 +48,7 @@ the skill package itself:
 
 - this packet is self-contained and keeps install, config, capability, demo,
   and troubleshooting material inside one portable folder
-- the OpenHands/extensions submission is currently review-pending at
+- the OpenHands/extensions submission currently has reviewer-requested changes at
   `OpenHands/extensions#154`
 - ClawHub and Official MCP Registry listing claims stay outside this packet
   until separate host-side or registry read-back is attached
@@ -58,7 +58,7 @@ the skill package itself:
 - no live OpenHands/extensions listing without fresh PR/read-back
 - no live ClawHub or Official MCP Registry listing inferred from this folder alone
 - no hosted Glama deployment, Docker catalog listing, or public relay claim
-- no `listed everywhere` claim that hides review-pending state
+- no `listed everywhere` claim that hides changes-requested or review-pending state
 
 ## Source of truth
 

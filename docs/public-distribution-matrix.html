@@ -602,9 +602,15 @@
               </tr>
               <tr>
                 <td>Official MCP Registry</td>
-                <td>Registry submission, namespace authentication, and listing proof</td>
-                <td>Owner with namespace or domain authentication control</td>
-                <td>Verify registry URL, namespace proof, and the listed install surface</td>
+                <td>
+                  No current blocker for the live entry; only later package-backed install upgrades
+                  or extra registry-proof work
+                </td>
+                <td>Owner only if a later package/auth upgrade is desired</td>
+                <td>
+                  Verify the live registry URL, listed version, and install surface still point to
+                  the repo-backed MCP docs
+                </td>
               </tr>
               <tr>
                 <td>.ai or domain alias</td>
@@ -616,8 +622,9 @@
           </table>
           <p>
             For the current repo truth, the strongest public distribution surface is the combination
-            of GitHub Releases, the public docs front door, and the repo-owned public bundles under
-            <code>mcp/integration-kits/</code>.
+            of GitHub Releases, the public docs front door, the repo-owned public bundles under
+            <code>mcp/integration-kits/</code>, and the already-live Official MCP Registry entry
+            for the local Prompt Switchboard MCP sidecar.
           </p>
           <div class="grid grid-two">
             <section class="subcard">
@@ -675,19 +682,20 @@
               <h3>MCP Registry owner packet</h3>
               <ol>
                 <li>
-                  Choose the exact registry surface the repo will claim and keep it aligned with the
-                  public distribution matrix.
+                  Keep the already-live Official MCP Registry entry aligned with the browser-first
+                  README and the local sidecar docs.
                 </li>
                 <li>
-                  Complete the official namespace authentication flow for the chosen registry entry.
+                  Only plan extra registry work if you want a package-backed install upgrade beyond
+                  the current websiteUrl-backed entry.
                 </li>
                 <li>
-                  Submit the Prompt Switchboard listing with the same install path this repo already
-                  documents.
+                  If that later upgrade matters, publish the package artifact first, then complete
+                  the exact auth and namespace steps for that artifact.
                 </li>
                 <li>
-                  Verify the public registry URL, namespace proof, and one install read-back path
-                  before changing public claims.
+                  Verify the live registry URL, listed version, and install surface before changing
+                  any broader marketplace claims.
                 </li>
               </ol>
             </section>
