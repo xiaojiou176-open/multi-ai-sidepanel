@@ -4,28 +4,29 @@ artifact: public-skill-listing-manifest
 skill:
   name: prompt-switchboard-compare-workflows
   display_name: Prompt Switchboard Compare Workflows
-  version: 1.1.0
+  version: 1.1.1
   entrypoint: SKILL.md
   package_shape: skill-folder
 
 registry_targets:
   clawhub:
-    status: ready-but-not-listed
+    status: external-readback-required
     package_shape: skill-folder
-    submit_via: clawhub publish . --slug prompt-switchboard-compare-workflows --name "Prompt Switchboard Compare Workflows" --version 1.1.0 --tags browser-extension,mcp,compare-first,productivity
+    submit_via: clawhub publish . --slug prompt-switchboard-compare-workflows --name "Prompt Switchboard Compare Workflows" --version 1.1.1 --tags browser-extension,mcp,compare-first,productivity
   openhands-extensions:
-    status: folder-ready
+    status: review-pending
     package_shape: skill-folder
+    submission_url: https://github.com/OpenHands/extensions/pull/154
     submit_via: submit this folder as skills/prompt-switchboard-compare-workflows/ in OpenHands/extensions
 
 boundaries:
-  product_identity: Compare-first browser workspace with a local MCP sidecar for Prompt Switchboard.
+  product_identity: Browser-first compare workspace companion skill for the local Prompt Switchboard MCP sidecar.
   canonical_repo_version: 0.2.2
-  official_listing_state: not-yet-listed
+  official_listing_state: openhands-review-pending-only
   not_claimed:
-    - No live ClawHub listing exists yet
     - No live OpenHands/extensions listing exists yet
-    - No live Official MCP Registry entry exists yet
+    - No live ClawHub listing is claimed from this packet alone
+    - No live Official MCP Registry entry is claimed from this packet alone
     - No hosted relay or public runtime is claimed
 
 pair_with:
@@ -37,5 +38,4 @@ pair_with:
   - references/DEMO.md
   - references/OPENHANDS_MCP_CONFIG.json
   - references/OPENCLAW_MCP_CONFIG.json
-  - ../../README.md
-  - ../../server.json
+  - references/TROUBLESHOOTING.md

@@ -2,9 +2,13 @@
 
 One prompt, many AI chats, one side panel.
 
+Teach an agent or operator one browser-first compare workflow: check readiness in already-open AI tabs, ask once from the side panel, then retry or export from the same turn.
+
 Prompt Switchboard is a **compare-first, local-first, browser-native AI compare workspace**. It lets you send one prompt to ChatGPT, Gemini, Perplexity, Qwen, and Grok, then compare the replies in one side panel instead of bouncing between tabs.
 
 It also ships a governed local MCP sidecar for **Codex and Claude Code browser workflows**. OpenCode and OpenClaw stay on repo-owned public packet lanes until stronger host proof or official listing proof exists.
+
+Agent-facing truth comes before every sidecar story: the first thing this repo teaches is how to run one real compare turn inside the extension itself. The local MCP sidecar, registry pack, host packets, and public bundles are second-ring carry-forward surfaces around that browser product, not the first install or first success door.
 
 > **Trust boundary**
 >
@@ -116,7 +120,7 @@ If you want to see the value quickly, try one of these on three or more supporte
 - Export a readable compare summary or Markdown artifact.
 - Reuse [Prompt packs](./docs/prompt-packs.html) when you want a faster second run.
 
-### Optional Builder Lane
+### Optional Builder Lane (Second Ring)
 
 If you already use MCP-capable coding agents, come here **after** the first compare works:
 
@@ -154,7 +158,7 @@ The strongest product claim here is not abstract AI productivity. It is much sim
 3. **Compare clearly**: review the answers side by side, inspect the per-model run timeline, copy the best response, or jump back into the original model tab.
 4. **Recover, export, and continue**: retry only the failed models, use the repair center when readiness blocks a run, export a readable compare artifact, or seed the next compare round from the completed answers.
 
-## Builder Lane (After The First Compare)
+## Builder Lane (Second Ring, After The First Compare)
 
 Prompt Switchboard also includes a local MCP sidecar for product-level agent integrations.
 That builder lane is real, but it is **not** the default first-stop story of the repo.
