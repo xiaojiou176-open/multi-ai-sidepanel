@@ -8,6 +8,10 @@ public builder docs, but an official registry listing is still an external
 publish step until a public artifact path and registry authentication are
 confirmed.
 
+Treat this as a companion future-lane submission pack around the local sidecar.
+It exists after the browser-first compare workspace is already clear; it is not
+the first install or first-success doorway of the product.
+
 ## Current claim ladder
 
 | Ladder step | Current status |
