@@ -727,191 +727,28 @@ export const CompareView = ({ messages }: CompareViewProps) => {
                 {turn.userMessage?.text ?? t('compare.legacyPrompt', 'Legacy prompt')}
               </p>
 
-              <div className="mt-4">
-                <WorkflowPanel
-                  turnId={turn.id}
-                  status={
-                    workflowState?.status ??
-                    (insight.completeCount >= 2 ? 'runnable' : 'idle')
-                  }
-                  currentStepId={workflowState?.currentStepId}
-                  waitingFor={workflowState?.waitingFor}
-                  nextActionLabel={workflowState?.nextActionLabel}
-                  nextActionSummary={workflowState?.nextActionSummary}
-                  emittedActionCommand={workflowState?.emittedActionCommand}
-                  emittedActionStepId={workflowState?.emittedActionStepId}
-                  targetModels={workflowState?.targetModels ?? followUpModels}
-                  seedPrompt={workflowState?.seedPrompt}
-                  errorMessage={
-                    workflowState?.errorMessage ??
-                    (insight.completeCount < 2
-                      ? t(
-                          'workflow.body.completeMoreAnswers',
-                          'Finish at least two answers before Prompt Switchboard can stage the next move.'
-                        )
-                      : undefined)
-                  }
-                  hasAnalystResult={analysisState?.status === 'success'}
-                  onRunWorkflow={() => {
-                    void stageWorkflowFromNextQuestion(turn.id, followUpModels);
-                  }}
-                  onUseSeed={() => {
-                    applyWorkflowSeedToComposer(turn.id);
-                  }}
-                  onRunNextCompare={() => {
-                    void runWorkflowSeedCompare(turn.id);
-                  }}
-                />
-              </div>
-
-              <div className="mt-4">
-                <CompareAnalystPanel
-                  turnId={turn.id}
-                  requestedModels={requestedModels}
-                  responses={turn.responses}
-                  followUpModels={followUpModels}
-                />
-              </div>
-
-              {disagreement.reasons.length > 0 && (
-                <div className="mt-4 rounded-[1.4rem] border border-slate-200/90 bg-slate-50/80 px-4 py-4 shadow-sm">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <span className="inline-flex rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-700">
-                      {t('compare.orchestration.title', 'Quick seed lane')}
-                    </span>
-                    <span className="text-xs font-medium text-slate-500">
-                      {t(
-                        'compare.orchestration.summary',
-                        'Use these manual seed shortcuts when you already know the next move. For the staged product path, use the workflow panel first.'
-                      )}
-                    </span>
-                  </div>
-
-                  <p className="mt-3 text-xs leading-6 text-slate-500">
-                    {t(
-                      'compare.orchestration.manualHint',
-                      'Use the workflow panel for staged next steps. The quick actions here stay manual.'
-                    )}
-                  </p>
-
-                  <ul className="mt-3 space-y-2 text-sm text-slate-700">
-                    {disagreement.reasons.map((reason) => (
-                      <li
-                        key={`${turn.id}-${reason}`}
-                        className="rounded-2xl border border-slate-200/80 bg-slate-50/70 px-3 py-2"
-                      >
-                        {reason}
-                      </li>
-                    ))}
-                  </ul>
-
-                  <div className="mt-3 flex flex-wrap gap-2 text-xs font-medium">
-                    {disagreement.completedModels.length > 0 && (
-                      <span className="rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-emerald-700">
-                        {t('compare.orchestration.completed', 'Completed')}:&nbsp;
-                        {disagreement.completedModels.join(', ')}
-                      </span>
-                    )}
-                    {disagreement.failedModels.length > 0 && (
-                      <span className="rounded-full border border-rose-200 bg-rose-50 px-2.5 py-1 text-rose-700">
-                        {t('compare.orchestration.failed', 'Failed')}:&nbsp;
-                        {disagreement.failedModels.join(', ')}
-                      </span>
-                    )}
-                    {disagreement.pendingModels.length > 0 && (
-                      <span className="rounded-full border border-amber-200 bg-amber-50 px-2.5 py-1 text-amber-700">
-                        {t('compare.orchestration.pending', 'Pending')}:&nbsp;
-                        {disagreement.pendingModels.join(', ')}
-                      </span>
-                    )}
-                  </div>
-
-                  <p className="mt-3 text-xs font-medium uppercase tracking-[0.14em] text-slate-500">
-                    {t('compare.orchestration.recommended', 'Current cue')}
-                  </p>
-                  <p className="mt-1 text-sm text-slate-700">
-                    {disagreement.recommendedAction === 'retry_failed'
-                      ? t(
-                          'compare.orchestration.actionRetry',
-                          'Retry the failed models first, then compare the refreshed turn.'
-                        )
-                      : disagreement.recommendedAction === 'judge'
-                        ? t(
-                            'compare.orchestration.actionJudge',
-                            'Draft a tighter follow-up review prompt when this turn still needs another compare round.'
-                          )
-                        : disagreement.recommendedAction === 'wait'
-                          ? t(
-                              'compare.orchestration.actionWait',
-                              'Wait for the remaining models before deciding which answer to continue from.'
-                            )
-                          : t(
-                          'compare.orchestration.actionContinue',
-                          'Keep the strongest answer in view, then seed the next compare from that card or continue in the original tab yourself.'
-                        )}
-                  </p>
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    {insight.completeCount >= 2 && (
-                      <button
-                        type="button"
-                        className="inline-flex items-center gap-2 rounded-full border border-violet-200 bg-white px-3 py-2 text-xs font-medium text-violet-700 transition-colors hover:bg-violet-50"
-                        title={t('compare.orchestration.followUp', 'Draft seed from this turn')}
-                        onClick={() => {
-                          setSelectedModelsForCurrentSession(followUpModels);
-                          setInput(
-                            buildJudgePrompt(
-                              turn.userMessage?.text ?? 'Legacy prompt',
-                              turn.responses,
-                              (key, defaultValue) => t(key, defaultValue)
-                            )
-                          );
-                        }}
-                      >
-                        <Gavel size={14} />
-                        <span>{t('compare.orchestration.followUp', 'Draft seed from this turn')}</span>
-                      </button>
-                    )}
-                    {disagreement.suggestedSeedModel &&
-                      turn.responses[disagreement.suggestedSeedModel]?.text.trim() && (
-                        <button
-                          type="button"
-                          className="inline-flex items-center gap-2 rounded-full border border-sky-200 bg-white px-3 py-2 text-xs font-medium text-sky-700 transition-colors hover:bg-sky-50"
-                          title={`${t('compare.orchestration.continueFrom', 'Manual seed from')} ${disagreement.suggestedSeedModel}`}
-                          onClick={() => {
-                            const nextText =
-                              turn.responses[disagreement.suggestedSeedModel!]?.text ?? '';
-                            setSelectedModelsForCurrentSession([disagreement.suggestedSeedModel!]);
-                            setInput(nextText);
-                          }}
-                        >
-                          <ArrowUpRight size={14} />
-                          <span>
-                            {t('compare.orchestration.continueFrom', 'Manual seed from')}{' '}
-                            {disagreement.suggestedSeedModel}
-                          </span>
-                        </button>
-                      )}
-                    {insight.failedModels.length > 0 && (
-                      <button
-                        type="button"
-                        className="inline-flex items-center gap-2 rounded-full border border-rose-200 bg-white px-3 py-2 text-xs font-medium text-rose-700 transition-colors hover:bg-rose-50"
-                        onClick={() => {
-                          void retryTurnForModels(turn.id, insight.failedModels);
-                        }}
-                      >
-                        <Repeat2 size={14} />
-                        <span>{t('compare.orchestration.retryNow', 'Recover failed models')}</span>
-                      </button>
-                    )}
-                    <span className="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-3 py-2 text-[11px] font-medium text-slate-600">
-                      {t('compare.orchestration.targets', 'Suggested targets')}: {followUpModels.join(', ')}
-                    </span>
-                  </div>
-                </div>
-              )}
             </div>
 
-            <div className="grid gap-4 p-4 md:grid-cols-2 xl:grid-cols-3">
+            <div className="px-4 pb-4 pt-4">
+              <div className="flex flex-wrap items-center justify-between gap-3 rounded-[1.4rem] border border-slate-200/80 bg-slate-50/70 px-4 py-3">
+                <div>
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-fuchsia-600">
+                    {t('compare.results.eyebrow', 'Result board')}
+                  </p>
+                  <p className="mt-1 text-sm text-slate-600">
+                    {t(
+                      'compare.results.summary',
+                      'Review the completed answers first, then use workflow and analyst lanes to decide the next move.'
+                    )}
+                  </p>
+                </div>
+                <span className="rounded-full border border-white/90 bg-white px-3 py-1.5 text-[11px] font-medium text-slate-600">
+                  {t('compare.results.targets', 'Current targets')}: {requestedModels.join(', ')}
+                </span>
+              </div>
+            </div>
+
+            <div className="grid gap-4 px-4 pb-4 md:grid-cols-2 xl:grid-cols-3">
               {requestedModels.map((model) => {
                 const response = turn.responses[model];
                 const status = response
@@ -1082,6 +919,209 @@ export const CompareView = ({ messages }: CompareViewProps) => {
                   </article>
                 );
               })}
+            </div>
+
+            <div className="border-t border-rose-100 bg-[linear-gradient(180deg,_rgba(248,250,252,0.45),_rgba(255,255,255,0.75))] px-4 py-4">
+              <div className="rounded-[1.5rem] border border-slate-200/80 bg-white/70 px-4 py-4 shadow-sm">
+                <div className="flex flex-wrap items-start justify-between gap-3">
+                  <div>
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">
+                      {t('compare.decisionLane.eyebrow', 'Decision lane')}
+                    </p>
+                    <h3 className="mt-1 text-sm font-semibold text-slate-900">
+                      {t('compare.decisionLane.title', 'Stage the next move after you review the answers')}
+                    </h3>
+                    <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">
+                      {t(
+                        'compare.decisionLane.body',
+                        'Workflow, analyst guidance, and quick seed actions stay available here, but they no longer outrank the result board itself.'
+                      )}
+                    </p>
+                  </div>
+                  <span className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-[11px] font-medium text-slate-600">
+                    {t('compare.decisionLane.followUpTargets', 'Follow-up targets')}:{' '}
+                    {followUpModels.join(', ')}
+                  </span>
+                </div>
+
+                <div className="mt-4 grid gap-4 xl:grid-cols-2">
+                  <WorkflowPanel
+                    turnId={turn.id}
+                    status={
+                      workflowState?.status ??
+                      (insight.completeCount >= 2 ? 'runnable' : 'idle')
+                    }
+                    currentStepId={workflowState?.currentStepId}
+                    waitingFor={workflowState?.waitingFor}
+                    nextActionLabel={workflowState?.nextActionLabel}
+                    nextActionSummary={workflowState?.nextActionSummary}
+                    emittedActionCommand={workflowState?.emittedActionCommand}
+                    emittedActionStepId={workflowState?.emittedActionStepId}
+                    targetModels={workflowState?.targetModels ?? followUpModels}
+                    seedPrompt={workflowState?.seedPrompt}
+                    errorMessage={
+                      workflowState?.errorMessage ??
+                      (insight.completeCount < 2
+                        ? t(
+                            'workflow.body.completeMoreAnswers',
+                            'Finish at least two answers before Prompt Switchboard can stage the next move.'
+                          )
+                        : undefined)
+                    }
+                    hasAnalystResult={analysisState?.status === 'success'}
+                    onRunWorkflow={() => {
+                      void stageWorkflowFromNextQuestion(turn.id, followUpModels);
+                    }}
+                    onUseSeed={() => {
+                      applyWorkflowSeedToComposer(turn.id);
+                    }}
+                    onRunNextCompare={() => {
+                      void runWorkflowSeedCompare(turn.id);
+                    }}
+                  />
+
+                  <CompareAnalystPanel
+                    turnId={turn.id}
+                    requestedModels={requestedModels}
+                    responses={turn.responses}
+                    followUpModels={followUpModels}
+                  />
+                </div>
+
+                {disagreement.reasons.length > 0 && (
+                  <div className="mt-4 rounded-[1.4rem] border border-slate-200/90 bg-slate-50/80 px-4 py-4 shadow-sm">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="inline-flex rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-700">
+                        {t('compare.orchestration.title', 'Quick seed lane')}
+                      </span>
+                      <span className="text-xs font-medium text-slate-500">
+                        {t(
+                          'compare.orchestration.summary',
+                          'Use these manual seed shortcuts when you already know the next move. For the staged product path, use the workflow panel first.'
+                        )}
+                      </span>
+                    </div>
+
+                    <p className="mt-3 text-xs leading-6 text-slate-500">
+                      {t(
+                        'compare.orchestration.manualHint',
+                        'Use the workflow panel for staged next steps. The quick actions here stay manual.'
+                      )}
+                    </p>
+
+                    <ul className="mt-3 space-y-2 text-sm text-slate-700">
+                      {disagreement.reasons.map((reason) => (
+                        <li
+                          key={`${turn.id}-${reason}`}
+                          className="rounded-2xl border border-slate-200/80 bg-slate-50/70 px-3 py-2"
+                        >
+                          {reason}
+                        </li>
+                      ))}
+                    </ul>
+
+                    <div className="mt-3 flex flex-wrap gap-2 text-xs font-medium">
+                      {disagreement.completedModels.length > 0 && (
+                        <span className="rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-emerald-700">
+                          {t('compare.orchestration.completed', 'Completed')}:&nbsp;
+                          {disagreement.completedModels.join(', ')}
+                        </span>
+                      )}
+                      {disagreement.failedModels.length > 0 && (
+                        <span className="rounded-full border border-rose-200 bg-rose-50 px-2.5 py-1 text-rose-700">
+                          {t('compare.orchestration.failed', 'Failed')}:&nbsp;
+                          {disagreement.failedModels.join(', ')}
+                        </span>
+                      )}
+                      {disagreement.pendingModels.length > 0 && (
+                        <span className="rounded-full border border-amber-200 bg-amber-50 px-2.5 py-1 text-amber-700">
+                          {t('compare.orchestration.pending', 'Pending')}:&nbsp;
+                          {disagreement.pendingModels.join(', ')}
+                        </span>
+                      )}
+                    </div>
+
+                    <p className="mt-3 text-xs font-medium uppercase tracking-[0.14em] text-slate-500">
+                      {t('compare.orchestration.recommended', 'Current cue')}
+                    </p>
+                    <p className="mt-1 text-sm text-slate-700">
+                      {disagreement.recommendedAction === 'retry_failed'
+                        ? t(
+                            'compare.orchestration.actionRetry',
+                            'Retry the failed models first, then compare the refreshed turn.'
+                          )
+                        : disagreement.recommendedAction === 'judge'
+                          ? t(
+                              'compare.orchestration.actionJudge',
+                              'Draft a tighter follow-up review prompt when this turn still needs another compare round.'
+                            )
+                          : disagreement.recommendedAction === 'wait'
+                            ? t(
+                                'compare.orchestration.actionWait',
+                                'Wait for the remaining models before deciding which answer to continue from.'
+                              )
+                            : t(
+                                'compare.orchestration.actionContinue',
+                                'Keep the strongest answer in view, then seed the next compare from that card or continue in the original tab yourself.'
+                              )}
+                    </p>
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      {insight.completeCount >= 2 && (
+                        <button
+                          type="button"
+                          className="inline-flex items-center gap-2 rounded-full border border-violet-200 bg-white px-3 py-2 text-xs font-medium text-violet-700 transition-colors hover:bg-violet-50"
+                          title={t('compare.orchestration.followUp', 'Draft seed from this turn')}
+                          onClick={() => {
+                            setSelectedModelsForCurrentSession(followUpModels);
+                            setInput(
+                              buildJudgePrompt(
+                                turn.userMessage?.text ?? 'Legacy prompt',
+                                turn.responses,
+                                (key, defaultValue) => t(key, defaultValue)
+                              )
+                            );
+                          }}
+                        >
+                          <Gavel size={14} />
+                          <span>{t('compare.orchestration.followUp', 'Draft seed from this turn')}</span>
+                        </button>
+                      )}
+                      {disagreement.suggestedSeedModel &&
+                        turn.responses[disagreement.suggestedSeedModel]?.text.trim() && (
+                          <button
+                            type="button"
+                            className="inline-flex items-center gap-2 rounded-full border border-sky-200 bg-white px-3 py-2 text-xs font-medium text-sky-700 transition-colors hover:bg-sky-50"
+                            title={`${t('compare.orchestration.continueFrom', 'Manual seed from')} ${disagreement.suggestedSeedModel}`}
+                            onClick={() => {
+                              const nextText =
+                                turn.responses[disagreement.suggestedSeedModel!]?.text ?? '';
+                              setSelectedModelsForCurrentSession([disagreement.suggestedSeedModel!]);
+                              setInput(nextText);
+                            }}
+                          >
+                            <ArrowUpRight size={14} />
+                            <span>
+                              {t('compare.orchestration.continueFrom', 'Manual seed from')}{' '}
+                              {disagreement.suggestedSeedModel}
+                            </span>
+                          </button>
+                        )}
+                      {insight.failedModels.length > 0 && (
+                        <button
+                          type="button"
+                          className="inline-flex items-center gap-2 rounded-full border border-rose-200 bg-white px-3 py-2 text-xs font-medium text-rose-700 transition-colors hover:bg-rose-50"
+                          onClick={() => {
+                            void retryTurnForModels(turn.id, insight.failedModels);
+                          }}
+                        >
+                          <Repeat2 size={14} />
+                          <span>{t('compare.orchestration.retryNow', 'Recover failed models')}</span>
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </section>
         );

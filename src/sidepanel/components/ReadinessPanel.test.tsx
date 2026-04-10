@@ -43,7 +43,12 @@ describe('ReadinessPanel', () => {
     expect(getByTestId('readiness-pill-Gemini')).toBeInTheDocument();
     expect(getAllByText('Ready').length).toBeGreaterThan(0);
     expect(getAllByText('Selector drift').length).toBeGreaterThan(0);
-    expect(getByText(/Selector drift suspected/)).toBeInTheDocument();
+    expect(getByRole('button', { name: 'Review repair steps' })).toBeInTheDocument();
+
+    fireEvent.click(getByRole('button', { name: 'Review repair steps' }));
+    expect(
+      getByText(/Prompt Switchboard found the page, but could not confirm the send controls/)
+    ).toBeInTheDocument();
     expect(getByText(/Remote selector cache/)).toBeInTheDocument();
     expect(getByTestId('readiness-repair-Gemini')).toBeInTheDocument();
     expect(getByRole('button', { name: 'First compare guide' })).toBeInTheDocument();
@@ -80,7 +85,7 @@ describe('ReadinessPanel', () => {
       isCheckingReadiness: true,
     } as Partial<ReturnType<typeof useStore.getState>>);
 
-    const { getAllByText, getByRole, getByTestId } = render(
+    const { getAllByText, getByRole } = render(
       <ReadinessPanel models={['ChatGPT', 'Gemini']} />
     );
 
@@ -88,7 +93,7 @@ describe('ReadinessPanel', () => {
       getAllByText('Selected models look ready, or Prompt Switchboard is checking them now.')[0]
     ).toBeInTheDocument();
     expect(getAllByText('Loading').length).toBeGreaterThan(0);
-    expect(getByTestId('readiness-repair-Gemini')).toBeInTheDocument();
+    expect(getByRole('button', { name: 'Review repair steps' })).toBeInTheDocument();
     expect(getByRole('button', { name: 'Refresh' })).toBeDisabled();
   });
 
@@ -130,6 +135,7 @@ describe('ReadinessPanel', () => {
     expect(getAllByText('Wrong page').length).toBeGreaterThan(0);
     expect(getAllByText('Content unavailable').length).toBeGreaterThan(0);
 
+    fireEvent.click(getAllByRole('button', { name: 'Review repair steps' })[0]!);
     fireEvent.click(getAllByRole('button', { name: 'Open model tab' })[0]!);
     expect(window.open).toHaveBeenCalled();
   });
@@ -155,6 +161,7 @@ describe('ReadinessPanel', () => {
       <ReadinessPanel models={['ChatGPT']} onOpenSettings={onOpenSettings} />
     );
 
+    fireEvent.click(getByRole('button', { name: 'Review repair steps' }));
     fireEvent.click(getByRole('button', { name: 'Open model health' }));
     expect(onOpenSettings).toHaveBeenCalled();
 

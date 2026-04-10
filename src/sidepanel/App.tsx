@@ -38,7 +38,7 @@ function App() {
   const selectedModels = useStore((state) => state.selectedModels);
   const refreshModelReadiness = useStore((state) => state.refreshModelReadiness);
 
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [showSettings, setShowSettings] = useState(() => shouldOpenSettingsFromUrl());
   const [viewMode, setViewMode] = useState<'compare' | 'transcript'>('compare');
 
@@ -141,113 +141,190 @@ function App() {
 
   return (
     <div className="flex h-screen overflow-hidden bg-[radial-gradient(circle_at_top_left,_rgba(253,230,255,0.9),_transparent_28%),linear-gradient(180deg,_#fff8fc_0%,_#ffffff_40%,_#fffaf2_100%)] font-sans text-slate-900">
-      <div
-        className={`
-          fixed inset-y-0 left-0 z-40 transform transition-transform duration-300 ease-in-out
-          ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}
-          md:relative md:translate-x-0
-          ${isSidebarOpen ? 'w-72' : 'w-0'}
-        `}
+      <a
+        href="#compare-main-content"
+        className="sr-only z-50 rounded-full bg-slate-900 px-4 py-2 text-sm font-medium text-white focus:not-sr-only focus:absolute focus:left-4 focus:top-4"
       >
-        <div className="h-full w-72">
-          <SessionList />
-        </div>
+        {t('app.skipToResults', 'Skip to compare results')}
+      </a>
+
+      {isSidebarOpen && (
+        <button
+          type="button"
+          className="absolute inset-0 z-30 bg-slate-900/18 backdrop-blur-[1px] sm:hidden"
+          aria-label={t('common.closeSidebar', 'Close sidebar')}
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
+      <div
+        id="session-workspace-drawer"
+        className={`
+          fixed inset-y-0 left-0 z-40 w-72 transform transition-transform duration-300 ease-in-out
+          ${isSidebarOpen ? 'translate-x-0 shadow-[0_18px_48px_rgba(15,23,42,0.18)]' : '-translate-x-full'}
+        `}
+        aria-hidden={!isSidebarOpen}
+      >
+        {isSidebarOpen ? (
+          <div className="h-full w-72">
+            <SessionList
+              onClose={() => setIsSidebarOpen(false)}
+              onSessionSelected={() => setIsSidebarOpen(false)}
+            />
+          </div>
+        ) : null}
       </div>
 
       <div className="relative flex h-full min-w-0 flex-1 flex-col bg-white/80 backdrop-blur-xl">
-        <header className="z-10 flex min-h-20 items-center justify-between border-b border-rose-100/80 bg-white/70 px-4 py-3 backdrop-blur-md">
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-              className="rounded-2xl border border-rose-100 bg-white/80 p-2 text-slate-600 transition-colors hover:bg-rose-50"
-              title={isSidebarOpen ? t('common.closeSidebar') : t('common.openSidebar')}
-            >
-              {isSidebarOpen ? <PanelLeftClose size={20} /> : <PanelLeftOpen size={20} />}
-            </button>
+        <header className="z-10 border-b border-rose-100/80 bg-white/78 px-4 py-3 backdrop-blur-md">
+          <div className="flex items-start justify-between gap-3">
             <div className="min-w-0">
-              <div className="flex items-center gap-2">
-                <h1 className="bg-gradient-to-r from-fuchsia-700 via-rose-600 to-amber-500 bg-clip-text text-lg font-semibold tracking-tight text-transparent">
-                  Prompt Switchboard
-                </h1>
-                <span className="hidden rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-[11px] font-medium uppercase tracking-[0.16em] text-emerald-700 md:inline-flex">
-                  {t('app.trust', 'Local-first')}
-                </span>
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() => setIsSidebarOpen((open) => !open)}
+                  className="rounded-2xl border border-rose-100 bg-white/85 p-2 text-slate-600 transition-colors hover:bg-rose-50"
+                  title={isSidebarOpen ? t('common.closeSidebar') : t('common.openSidebar')}
+                  aria-label={isSidebarOpen ? t('common.closeSidebar') : t('common.openSidebar')}
+                  aria-expanded={isSidebarOpen}
+                  aria-controls="session-workspace-drawer"
+                >
+                  {isSidebarOpen ? <PanelLeftClose size={20} /> : <PanelLeftOpen size={20} />}
+                </button>
+                <div className="min-w-0">
+                  <div className="flex items-center gap-2">
+                    <h1 className="bg-gradient-to-r from-fuchsia-700 via-rose-600 to-amber-500 bg-clip-text text-lg font-semibold tracking-tight text-transparent">
+                      Prompt Switchboard
+                    </h1>
+                    <span className="inline-flex rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-[11px] font-medium uppercase tracking-[0.16em] text-emerald-700">
+                      {t('app.trust', 'Local-first')}
+                    </span>
+                  </div>
+                  <p className="mt-1 text-sm text-slate-500">
+                    {t(
+                      'app.subtitle',
+                      'Ask once, compare multiple AI chats side by side from one browser workspace.'
+                    )}
+                  </p>
+                </div>
               </div>
-              <p className="hidden text-sm text-slate-500 md:block">
-                {t(
-                  'app.subtitle',
-                  'Ask once, compare multiple AI chats side by side from one browser workspace.'
-                )}
-              </p>
             </div>
-            <div className="hidden rounded-full border border-rose-100 bg-white/80 p-1 shadow-sm md:flex">
+
+            <div className="flex shrink-0 items-center gap-2">
+              <div className="hidden rounded-full border border-rose-100 bg-white/85 p-1 shadow-sm sm:flex">
+                <button
+                  type="button"
+                  onClick={() => setViewMode('compare')}
+                  className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
+                    viewMode === 'compare'
+                      ? 'bg-gradient-to-r from-fuchsia-600 to-rose-500 text-white shadow-sm'
+                      : 'text-slate-500 hover:text-slate-800'
+                  }`}
+                >
+                  {t('compare.view.compare', 'Compare')}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setViewMode('transcript')}
+                  className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
+                    viewMode === 'transcript'
+                      ? 'bg-gradient-to-r from-fuchsia-600 to-rose-500 text-white shadow-sm'
+                      : 'text-slate-500 hover:text-slate-800'
+                  }`}
+                >
+                  {t('compare.view.transcript', 'Transcript')}
+                </button>
+              </div>
               <button
-                type="button"
-                onClick={() => setViewMode('compare')}
-                className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
-                  viewMode === 'compare'
-                    ? 'bg-gradient-to-r from-fuchsia-600 to-rose-500 text-white shadow-sm'
-                    : 'text-slate-500 hover:text-slate-800'
-                }`}
+                onClick={() => {
+                  getModelOpenUrls().forEach((url) => window.open(url, '_blank'));
+                }}
+                className="inline-flex items-center gap-2 rounded-2xl border border-rose-100 bg-white/90 px-3 py-2 text-xs font-medium text-slate-700 transition-colors hover:bg-rose-50"
+                title={t('app.openAllTitle', 'Open supported AI tabs')}
               >
-                {t('compare.view.compare', 'Compare')}
+                <ShieldCheck size={14} />
+                <span className="hidden sm:inline">{t('app.openAll', 'Open model tabs')}</span>
+                <span className="sm:hidden">{t('app.openAllShort', 'Open')}</span>
               </button>
               <button
-                type="button"
-                onClick={() => setViewMode('transcript')}
-                className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
-                  viewMode === 'transcript'
-                    ? 'bg-gradient-to-r from-fuchsia-600 to-rose-500 text-white shadow-sm'
-                    : 'text-slate-500 hover:text-slate-800'
-                }`}
+                onClick={() => setShowSettings(true)}
+                className="rounded-2xl border border-rose-100 bg-white/90 p-2 text-slate-600 transition-colors hover:bg-rose-50"
+                title={t('settings.title')}
+                aria-label={t('settings.title')}
               >
-                {t('compare.view.transcript', 'Transcript')}
+                <Settings size={20} />
               </button>
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
-            <div className="hidden items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-3 py-1.5 text-xs font-medium text-amber-700 md:flex">
-              <Sparkles size={14} />
-              <span>
-                {currentPromptCount}{' '}
-                {currentPromptCount === 1
-                  ? t('app.turnSingular', 'comparison')
-                  : t('app.turnPlural', 'comparisons')}
-              </span>
+          <div className="mt-3 rounded-[1.6rem] border border-rose-100/80 bg-white/78 px-3 py-3 shadow-sm">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <div className="min-w-0">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-fuchsia-600">
+                  {t('app.modelRail', 'Model rail')}
+                </p>
+                <p className="mt-1 text-sm text-slate-500">
+                  {t(
+                    'app.modelRailHint',
+                    'Choose the sites you want in this compare run, then review the result board before taking the next step.'
+                  )}
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-3 py-1.5 text-xs font-medium text-amber-700">
+                  <Sparkles size={14} />
+                  <span>
+                    {currentPromptCount}{' '}
+                    {currentPromptCount === 1
+                      ? t('app.turnSingular', 'comparison')
+                      : t('app.turnPlural', 'comparisons')}
+                  </span>
+                </div>
+                <div className="flex rounded-full border border-rose-100 bg-white/85 p-1 shadow-sm sm:hidden">
+                  <button
+                    type="button"
+                    onClick={() => setViewMode('compare')}
+                    className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
+                      viewMode === 'compare'
+                        ? 'bg-gradient-to-r from-fuchsia-600 to-rose-500 text-white shadow-sm'
+                        : 'text-slate-500 hover:text-slate-800'
+                    }`}
+                  >
+                    {t('compare.view.compare', 'Compare')}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setViewMode('transcript')}
+                    className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
+                      viewMode === 'transcript'
+                        ? 'bg-gradient-to-r from-fuchsia-600 to-rose-500 text-white shadow-sm'
+                        : 'text-slate-500 hover:text-slate-800'
+                    }`}
+                  >
+                    {t('compare.view.transcript', 'Transcript')}
+                  </button>
+                </div>
+              </div>
             </div>
-            <button
-              onClick={() => {
-                getModelOpenUrls().forEach((url) => window.open(url, '_blank'));
-              }}
-              className="inline-flex items-center gap-2 rounded-2xl border border-rose-100 bg-white/90 px-3 py-2 text-xs font-medium text-slate-700 transition-colors hover:bg-rose-50"
-              title={t('app.openAllTitle', 'Open supported AI tabs')}
-            >
-              <ShieldCheck size={14} />
-              <span className="hidden md:inline">{t('app.openAll', 'Open model tabs')}</span>
-              <span className="md:hidden">{t('app.openAllShort', 'Open')}</span>
-            </button>
-            <ModelSelector />
-            <button
-              onClick={() => setShowSettings(true)}
-              className="rounded-2xl border border-rose-100 bg-white/90 p-2 text-slate-600 transition-colors hover:bg-rose-50"
-              title={t('settings.title')}
-              aria-label={t('settings.title')}
-            >
-              <Settings size={20} />
-            </button>
+
+            <div className="mt-3">
+              <ModelSelector />
+            </div>
           </div>
         </header>
 
         <ReadinessPanel models={selectedModels} onOpenSettings={() => setShowSettings(true)} />
 
-        <div className="relative flex-1 overflow-hidden">
+        <main
+          id="compare-main-content"
+          tabIndex={-1}
+          className="relative flex-1 overflow-hidden focus:outline-none"
+        >
           {viewMode === 'compare' ? (
             <CompareView messages={currentMessages} />
           ) : (
             <VirtualizedMessageList messages={currentMessages} />
           )}
-        </div>
+        </main>
 
         <div className="border-t border-rose-100/80 bg-white/75 p-4 backdrop-blur-sm">
           <InputArea />

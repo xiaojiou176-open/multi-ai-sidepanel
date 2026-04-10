@@ -186,12 +186,13 @@ describe('App', () => {
   it('toggles sidebar visibility', () => {
     const { getByTitle, container } = render(<App />);
 
-    const toggle = getByTitle('common.closeSidebar');
+    const toggle = getByTitle('common.openSidebar');
     const sidebar = container.querySelector('div.fixed');
-    expect(sidebar?.className).toContain('translate-x-0');
+    expect(sidebar?.className).toContain('-translate-x-full');
 
     fireEvent.click(toggle);
-    expect(sidebar?.className).toContain('-translate-x-full');
+    expect(sidebar?.className).toContain('translate-x-0');
+    expect(getByTitle('common.closeSidebar')).toBeInTheDocument();
   });
 
   it('does not crash when chrome runtime is unavailable', () => {
@@ -390,15 +391,15 @@ describe('App', () => {
   });
 
   it('renders compare view by default and switches back to transcript', () => {
-    const { getByText, getByTestId, queryByTestId } = render(<App />);
+    const { getAllByText, getByTestId, queryByTestId } = render(<App />);
 
     expect(getByTestId('compare-view')).toBeInTheDocument();
     expect(queryByTestId('message-list')).toBeNull();
 
-    fireEvent.click(getByText('Transcript'));
+    fireEvent.click(getAllByText('Transcript')[0]!);
     expect(getByTestId('message-list')).toBeInTheDocument();
 
-    fireEvent.click(getByText('Compare'));
+    fireEvent.click(getAllByText('Compare')[0]!);
     expect(getByTestId('compare-view')).toBeInTheDocument();
   });
 
