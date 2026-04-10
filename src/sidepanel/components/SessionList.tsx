@@ -9,10 +9,11 @@ import { ConfirmDialog } from './ConfirmDialog';
 import { StorageService } from '../../services/storage';
 
 interface SessionListProps {
+  onClose?: () => void;
   onSessionSelected?: () => void;
 }
 
-export const SessionList = React.memo(({ onSessionSelected }: SessionListProps) => {
+export const SessionList = React.memo(({ onClose, onSessionSelected }: SessionListProps) => {
   const { t } = useTranslation();
   const sessions = useStore((state) => state.sessions);
   const currentSessionId = useStore((state) => state.currentSessionId);
@@ -100,19 +101,32 @@ export const SessionList = React.memo(({ onSessionSelected }: SessionListProps) 
       className="flex h-full w-72 flex-col border-r border-rose-100 bg-[linear-gradient(180deg,_rgba(255,248,252,0.96),_rgba(255,255,255,0.96))]"
     >
       <div className="space-y-4 border-b border-rose-100 p-4">
-        <div className="space-y-1">
-          <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-fuchsia-600">
-            {t('session.workspace', 'Workspace')}
-          </p>
-          <h2 className="text-lg font-semibold tracking-tight text-slate-900">
-            {t('session.heading', 'Recent comparisons')}
-          </h2>
-          <p className="text-sm leading-6 text-slate-500">
-            {t(
-              'session.subtitle',
-              'Keep every compare run, switch contexts fast, and reopen the tabs you already trust.'
-            )}
-          </p>
+        <div className="flex items-start justify-between gap-3">
+          <div className="space-y-1">
+            <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-fuchsia-600">
+              {t('session.workspace', 'Workspace')}
+            </p>
+            <h2 className="text-lg font-semibold tracking-tight text-slate-900">
+              {t('session.heading', 'Recent comparisons')}
+            </h2>
+            <p className="text-sm leading-6 text-slate-500">
+              {t(
+                'session.subtitle',
+                'Keep every compare run, switch contexts fast, and reopen the tabs you already trust.'
+              )}
+            </p>
+          </div>
+          {onClose ? (
+            <button
+              type="button"
+              onClick={onClose}
+              className="rounded-xl border border-rose-100 bg-white/90 p-2 text-slate-500 transition-colors hover:bg-rose-50 hover:text-slate-700"
+              aria-label={t('common.closeSidebar', 'Close sidebar')}
+              title={t('common.closeSidebar', 'Close sidebar')}
+            >
+              <X size={16} />
+            </button>
+          ) : null}
         </div>
 
         <button

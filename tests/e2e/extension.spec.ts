@@ -128,6 +128,35 @@ test('sidepanel renders and handles core flow', async ({ browserName: _browserNa
   fs.mkdirSync(path.dirname(extensionIdCachePath), { recursive: true });
   fs.writeFileSync(extensionIdCachePath, extensionId, 'utf8');
   const extensionPrefix = `chrome-extension://${extensionId}`;
+  const setSessionDrawerOpen = async (nextOpen: boolean) => {
+    if (nextOpen) {
+      const sessionDrawerToggle = page!.locator('[aria-controls="session-workspace-drawer"]');
+      await expect(sessionDrawerToggle).toBeVisible();
+      if ((await sessionDrawerToggle.getAttribute('aria-expanded')) !== 'true') {
+        await sessionDrawerToggle.click();
+      }
+      return;
+    }
+
+    const sessionDrawer = page!.locator('#session-workspace-drawer');
+    const drawerCloseButton = sessionDrawer.getByRole('button', {
+      name: /关闭侧边栏|Close sidebar/i,
+    });
+    if (await drawerCloseButton.isVisible().catch(() => false)) {
+      await drawerCloseButton.click();
+      return;
+    }
+
+    const sessionDrawerToggle = page!.locator('[aria-controls="session-workspace-drawer"]');
+    await expect(sessionDrawerToggle).toBeVisible();
+    if ((await sessionDrawerToggle.getAttribute('aria-expanded')) === 'true') {
+      await sessionDrawerToggle.click();
+    }
+  };
+  const openSessionDrawer = async () => {
+    await setSessionDrawerOpen(true);
+    return page!.locator('#session-workspace-drawer');
+  };
 
   page = await context.newPage();
   await page.goto(`${extensionPrefix}/index.html`);
@@ -143,38 +172,43 @@ test('sidepanel renders and handles core flow', async ({ browserName: _browserNa
   );
   await promptInput.fill('');
 
+  const sessionDrawer = await openSessionDrawer();
+
   // Create a new session and verify list grows
-  const newSessionButton = page.getByRole('button', { name: /新会话|New/i });
-  const sessionTitle = page.getByText('New Chat', { exact: true });
+  const newSessionButton = sessionDrawer.getByRole('button', { name: /新会话|New/i });
+  await expect(newSessionButton).toBeVisible();
+  const sessionTitle = sessionDrawer.getByText('New Chat', { exact: true });
   const beforeCount = await sessionTitle.count();
   await newSessionButton.click();
   await expect(sessionTitle).toHaveCount(beforeCount + 1);
 
   // Search filter should show empty state when no match
-  const searchInput = page.getByPlaceholder(/搜索会话|Search/i);
+  const searchInput = sessionDrawer.getByPlaceholder(/搜索会话|Search/i);
   await searchInput.fill('non-existent-session');
-  await expect(page.getByText(/未找到匹配的会话|No chats found/i)).toBeVisible();
+  await expect(sessionDrawer.getByText(/未找到匹配的会话|No chats found/i)).toBeVisible();
   await searchInput.fill('');
+  await setSessionDrawerOpen(false);
 
   // Toggle an extra model (no send to avoid spawning external tabs)
   await page.getByRole('button', { name: 'Gemini', exact: true }).click();
 
   // Rename a session via double click + save
-  await page
+  const reopenedSessionDrawer = await openSessionDrawer();
+  await reopenedSessionDrawer
     .getByTitle(/重命名|Rename/i)
     .first()
     .click();
-  const editInput = page.getByRole('textbox', { name: /重命名|Rename/i });
+  const editInput = reopenedSessionDrawer.getByRole('textbox', { name: /重命名|Rename/i });
   await editInput.fill('Renamed Chat');
   await editInput.press('Enter');
-  await expect(page.getByText('Renamed Chat', { exact: true })).toBeVisible();
+  await expect(reopenedSessionDrawer.getByText('Renamed Chat', { exact: true })).toBeVisible();
 
   // Delete a session and confirm
-  await page
+  await reopenedSessionDrawer
     .getByTitle(/删除会话|Delete/i)
     .first()
     .click();
-  await page.getByRole('button', { name: /确认|Confirm/i }).click();
+  await reopenedSessionDrawer.getByRole('button', { name: /确认|Confirm/i }).click();
 
   // Open options page to validate data management paths
   const settingsPagePromise = context.waitForEvent('page');
@@ -289,8 +323,9 @@ test('sidepanel renders and handles core flow', async ({ browserName: _browserNa
     })
   );
   await page.reload();
-  await expect(page.getByText('Legacy', { exact: true })).toBeVisible();
-  await expect(page.getByTestId('session-legacy-models')).toBeVisible();
+  const reloadedSessionDrawer = await openSessionDrawer();
+  await expect(reloadedSessionDrawer.getByText('Legacy', { exact: true })).toBeVisible();
+  await expect(reloadedSessionDrawer.getByTestId('session-legacy-models')).toBeVisible();
 
   // Simulate service worker restart by recreating context
   await page.close();

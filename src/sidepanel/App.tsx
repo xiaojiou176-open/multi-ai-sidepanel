@@ -158,6 +158,7 @@ function App() {
       )}
 
       <div
+        id="session-workspace-drawer"
         className={`
           fixed inset-y-0 left-0 z-40 w-72 transform transition-transform duration-300 ease-in-out
           ${isSidebarOpen ? 'translate-x-0 shadow-[0_18px_48px_rgba(15,23,42,0.18)]' : '-translate-x-full'}
@@ -166,7 +167,10 @@ function App() {
       >
         {isSidebarOpen ? (
           <div className="h-full w-72">
-            <SessionList onSessionSelected={() => setIsSidebarOpen(false)} />
+            <SessionList
+              onClose={() => setIsSidebarOpen(false)}
+              onSessionSelected={() => setIsSidebarOpen(false)}
+            />
           </div>
         ) : null}
       </div>
