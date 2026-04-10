@@ -8,7 +8,11 @@ import { useDebouncedValue } from '../hooks/useDebouncedValue';
 import { ConfirmDialog } from './ConfirmDialog';
 import { StorageService } from '../../services/storage';
 
-export const SessionList = React.memo(() => {
+interface SessionListProps {
+  onSessionSelected?: () => void;
+}
+
+export const SessionList = React.memo(({ onSessionSelected }: SessionListProps) => {
   const { t } = useTranslation();
   const sessions = useStore((state) => state.sessions);
   const currentSessionId = useStore((state) => state.currentSessionId);
@@ -91,7 +95,10 @@ export const SessionList = React.memo(() => {
   }, [sortedSessions, debouncedSearch]);
 
   return (
-    <div className="flex h-full w-72 flex-col border-r border-rose-100 bg-[linear-gradient(180deg,_rgba(255,248,252,0.96),_rgba(255,255,255,0.96))]">
+    <div
+      id="session-workspace-drawer"
+      className="flex h-full w-72 flex-col border-r border-rose-100 bg-[linear-gradient(180deg,_rgba(255,248,252,0.96),_rgba(255,255,255,0.96))]"
+    >
       <div className="space-y-4 border-b border-rose-100 p-4">
         <div className="space-y-1">
           <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-fuchsia-600">
@@ -156,7 +163,11 @@ export const SessionList = React.memo(() => {
               return (
                 <div
                   key={session.id}
-                  onClick={() => !isEditing && switchSession(session.id)}
+                  onClick={() => {
+                    if (isEditing) return;
+                    switchSession(session.id);
+                    onSessionSelected?.();
+                  }}
                   onDoubleClick={() => {
                     if (!isEditing && settings.doubleClickToEdit) {
                       handleStartEdit(session);
