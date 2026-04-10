@@ -132,6 +132,21 @@ export const ReadinessPanel: React.FC<ReadinessPanelProps> = ({ models, onOpenSe
     .filter(
       (entry): entry is { model: ModelName; report: ModelReadinessReport } => Boolean(entry.report?.ready === false)
     );
+  const readyCount = models.filter((model) => modelReadiness[model]?.ready).length;
+  const loadingCount = models.filter(
+    (model) => modelReadiness[model]?.status === READINESS_STATUSES.TAB_LOADING
+  ).length;
+  const checkingCount = models.filter((model) => !modelReadiness[model]).length;
+  const blockedCount = attentionReports.filter(
+    ({ report }) => report.status !== READINESS_STATUSES.TAB_LOADING
+  ).length;
+  const modelsToOpen = attentionReports
+    .filter(
+      ({ report }) =>
+        report.status === READINESS_STATUSES.TAB_MISSING ||
+        report.status === READINESS_STATUSES.MODEL_MISMATCH
+    )
+    .map(({ model }) => model);
 
   const hasBlockingIssue = models.some((model) => {
     const report = modelReadiness[model];
@@ -203,6 +218,137 @@ export const ReadinessPanel: React.FC<ReadinessPanelProps> = ({ models, onOpenSe
             </div>
           );
         })}
+      </div>
+
+      <div className="mt-4 grid gap-3 xl:grid-cols-[minmax(0,1.35fr)_repeat(3,minmax(0,1fr))]">
+        <div
+          className={`rounded-[1.45rem] border px-4 py-3 shadow-sm ${
+            hasBlockingIssue
+              ? 'border-rose-200 bg-rose-50/75'
+              : 'border-emerald-200 bg-emerald-50/75'
+          }`}
+        >
+          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">
+            {t('readiness.workspacePulse.eyebrow', 'Readiness pulse')}
+          </p>
+          <p className="mt-2 text-sm font-semibold text-slate-900">
+            {hasBlockingIssue
+              ? t('readiness.workspacePulse.blockedTitle', 'Repair first, then compare')
+              : t('readiness.workspacePulse.readyTitle', 'Good enough to start a clean compare')}
+          </p>
+          <p className="mt-2 text-sm leading-6 text-slate-600">
+            {hasBlockingIssue
+              ? t(
+                  'readiness.workspacePulse.blockedBody',
+                  'Use this panel like a pre-flight checklist: unblock the broken tabs here so the result board and analyst lane do not start from missing answers.'
+                )
+              : t(
+                  'readiness.workspacePulse.readyBody',
+                  'At least one selected tab is usable. Ask once, then come back only if the result board exposes a real failure.'
+                )}
+          </p>
+        </div>
+
+        <div className="rounded-[1.45rem] border border-slate-200 bg-white/90 px-4 py-3 shadow-sm">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">
+            {t('readiness.workspacePulse.readyEyebrow', 'Ready now')}
+          </p>
+          <p className="mt-2 text-2xl font-semibold text-slate-900">{readyCount}</p>
+          <p className="mt-1 text-sm text-slate-600">
+            {t(
+              'readiness.workspacePulse.readyBodyCompact',
+              'These tabs can participate in the next compare turn right away.'
+            )}
+          </p>
+        </div>
+
+        <div className="rounded-[1.45rem] border border-slate-200 bg-white/90 px-4 py-3 shadow-sm">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">
+            {t('readiness.workspacePulse.blockedEyebrow', 'Needs repair')}
+          </p>
+          <p className="mt-2 text-2xl font-semibold text-slate-900">{blockedCount}</p>
+          <p className="mt-1 text-sm text-slate-600">
+            {t(
+              'readiness.workspacePulse.blockedBodyCompact',
+              'Fix these before you trust analyst recommendations or workflow staging.'
+            )}
+          </p>
+        </div>
+
+        <div className="rounded-[1.45rem] border border-slate-200 bg-white/90 px-4 py-3 shadow-sm">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">
+            {t('readiness.workspacePulse.pendingEyebrow', 'Still settling')}
+          </p>
+          <p className="mt-2 text-2xl font-semibold text-slate-900">
+            {loadingCount + checkingCount}
+          </p>
+          <p className="mt-1 text-sm text-slate-600">
+            {t(
+              'readiness.workspacePulse.pendingBodyCompact',
+              'These tabs are loading or still being checked, so re-run readiness after the pages settle.'
+            )}
+          </p>
+        </div>
+      </div>
+
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-[1.45rem] border border-slate-200 bg-white/85 px-4 py-3 shadow-sm">
+        <div className="min-w-0">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-fuchsia-600">
+            {t('readiness.nextMove.eyebrow', 'Best next move')}
+          </p>
+          <p className="mt-1 text-sm font-semibold text-slate-900">
+            {hasBlockingIssue
+              ? t('readiness.nextMove.blockedTitle', 'Use the repair center before the next compare')
+              : t('readiness.nextMove.readyTitle', 'You can switch back to the result board and ask once')}
+          </p>
+          <p className="mt-1 text-sm text-slate-600">
+            {hasBlockingIssue
+              ? t(
+                  'readiness.nextMove.blockedBody',
+                  'This keeps the compare board readable and stops the analyst lane from overreacting to avoidable missing tabs.'
+                )
+              : t(
+                  'readiness.nextMove.readyBody',
+                  'Readiness has done its job. The next useful signal should come from a real compare run, not from repeatedly refreshing this panel.'
+                )}
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {modelsToOpen.length > 0 && (
+            <button
+              type="button"
+              className="inline-flex items-center gap-2 rounded-full border border-rose-100 bg-rose-50/80 px-3 py-2 text-xs font-medium text-rose-800 transition-colors hover:bg-rose-100"
+              onClick={() => {
+                modelsToOpen.forEach((model) =>
+                  window.open(getModelConfig(model).openUrl, '_blank', 'noopener,noreferrer')
+                );
+              }}
+            >
+              <ArrowUpRight size={13} />
+              <span>{t('readiness.nextMove.openBlocked', 'Open blocked tabs')}</span>
+            </button>
+          )}
+          <button
+            type="button"
+            className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-2 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-50"
+            onClick={() => {
+              void refreshModelReadiness(models);
+            }}
+          >
+            <RefreshCcw size={13} className={isCheckingReadiness ? 'animate-spin' : ''} />
+            <span>{t('readiness.nextMove.recheckAll', 'Re-check selected models')}</span>
+          </button>
+          {onOpenSettings && (
+            <button
+              type="button"
+              className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-2 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-50"
+              onClick={onOpenSettings}
+            >
+              <Settings2 size={13} />
+              <span>{t('readiness.nextMove.modelHealth', 'Open model health overview')}</span>
+            </button>
+          )}
+        </div>
       </div>
 
       {attentionReports.length > 0 && (

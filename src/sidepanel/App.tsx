@@ -36,6 +36,7 @@ function App() {
   const createNewSession = useStore((state) => state.createNewSession);
   const importSessions = useStore((state) => state.importSessions);
   const selectedModels = useStore((state) => state.selectedModels);
+  const modelReadiness = useStore((state) => state.modelReadiness);
   const refreshModelReadiness = useStore((state) => state.refreshModelReadiness);
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -53,6 +54,87 @@ function App() {
     () => currentMessages.filter((message) => message.role === MESSAGE_ROLES.USER).length,
     [currentMessages]
   );
+  const readinessSummary = useMemo(
+    () =>
+      selectedModels.reduce(
+        (summary, model) => {
+          const report = modelReadiness[model];
+          if (!report) {
+            summary.checkingCount += 1;
+            return summary;
+          }
+
+          if (report.ready) {
+            summary.readyCount += 1;
+            return summary;
+          }
+
+          if (report.status === 'tab_loading') {
+            summary.loadingCount += 1;
+            return summary;
+          }
+
+          summary.blockedCount += 1;
+          return summary;
+        },
+        {
+          readyCount: 0,
+          loadingCount: 0,
+          blockedCount: 0,
+          checkingCount: 0,
+        }
+      ),
+    [modelReadiness, selectedModels]
+  );
+  const workspacePulse = useMemo(() => {
+    if (selectedModels.length === 0) {
+      return {
+        tone: 'border-slate-200 bg-slate-50/85 text-slate-700',
+        label: t('app.workspacePulse.selectModelsLabel', 'Select the compare lane'),
+        body: t(
+          'app.workspacePulse.selectModelsBody',
+          'Pick the tabs you want in this run first, then let readiness decide whether you should compare now or repair first.'
+        ),
+      };
+    }
+
+    if (readinessSummary.blockedCount > 0) {
+      return {
+        tone: 'border-rose-200 bg-rose-50/85 text-rose-800',
+        label: t('app.workspacePulse.repairLabel', 'Repair before you ask'),
+        body: t(
+          'app.workspacePulse.repairBody',
+          'Some selected tabs still need attention. Fix the blocked models first so the result board stays analyst-ready instead of half-empty.'
+        ),
+      };
+    }
+
+    if (readinessSummary.readyCount > 0) {
+      return {
+        tone: 'border-emerald-200 bg-emerald-50/85 text-emerald-800',
+        label: t('app.workspacePulse.compareLabel', 'Compare lane is ready'),
+        body:
+          currentPromptCount > 0
+            ? t(
+                'app.workspacePulse.reviewBody',
+                'Your compare workspace already has completed turns. Review the result board first, then use the analyst or workflow lane only for the next move.'
+              )
+            : t(
+                'app.workspacePulse.compareBody',
+                'At least one selected tab is ready. Ask once from the composer, then use the result board to decide whether to retry, export, or stage a follow-up.'
+              ),
+      };
+    }
+
+    return {
+      tone: 'border-amber-200 bg-amber-50/85 text-amber-800',
+      label: t('app.workspacePulse.waitLabel', 'Readiness is still settling'),
+      body: t(
+        'app.workspacePulse.waitBody',
+        'Prompt Switchboard is still checking or waiting for model tabs to finish loading. Re-check once the pages settle.'
+      ),
+    };
+  }, [currentPromptCount, readinessSummary, selectedModels.length, t]);
 
   useEffect(() => {
     loadSessions();
@@ -308,6 +390,86 @@ function App() {
 
             <div className="mt-3">
               <ModelSelector />
+            </div>
+
+            <div className="mt-3 grid gap-3 lg:grid-cols-[minmax(0,1.4fr)_repeat(3,minmax(0,1fr))]">
+              <div className={`rounded-[1.45rem] border px-4 py-3 shadow-sm ${workspacePulse.tone}`}>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.16em]">
+                  {t('app.workspacePulse.eyebrow', 'Workspace pulse')}
+                </p>
+                <p className="mt-2 text-sm font-semibold">{workspacePulse.label}</p>
+                <p className="mt-2 text-sm leading-6 text-current/80">{workspacePulse.body}</p>
+              </div>
+
+              <div className="rounded-[1.45rem] border border-slate-200 bg-white/90 px-4 py-3 shadow-sm">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">
+                  {t('app.workspacePulse.selectedEyebrow', 'Selected tabs')}
+                </p>
+                <p className="mt-2 text-2xl font-semibold text-slate-900">{selectedModels.length}</p>
+                <p className="mt-1 text-sm text-slate-600">
+                  {selectedModels.length > 0
+                    ? t(
+                        'app.workspacePulse.selectedBody',
+                        'Keep this set tight so the compare board stays readable and the analyst lane has a clear target.'
+                      )
+                    : t(
+                        'app.workspacePulse.selectedEmpty',
+                        'Choose at least one model to start the compare lane.'
+                      )}
+                </p>
+              </div>
+
+              <div className="rounded-[1.45rem] border border-slate-200 bg-white/90 px-4 py-3 shadow-sm">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">
+                  {t('app.workspacePulse.readinessEyebrow', 'Ready now')}
+                </p>
+                <p className="mt-2 text-2xl font-semibold text-slate-900">{readinessSummary.readyCount}</p>
+                <p className="mt-1 text-sm text-slate-600">
+                  {readinessSummary.blockedCount > 0
+                    ? t(
+                        'app.workspacePulse.readinessBodyBlocked',
+                        '{{count}} blocked model still needs repair before you trust the analyst lane.',
+                        { count: readinessSummary.blockedCount }
+                      )
+                    : t(
+                        'app.workspacePulse.readinessBody',
+                        '{{count}} loading or checking model is still settling in the background.',
+                        {
+                          count:
+                            readinessSummary.loadingCount + readinessSummary.checkingCount,
+                        }
+                      )}
+                </p>
+              </div>
+
+              <div className="rounded-[1.45rem] border border-slate-200 bg-white/90 px-4 py-3 shadow-sm">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">
+                  {t('app.workspacePulse.nextEyebrow', 'Next step')}
+                </p>
+                <p className="mt-2 text-sm font-semibold text-slate-900">
+                  {readinessSummary.blockedCount > 0
+                    ? t('app.workspacePulse.nextRepair', 'Use Repair Center')
+                    : currentPromptCount > 0
+                      ? t('app.workspacePulse.nextReview', 'Review result board')
+                      : t('app.workspacePulse.nextAsk', 'Ask once from the composer')}
+                </p>
+                <p className="mt-2 text-sm text-slate-600">
+                  {readinessSummary.blockedCount > 0
+                    ? t(
+                        'app.workspacePulse.nextRepairBody',
+                        'Fix blocked tabs first so compare and analyst flows stay balanced.'
+                      )
+                    : currentPromptCount > 0
+                      ? t(
+                          'app.workspacePulse.nextReviewBody',
+                          'Keep the answers in view, then decide whether to retry failures, export, or stage a follow-up.'
+                        )
+                      : t(
+                          'app.workspacePulse.nextAskBody',
+                          'Your first clean compare should create one readable board, not a noisy recovery session.'
+                        )}
+                </p>
+              </div>
             </div>
           </div>
         </header>

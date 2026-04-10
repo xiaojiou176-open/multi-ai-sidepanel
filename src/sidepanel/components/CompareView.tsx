@@ -630,6 +630,66 @@ export const CompareView = ({ messages }: CompareViewProps) => {
           insight,
           disagreement
         );
+        const compareDecisionLabel =
+          insight.failedCount > 0
+            ? t('compare.decisionSnapshot.recoverLabel', 'Recover failed cards first')
+            : insight.pendingCount > 0
+              ? t('compare.decisionSnapshot.waitLabel', 'Wait for the remaining cards')
+              : disagreement.recommendedAction === 'judge'
+                ? t('compare.decisionSnapshot.followUpLabel', 'Stage a tighter follow-up compare')
+                : t(
+                    'compare.decisionSnapshot.exportLabel',
+                    'Choose the strongest answer, then export or continue'
+                  );
+        const compareDecisionBody =
+          insight.failedCount > 0
+            ? t(
+                'compare.decisionSnapshot.recoverBody',
+                'This turn already has useful signal, but it is not analyst-ready until the failed cards are retried or intentionally left behind.'
+              )
+            : insight.pendingCount > 0
+              ? t(
+                  'compare.decisionSnapshot.waitBody',
+                  'Keep the board stable until every important model has answered. Premature analyst work tends to amplify timing noise.'
+                )
+              : disagreement.recommendedAction === 'judge'
+                ? t(
+                    'compare.decisionSnapshot.followUpBody',
+                    'The answers are complete enough to compare, but not close enough to stop. Use workflow or analyst guidance to shape the next question.'
+                  )
+                : t(
+                    'compare.decisionSnapshot.exportBody',
+                    'This board already has enough signal to pick a best-fit answer, continue in the original tab, or carry a readable export outside the side panel.'
+                  );
+        const analystSnapshotLabel =
+          analysisState?.status === 'success'
+            ? t('compare.decisionSnapshot.analystReady', 'Analyst guidance is ready')
+            : t('compare.decisionSnapshot.analystPending', 'Analyst lane stays optional');
+        const analystSnapshotBody =
+          analysisState?.status === 'success'
+            ? t(
+                'compare.decisionSnapshot.analystReadyBody',
+                'Use the analyst lane to summarize consensus and disagreement only after the result board already looks worth reading.'
+              )
+            : t(
+                'compare.decisionSnapshot.analystPendingBody',
+                'You do not need AI commentary to decide the first next move. The result board and workflow lane should stay understandable on their own.'
+              );
+        const workflowSnapshotLabel =
+          workflowState?.status === 'runnable' || insight.completeCount >= 2
+            ? t('compare.decisionSnapshot.workflowReady', 'Workflow seed can be staged')
+            : t('compare.decisionSnapshot.workflowWaiting', 'Workflow seed still needs more signal');
+        const workflowSnapshotBody =
+          workflowState?.status === 'runnable' || insight.completeCount >= 2
+            ? workflowState?.nextActionSummary ??
+              t(
+                'compare.decisionSnapshot.workflowReadyBody',
+                'You already have enough completed answers to stage the next compare instead of manually copying context across cards.'
+              )
+            : t(
+                'compare.decisionSnapshot.workflowWaitingBody',
+                'Finish at least two usable answers before the staged next-step lane becomes more trustworthy than manual guessing.'
+              );
 
         return (
           <section
@@ -745,6 +805,32 @@ export const CompareView = ({ messages }: CompareViewProps) => {
                 <span className="rounded-full border border-white/90 bg-white px-3 py-1.5 text-[11px] font-medium text-slate-600">
                   {t('compare.results.targets', 'Current targets')}: {requestedModels.join(', ')}
                 </span>
+              </div>
+            </div>
+
+            <div className="px-4 pb-4">
+              <div className="grid gap-3 xl:grid-cols-3">
+                <div className="rounded-[1.45rem] border border-slate-200 bg-white/90 px-4 py-4 shadow-sm">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-fuchsia-600">
+                    {t('compare.decisionSnapshot.boardEyebrow', 'Board health')}
+                  </p>
+                  <p className="mt-2 text-sm font-semibold text-slate-900">{compareDecisionLabel}</p>
+                  <p className="mt-2 text-sm leading-6 text-slate-600">{compareDecisionBody}</p>
+                </div>
+                <div className="rounded-[1.45rem] border border-slate-200 bg-white/90 px-4 py-4 shadow-sm">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-fuchsia-600">
+                    {t('compare.decisionSnapshot.analystEyebrow', 'Analyst balance')}
+                  </p>
+                  <p className="mt-2 text-sm font-semibold text-slate-900">{analystSnapshotLabel}</p>
+                  <p className="mt-2 text-sm leading-6 text-slate-600">{analystSnapshotBody}</p>
+                </div>
+                <div className="rounded-[1.45rem] border border-slate-200 bg-white/90 px-4 py-4 shadow-sm">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-fuchsia-600">
+                    {t('compare.decisionSnapshot.nextEyebrow', 'Staged next move')}
+                  </p>
+                  <p className="mt-2 text-sm font-semibold text-slate-900">{workflowSnapshotLabel}</p>
+                  <p className="mt-2 text-sm leading-6 text-slate-600">{workflowSnapshotBody}</p>
+                </div>
               </div>
             </div>
 
