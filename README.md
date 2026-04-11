@@ -29,9 +29,11 @@ The shortest way to evaluate Prompt Switchboard is simple: install the latest pa
 | Product install | **GitHub Release zip is the supported install path today.**                                                                                                      |
 | Core product    | **Browser extension + compare-first side panel** with your existing signed-in tabs.                                                                              |
 | Builder lane    | **Local MCP sidecar** for Codex and Claude Code, plus repo-owned starter packets for OpenCode and OpenClaw, and an optional Docker wrapper for the same sidecar. |
-| Not live yet    | **Browser store, official registries, official marketplaces, and any Glama listing**.                                                                            |
+| Official registry | **The official MCP Registry already returns a live Prompt Switchboard MCP entry for the local sidecar.**                                                     |
+| Not live yet    | **Browser store, host marketplaces, and any Glama listing.**                                                                                                     |
 
 The supported install path today is the packaged GitHub Release zip. Browser-store submission materials are being kept ready, but GitHub Releases remains the supported install surface today.
+The official MCP Registry already returns a live Prompt Switchboard MCP entry for the same local sidecar install surface. That registry proof does **not** make the browser-store path live, and it does **not** mean every host marketplace is already published.
 
 The optional builder lane stays one step lower in the information hierarchy. Reach for MCP starter kits, host packets, Docker sidecar docs, and distribution truth only after the first compare path is already clear.
 
@@ -177,6 +179,8 @@ Current truthful split:
 
 - **Supported now**: Codex and Claude Code are the strongest repo-specific host
   flows.
+- **Official MCP Registry**: a live Prompt Switchboard entry already points to
+  the local sidecar install/docs surface.
 - **Packet-ready, not published**: OpenCode and OpenClaw ship repo-owned public
   packets, but this repo still does not claim official published listings for
   them.

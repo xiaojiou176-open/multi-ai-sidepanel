@@ -13,6 +13,8 @@
   "landing_og_description": "Ask once, compare ChatGPT, Gemini, Perplexity, Qwen, and Grok side by side, keep the trust boundary in your browser, and move from install to first compare without tab juggling. The governed MCP sidecar stays optional after the product path is already clear.",
   "current_install_surface": "The supported install path today is the packaged GitHub Release zip.",
   "store_ready_note": "Browser-store submission materials are being kept ready, but GitHub Releases remains the supported install surface today.",
+  "official_registry_live_note": "The official MCP Registry already returns a live Prompt Switchboard MCP entry for the same local sidecar install surface.",
+  "browser_store_public_note": "The browser-store install path is still not live today, and the public Chrome surface does not yet provide an exact Prompt Switchboard listing proof.",
   "install_guide_path": "./install.html",
   "first_compare_path": "./first-compare-guide.html",
   "supported_sites_path": "./supported-sites.html",

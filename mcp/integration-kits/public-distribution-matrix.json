@@ -80,18 +80,21 @@
   },
   "official_registry_surface": {
     "official_docs": ["https://modelcontextprotocol.io/registry"],
-    "status": "official_registry_exists_not_published",
-    "summary": "Official MCP Registry docs exist, but this repo does not yet claim a published Prompt Switchboard registry entry.",
+    "status": "official_registry_listing_live_websiteurl_backed",
+    "summary": "The official MCP Registry already returns a live Prompt Switchboard MCP entry for the same local sidecar install surface.",
     "external_publish_packet": {
-      "surface": "official_mcp_registry_submission",
-      "missing": ["registry submission", "namespace authentication", "public listing proof"],
-      "steps": [
-        "Choose the exact registry surface the repo will claim and keep it aligned with the public distribution matrix.",
-        "Complete the official namespace authentication flow for the chosen registry entry.",
-        "Submit the Prompt Switchboard listing with the same install path this repo already documents.",
-        "Verify the public registry URL, namespace proof, and one install read-back path before changing public claims."
+      "surface": "official_mcp_registry_package_upgrade",
+      "missing": [
+        "optional package-backed install artifact",
+        "optional namespace/auth work only if a package-backed upgrade is desired"
       ],
-      "verify_after": ["registry URL", "namespace proof", "install surface"]
+      "steps": [
+        "Keep the already-live registry entry aligned with the browser-first README, landing page, and local sidecar docs.",
+        "Only plan extra registry work if you want a package-backed install upgrade beyond the current websiteUrl-backed entry.",
+        "If that upgrade matters, publish the package artifact first, then complete the exact auth and namespace steps for that richer install surface.",
+        "Verify the live registry URL, listed version, and install surface before changing any broader marketplace claims."
+      ],
+      "verify_after": ["registry URL", "listed version", "install surface"]
     }
   },
   "hosts": {

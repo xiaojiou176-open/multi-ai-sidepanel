@@ -16,6 +16,7 @@ describe('front door contract', () => {
     expect(readme).toContain(metadata.tagline);
     expect(normalizedReadme).toContain(metadata.current_install_surface);
     expect(normalizedReadme).toContain(metadata.store_ready_note);
+    expect(normalizedReadme).toContain(metadata.official_registry_live_note);
     expect(readme).toContain('## Try It Now');
     expect(readme).toContain('### Good First Compare Prompts');
     expect(readme).toContain('## Why It Feels Worth Saving');
@@ -59,6 +60,7 @@ describe('front door contract', () => {
     expect(landing).toContain(metadata.landing_og_description);
     expect(normalizedLanding).toContain(metadata.current_install_surface);
     expect(normalizedLanding).toContain(metadata.store_ready_note);
+    expect(normalizedLanding).toContain(metadata.official_registry_live_note);
     expect(landing).toContain('rel="canonical"');
     expect(landing).toContain('property="og:title"');
     expect(landing).toContain('name="twitter:card"');
@@ -158,7 +160,11 @@ describe('front door contract', () => {
     expect(publicDistribution).toContain('name="twitter:card"');
     expect(publicDistribution).toContain('"@type": "TechArticle"');
     expect(normalizedPublicDistribution).toContain(metadata.current_install_surface);
-    expect(normalizedPublicDistribution).toContain('official marketplace or registry');
+    expect(normalizedPublicDistribution).toContain(metadata.official_registry_live_note);
+    expect(normalizedPublicDistribution).toContain('websiteUrl-backed entry');
+    expect(normalizedPublicDistribution).not.toContain(
+      'Any official MCP Registry publication or listing submission.'
+    );
     expect(publicDistribution).toContain('Codex');
     expect(publicDistribution).toContain('Claude Code');
     expect(publicDistribution).toContain('OpenCode');
@@ -187,6 +193,26 @@ describe('front door contract', () => {
     expect(localFirstUseCase).toContain('property="og:url"');
     expect(localFirstUseCase).toContain('"@type": "TechArticle"');
     expect(localFirstUseCase).toContain(metadata.first_compare_path);
+  });
+
+  it('keeps machine-readable distribution truth aligned with the front-door truth', () => {
+    const distributionMatrix = JSON.parse(read('mcp', 'integration-kits', 'public-distribution-matrix.json'));
+    const publicSkillsReadme = read('public-skills', 'README.md');
+
+    expect(distributionMatrix.official_registry_surface.status).toBe(
+      'official_registry_listing_live_websiteurl_backed'
+    );
+    expect(distributionMatrix.official_registry_surface.summary).toBe(
+      metadata.official_registry_live_note
+    );
+    expect(distributionMatrix.official_registry_surface.external_publish_packet.surface).toBe(
+      'official_mcp_registry_package_upgrade'
+    );
+    expect(distributionMatrix.official_registry_surface.external_publish_packet.missing).toContain(
+      'optional package-backed install artifact'
+    );
+    expect(publicSkillsReadme).toContain('repo-owned submission materials');
+    expect(publicSkillsReadme).toContain('not proof of a live OpenHands/extensions or ClawHub listing');
   });
 
   it('keeps the sitemap aligned with the current public front door pages', () => {
