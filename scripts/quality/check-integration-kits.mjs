@@ -335,6 +335,28 @@ expect(
   'Public distribution matrix must point Docker docs at docs/mcp-docker-sidecar.html.',
   findings
 );
+expectNonEmptyString(
+  frontdoorMetadata.official_registry_live_note,
+  'docs/frontdoor-metadata.json official_registry_live_note',
+  findings
+);
+expectNonEmptyString(
+  frontdoorMetadata.browser_store_public_note,
+  'docs/frontdoor-metadata.json browser_store_public_note',
+  findings
+);
+expect(
+  publicDistributionMatrix?.official_registry_surface?.status ===
+    'official_registry_listing_live_websiteurl_backed',
+  'Public distribution matrix must keep the official MCP Registry surface on the live websiteUrl-backed state.',
+  findings
+);
+expect(
+  publicDistributionMatrix?.official_registry_surface?.summary ===
+    frontdoorMetadata.official_registry_live_note,
+  'Public distribution matrix official registry summary must stay aligned with docs/frontdoor-metadata.json official_registry_live_note.',
+  findings
+);
 
 for (const field of ROOT_PACKAGE_REQUIRED_FIELDS) {
   expect(field in rootPackage, `package.json must expose ${field}.`, findings);
@@ -502,6 +524,7 @@ expect(
 const starterKitsDoc = read('docs/mcp-starter-kits.html');
 const publicDistributionDoc = read('docs/public-distribution-matrix.html');
 const hostPacketsDoc = read('docs/mcp-host-packets.html');
+const publicSkillsReadme = read('public-skills/README.md');
 if (!starterKitsDoc.includes(PATH_PLACEHOLDER)) {
   findings.push('Starter kits page must use the shared placeholder path.');
 }
@@ -529,6 +552,11 @@ for (const needle of [
   if (!publicDistributionDoc.includes(needle)) {
     findings.push(`Public distribution page must mention ${needle}.`);
   }
+}
+if (publicDistributionDoc.includes('Any official MCP Registry publication or listing submission.')) {
+  findings.push(
+    'Public distribution page must not keep the old external-only MCP Registry submission wording once the registry entry is already live.'
+  );
 }
 for (const needle of [
   'Prompt Switchboard host packets',
@@ -575,6 +603,14 @@ if (
 }
 if (!faqDoc.includes('mcp-host-packets.html')) {
   findings.push('FAQ must link to the host packets page.');
+}
+for (const needle of [
+  'repo-owned submission materials',
+  'not proof of a live OpenHands/extensions or ClawHub listing',
+]) {
+  if (!publicSkillsReadme.includes(needle)) {
+    findings.push(`public-skills/README.md must mention ${needle}.`);
+  }
 }
 
 for (const relPath of [
