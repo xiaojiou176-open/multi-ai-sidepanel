@@ -183,6 +183,10 @@ Current truthful split:
   the local sidecar install/docs surface.
 - **ClawHub**: the standalone compare-workflows skill is now publicly listed at
   `https://clawhub.ai/xiaojiou176/prompt-switchboard-compare-workflows`.
+- **awesome-opencode**: the curated project/resource entry is submitted on
+  [`awesome-opencode/awesome-opencode#276`](https://github.com/awesome-opencode/awesome-opencode/pull/276)
+  and is still review-pending; that receipt does **not** make the OpenCode
+  plugin package published.
 - **Packet-ready, not published**: OpenCode still stays on the repo-owned
   packet lane, and this repo still does not claim a broader official OpenClaw
   plugin or marketplace listing beyond the live ClawHub skill page.
