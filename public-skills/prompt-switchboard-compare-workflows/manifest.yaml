@@ -10,8 +10,9 @@ skill:
 
 registry_targets:
   clawhub:
-    status: external-readback-required
+    status: listed-live
     package_shape: skill-folder
+    live_read_back: https://clawhub.ai/xiaojiou176/prompt-switchboard-compare-workflows
     submit_via: clawhub publish . --slug prompt-switchboard-compare-workflows --name "Prompt Switchboard Compare Workflows" --version 1.1.1 --tags browser-extension,mcp,compare-first,productivity
   openhands-extensions:
     status: changes-requested
@@ -22,10 +23,10 @@ registry_targets:
 boundaries:
   product_identity: Browser-first compare workspace companion skill for the local Prompt Switchboard MCP sidecar.
   canonical_repo_version: 0.2.2
-  official_listing_state: openhands-changes-requested-only
+  official_listing_state: clawhub-live-plus-openhands-changes-requested
   not_claimed:
     - No live OpenHands/extensions listing exists yet
-    - No live ClawHub listing is claimed from this packet alone
+    - No broader official OpenClaw plugin or marketplace listing is claimed beyond the live ClawHub skill page
     - No live Official MCP Registry entry is claimed from this packet alone
     - No hosted relay or public runtime is claimed
 

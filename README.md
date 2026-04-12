@@ -181,9 +181,11 @@ Current truthful split:
   flows.
 - **Official MCP Registry**: a live Prompt Switchboard entry already points to
   the local sidecar install/docs surface.
-- **Packet-ready, not published**: OpenCode and OpenClaw ship repo-owned public
-  packets, but this repo still does not claim official published listings for
-  them.
+- **ClawHub**: the standalone compare-workflows skill is now publicly listed at
+  `https://clawhub.ai/xiaojiou176/prompt-switchboard-compare-workflows`.
+- **Packet-ready, not published**: OpenCode still stays on the repo-owned
+  packet lane, and this repo still does not claim a broader official OpenClaw
+  plugin or marketplace listing beyond the live ClawHub skill page.
 - **Still external-only**: package namespace control, browser-store
   submission, and any future marketplace or registry listing.
 
