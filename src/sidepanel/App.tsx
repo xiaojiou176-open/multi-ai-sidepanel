@@ -135,6 +135,55 @@ function App() {
       ),
     };
   }, [currentPromptCount, readinessSummary, selectedModels.length, t]);
+  const firstSuccessRail = useMemo(
+    () => [
+      {
+        step: '1',
+        title: t('app.firstSuccess.selectTitle', 'Select the tabs that belong in this compare'),
+        body: t(
+          'app.firstSuccess.selectBody',
+          'Keep the first run narrow. Pick only the models you actually want to compare before you open any analyst or workflow lane.'
+        ),
+        active: selectedModels.length === 0,
+      },
+      {
+        step: '2',
+        title: t('app.firstSuccess.readyTitle', 'Wait for one clean readiness signal'),
+        body:
+          readinessSummary.blockedCount > 0
+            ? t(
+                'app.firstSuccess.readyBlockedBody',
+                'A blocked model is still pulling the first run sideways. Repair that tab before you ask.'
+              )
+            : t(
+                'app.firstSuccess.readyBody',
+                'You only need one honest ready tab to start the first compare. Everything else can stay secondary.'
+              ),
+        active:
+          selectedModels.length > 0 &&
+          (readinessSummary.blockedCount > 0 || readinessSummary.readyCount === 0),
+      },
+      {
+        step: '3',
+        title: t('app.firstSuccess.askTitle', 'Ask once, then read the compare board'),
+        body:
+          currentPromptCount > 0
+            ? t(
+                'app.firstSuccess.reviewBody',
+                'The first answer already exists. Stay on the compare board and decide whether to retry, export, or stage a follow-up.'
+              )
+            : t(
+                'app.firstSuccess.askBody',
+                'Treat the first prompt like a calibration run. Get one readable answer board before you touch the workflow lane.'
+              ),
+        active:
+          selectedModels.length > 0 &&
+          readinessSummary.readyCount > 0 &&
+          readinessSummary.blockedCount === 0,
+      },
+    ],
+    [currentPromptCount, readinessSummary.blockedCount, readinessSummary.readyCount, selectedModels.length, t]
+  );
 
   useEffect(() => {
     loadSessions();
@@ -473,6 +522,59 @@ function App() {
             </div>
           </div>
         </header>
+
+        <section className="px-4 pb-4">
+          <div className="rounded-[1.6rem] border border-slate-200 bg-white/90 px-4 py-4 shadow-sm">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">
+                  {t('app.firstSuccess.eyebrow', 'First compare path')}
+                </p>
+                <p className="mt-2 text-sm font-semibold text-slate-900">
+                  {t(
+                    'app.firstSuccess.title',
+                    'Keep the first success path small: select, verify, ask once.'
+                  )}
+                </p>
+              </div>
+              <span className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-emerald-700">
+                {currentPromptCount > 0
+                  ? t('app.firstSuccess.stageReview', 'review')
+                  : readinessSummary.readyCount > 0 && readinessSummary.blockedCount === 0
+                    ? t('app.firstSuccess.stageAsk', 'ask once')
+                    : selectedModels.length > 0
+                      ? t('app.firstSuccess.stageReady', 'ready check')
+                      : t('app.firstSuccess.stageSelect', 'select tabs')}
+              </span>
+            </div>
+
+            <div className="mt-4 grid gap-3 lg:grid-cols-3">
+              {firstSuccessRail.map((item) => (
+                <article
+                  key={item.step}
+                  className={
+                    item.active
+                      ? 'rounded-[1.2rem] border border-slate-900 bg-slate-900 px-4 py-4 text-white'
+                      : 'rounded-[1.2rem] border border-slate-200 bg-slate-50/80 px-4 py-4 text-slate-900'
+                  }
+                >
+                  <p
+                    className={
+                      item.active
+                        ? 'text-[11px] font-semibold uppercase tracking-[0.16em] text-white/70'
+                        : 'text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500'
+                    }
+                  >
+                    {item.step}. {item.title}
+                  </p>
+                  <p className={item.active ? 'mt-3 text-sm leading-6 text-white/85' : 'mt-3 text-sm leading-6 text-slate-600'}>
+                    {item.body}
+                  </p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
 
         <ReadinessPanel models={selectedModels} onOpenSettings={() => setShowSettings(true)} />
 

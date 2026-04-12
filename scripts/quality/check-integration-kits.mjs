@@ -525,6 +525,9 @@ const starterKitsDoc = read('docs/mcp-starter-kits.html');
 const publicDistributionDoc = read('docs/public-distribution-matrix.html');
 const hostPacketsDoc = read('docs/mcp-host-packets.html');
 const publicSkillsReadme = read('public-skills/README.md');
+const mcpRegistryPacketReadme = read(
+  'mcp/integration-kits/public-distribution/mcp-registry/README.md'
+);
 if (!starterKitsDoc.includes(PATH_PLACEHOLDER)) {
   findings.push('Starter kits page must use the shared placeholder path.');
 }
@@ -611,6 +614,25 @@ for (const needle of [
   if (!publicSkillsReadme.includes(needle)) {
     findings.push(`public-skills/README.md must mention ${needle}.`);
   }
+}
+if (!mcpRegistryPacketReadme.includes(frontdoorMetadata.official_registry_live_note)) {
+  findings.push(
+    'mcp-registry packet README must state the same live official registry note as docs/frontdoor-metadata.json.'
+  );
+}
+if (!mcpRegistryPacketReadme.includes('extension-first and mixed-surface')) {
+  findings.push(
+    'mcp-registry packet README must keep the extension-first mixed-surface boundary explicit.'
+  );
+}
+if (
+  mcpRegistryPacketReadme.includes(
+    'an official registry listing is still an external publish step until a public artifact path and registry authentication are confirmed.'
+  )
+) {
+  findings.push(
+    'mcp-registry packet README must not keep the old external-only registry story once the registry entry is already live.'
+  );
 }
 
 for (const relPath of [
