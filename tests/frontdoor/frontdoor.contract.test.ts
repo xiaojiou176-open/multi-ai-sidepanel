@@ -198,6 +198,13 @@ describe('front door contract', () => {
   it('keeps machine-readable distribution truth aligned with the front-door truth', () => {
     const distributionMatrix = JSON.parse(read('mcp', 'integration-kits', 'public-distribution-matrix.json'));
     const publicSkillsReadme = read('public-skills', 'README.md');
+    const mcpRegistryPacketReadme = read(
+      'mcp',
+      'integration-kits',
+      'public-distribution',
+      'mcp-registry',
+      'README.md'
+    );
 
     expect(distributionMatrix.official_registry_surface.status).toBe(
       'official_registry_listing_live_websiteurl_backed'
@@ -213,6 +220,11 @@ describe('front door contract', () => {
     );
     expect(publicSkillsReadme).toContain('repo-owned submission materials');
     expect(publicSkillsReadme).toContain('not proof of a live OpenHands/extensions or ClawHub listing');
+    expect(mcpRegistryPacketReadme).toContain(metadata.official_registry_live_note);
+    expect(mcpRegistryPacketReadme).toContain('extension-first and mixed-surface');
+    expect(mcpRegistryPacketReadme).not.toContain(
+      'an official registry listing is still an external publish step until a public artifact path and registry authentication are confirmed.'
+    );
   });
 
   it('keeps the sitemap aligned with the current public front door pages', () => {
