@@ -25,7 +25,7 @@ describe('ChatBubble', () => {
 
     const text = getByText('System');
     expect(text).toBeInTheDocument();
-    expect(text.parentElement?.className).toContain('bg-gray-50');
+    expect(text.parentElement?.className).toContain('ps-system-bubble');
   });
 
   it('renders assistant message without model icon label', () => {

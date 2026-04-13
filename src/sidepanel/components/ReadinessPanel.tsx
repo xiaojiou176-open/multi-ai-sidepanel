@@ -41,14 +41,14 @@ const getStatusLabel = (
 
 const getStatusTone = (report: ModelReadinessReport | undefined) => {
   if (!report || report.status === READINESS_STATUSES.TAB_LOADING) {
-    return 'border-amber-200 bg-amber-50 text-amber-700';
+    return 'border-[rgba(243,192,107,0.28)] bg-[rgba(243,192,107,0.12)] text-[color:var(--ps-warning)]';
   }
 
   if (report.ready) {
-    return 'border-emerald-200 bg-emerald-50 text-emerald-700';
+    return 'border-[rgba(83,196,143,0.28)] bg-[rgba(83,196,143,0.12)] text-[color:var(--ps-success)]';
   }
 
-  return 'border-rose-200 bg-rose-50 text-rose-700';
+  return 'border-[rgba(255,123,134,0.28)] bg-[rgba(255,123,134,0.12)] text-[color:var(--ps-danger)]';
 };
 
 const getRepairCopy = (
@@ -115,9 +115,14 @@ const getRepairCopy = (
 interface ReadinessPanelProps {
   models: ModelName[];
   onOpenSettings?: () => void;
+  compact?: boolean;
 }
 
-export const ReadinessPanel: React.FC<ReadinessPanelProps> = ({ models, onOpenSettings }) => {
+export const ReadinessPanel: React.FC<ReadinessPanelProps> = ({
+  models,
+  onOpenSettings,
+  compact = false,
+}) => {
   const { t } = useTranslation();
   const modelReadiness = useStore((state) => state.modelReadiness);
   const refreshModelReadiness = useStore((state) => state.refreshModelReadiness);
@@ -157,19 +162,19 @@ export const ReadinessPanel: React.FC<ReadinessPanelProps> = ({ models, onOpenSe
 
   return (
     <section
-      className="border-b border-rose-100/80 bg-white/70 px-4 py-3 backdrop-blur-sm"
+      className="border-b border-[color:var(--ps-border)] bg-[rgba(7,8,10,0.76)] px-4 py-4 backdrop-blur-xl"
       data-testid="readiness-panel"
     >
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="min-w-0">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-fuchsia-600">
+          <p className="ps-eyebrow">
             {t('readiness.eyebrow', 'Model readiness')}
           </p>
-          <div className="mt-1 flex items-center gap-2 text-sm text-slate-600">
+          <div className="mt-1 flex items-center gap-2 text-sm text-[color:var(--ps-text-muted)]">
             {hasBlockingIssue ? (
-              <TriangleAlert size={14} className="text-rose-500" />
+              <TriangleAlert size={14} className="text-[color:var(--ps-danger)]" />
             ) : (
-              <ShieldCheck size={14} className="text-emerald-600" />
+              <ShieldCheck size={14} className="text-[color:var(--ps-success)]" />
             )}
             <span>
               {hasBlockingIssue
@@ -187,7 +192,7 @@ export const ReadinessPanel: React.FC<ReadinessPanelProps> = ({ models, onOpenSe
 
         <button
           type="button"
-          className="inline-flex items-center gap-2 rounded-full border border-rose-100 bg-white px-3 py-2 text-xs font-medium text-slate-600 transition-colors hover:bg-rose-50 disabled:cursor-not-allowed disabled:opacity-70"
+          className="ps-action-secondary inline-flex items-center gap-2 rounded-full px-3 py-2 text-xs font-medium transition-colors hover:border-[rgba(255,255,255,0.18)] hover:bg-[rgba(255,255,255,0.08)] hover:text-[color:var(--ps-text)] disabled:cursor-not-allowed disabled:opacity-70"
           onClick={() => {
             void refreshModelReadiness(models);
           }}
@@ -208,11 +213,11 @@ export const ReadinessPanel: React.FC<ReadinessPanelProps> = ({ models, onOpenSe
               data-testid={`readiness-pill-${model}`}
               title={report?.hostname || model}
             >
-              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white/80 text-slate-700">
+              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[rgba(255,255,255,0.1)] text-[color:var(--ps-text)]">
                 {getModelIcon(model, 'h-3 w-3')}
               </span>
               <span>{model}</span>
-              <span className="rounded-full bg-white/80 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em]">
+              <span className="rounded-full bg-[rgba(255,255,255,0.1)] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em]">
                 {getStatusLabel(report, t)}
               </span>
             </div>
@@ -220,152 +225,228 @@ export const ReadinessPanel: React.FC<ReadinessPanelProps> = ({ models, onOpenSe
         })}
       </div>
 
-      <div className="mt-4 grid gap-3 xl:grid-cols-[minmax(0,1.35fr)_repeat(3,minmax(0,1fr))]">
-        <div
-          className={`rounded-[1.45rem] border px-4 py-3 shadow-sm ${
-            hasBlockingIssue
-              ? 'border-rose-200 bg-rose-50/75'
-              : 'border-emerald-200 bg-emerald-50/75'
-          }`}
-        >
-          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">
-            {t('readiness.workspacePulse.eyebrow', 'Readiness pulse')}
-          </p>
-          <p className="mt-2 text-sm font-semibold text-slate-900">
-            {hasBlockingIssue
-              ? t('readiness.workspacePulse.blockedTitle', 'Repair first, then compare')
-              : t('readiness.workspacePulse.readyTitle', 'Good enough to start a clean compare')}
-          </p>
-          <p className="mt-2 text-sm leading-6 text-slate-600">
-            {hasBlockingIssue
-              ? t(
-                  'readiness.workspacePulse.blockedBody',
-                  'Use this panel like a pre-flight checklist: unblock the broken tabs here so the result board and analyst lane do not start from missing answers.'
-                )
-              : t(
-                  'readiness.workspacePulse.readyBody',
-                  'At least one selected tab is usable. Ask once, then come back only if the result board exposes a real failure.'
-                )}
-          </p>
-        </div>
-
-        <div className="rounded-[1.45rem] border border-slate-200 bg-white/90 px-4 py-3 shadow-sm">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">
-            {t('readiness.workspacePulse.readyEyebrow', 'Ready now')}
-          </p>
-          <p className="mt-2 text-2xl font-semibold text-slate-900">{readyCount}</p>
-          <p className="mt-1 text-sm text-slate-600">
-            {t(
-              'readiness.workspacePulse.readyBodyCompact',
-              'These tabs can participate in the next compare turn right away.'
+      {compact ? (
+        <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-[1.25rem] border border-[color:var(--ps-border)] bg-[rgba(255,255,255,0.04)] px-4 py-3 shadow-sm">
+          <div className="min-w-0">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[color:var(--ps-text-muted)]">
+              {t('readiness.nextMove.eyebrow', 'Best next move')}
+            </p>
+            <p className="mt-1 text-sm font-semibold text-[color:var(--ps-text)]">
+              {hasBlockingIssue
+                ? t('readiness.nextMove.blockedTitle', 'Use the repair center before the next compare')
+                : t('readiness.nextMove.readyTitle', 'Stay on the result board unless a tab truly fails')}
+            </p>
+            <p className="mt-1 text-sm text-[color:var(--ps-text-muted)]">
+              {hasBlockingIssue
+                ? t(
+                    'readiness.nextMove.blockedBody',
+                    'This keeps the compare board readable and stops the analyst lane from overreacting to avoidable missing tabs.'
+                  )
+                : t(
+                    'readiness.compact.readyBody',
+                    'Readiness is now just a health strip. Keep your attention on the compare result, not on repeated health checks.'
+                  )}
+            </p>
+          </div>
+          <div className="flex flex-wrap items-center gap-2 text-[11px] font-medium">
+            <span className="rounded-full border border-[rgba(83,196,143,0.24)] bg-[rgba(83,196,143,0.12)] px-2.5 py-1 text-[color:var(--ps-success)]">
+              {t('readiness.workspacePulse.readyEyebrow', 'Ready now')}: {readyCount}
+            </span>
+            <span className="rounded-full border border-[rgba(255,123,134,0.24)] bg-[rgba(255,123,134,0.12)] px-2.5 py-1 text-[color:var(--ps-danger)]">
+              {t('readiness.workspacePulse.blockedEyebrow', 'Needs repair')}: {blockedCount}
+            </span>
+            <span className="rounded-full border border-[rgba(243,192,107,0.24)] bg-[rgba(243,192,107,0.12)] px-2.5 py-1 text-[color:var(--ps-warning)]">
+              {t('readiness.workspacePulse.pendingEyebrow', 'Still settling')}: {loadingCount + checkingCount}
+            </span>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {hasBlockingIssue && (
+              <button
+                type="button"
+                className="inline-flex items-center gap-2 rounded-full border border-[rgba(255,123,134,0.24)] bg-[rgba(255,123,134,0.12)] px-3 py-2 text-xs font-medium text-[color:var(--ps-danger)] transition-colors hover:bg-[rgba(255,123,134,0.2)]"
+                onClick={() => setShowRepairDetails((open) => !open)}
+                aria-expanded={showRepairDetails}
+              >
+                {showRepairDetails ? <ChevronUp size={13} /> : <ChevronDown size={13} />}
+                <span>
+                  {showRepairDetails
+                    ? t('readiness.repair.hideDetails', 'Hide repair details')
+                    : t('readiness.repair.showDetails', 'Review repair steps')}
+                </span>
+              </button>
             )}
-          </p>
-        </div>
-
-        <div className="rounded-[1.45rem] border border-slate-200 bg-white/90 px-4 py-3 shadow-sm">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">
-            {t('readiness.workspacePulse.blockedEyebrow', 'Needs repair')}
-          </p>
-          <p className="mt-2 text-2xl font-semibold text-slate-900">{blockedCount}</p>
-          <p className="mt-1 text-sm text-slate-600">
-            {t(
-              'readiness.workspacePulse.blockedBodyCompact',
-              'Fix these before you trust analyst recommendations or workflow staging.'
-            )}
-          </p>
-        </div>
-
-        <div className="rounded-[1.45rem] border border-slate-200 bg-white/90 px-4 py-3 shadow-sm">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">
-            {t('readiness.workspacePulse.pendingEyebrow', 'Still settling')}
-          </p>
-          <p className="mt-2 text-2xl font-semibold text-slate-900">
-            {loadingCount + checkingCount}
-          </p>
-          <p className="mt-1 text-sm text-slate-600">
-            {t(
-              'readiness.workspacePulse.pendingBodyCompact',
-              'These tabs are loading or still being checked, so re-run readiness after the pages settle.'
-            )}
-          </p>
-        </div>
-      </div>
-
-      <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-[1.45rem] border border-slate-200 bg-white/85 px-4 py-3 shadow-sm">
-        <div className="min-w-0">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-fuchsia-600">
-            {t('readiness.nextMove.eyebrow', 'Best next move')}
-          </p>
-          <p className="mt-1 text-sm font-semibold text-slate-900">
-            {hasBlockingIssue
-              ? t('readiness.nextMove.blockedTitle', 'Use the repair center before the next compare')
-              : t('readiness.nextMove.readyTitle', 'You can switch back to the result board and ask once')}
-          </p>
-          <p className="mt-1 text-sm text-slate-600">
-            {hasBlockingIssue
-              ? t(
-                  'readiness.nextMove.blockedBody',
-                  'This keeps the compare board readable and stops the analyst lane from overreacting to avoidable missing tabs.'
-                )
-              : t(
-                  'readiness.nextMove.readyBody',
-                  'Readiness has done its job. The next useful signal should come from a real compare run, not from repeatedly refreshing this panel.'
-                )}
-          </p>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          {modelsToOpen.length > 0 && (
             <button
               type="button"
-              className="inline-flex items-center gap-2 rounded-full border border-rose-100 bg-rose-50/80 px-3 py-2 text-xs font-medium text-rose-800 transition-colors hover:bg-rose-100"
+              className="ps-action-secondary inline-flex items-center gap-2 rounded-full px-3 py-2 text-xs font-medium transition-colors hover:border-[rgba(255,255,255,0.18)] hover:bg-[rgba(255,255,255,0.08)] hover:text-[color:var(--ps-text)]"
               onClick={() => {
-                modelsToOpen.forEach((model) =>
-                  window.open(getModelConfig(model).openUrl, '_blank', 'noopener,noreferrer')
-                );
+                void refreshModelReadiness(models);
               }}
             >
-              <ArrowUpRight size={13} />
-              <span>{t('readiness.nextMove.openBlocked', 'Open blocked tabs')}</span>
+              <RefreshCcw size={13} className={isCheckingReadiness ? 'animate-spin' : ''} />
+              <span>{t('readiness.nextMove.recheckAll', 'Re-check selected models')}</span>
             </button>
-          )}
-          <button
-            type="button"
-            className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-2 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-50"
-            onClick={() => {
-              void refreshModelReadiness(models);
-            }}
-          >
-            <RefreshCcw size={13} className={isCheckingReadiness ? 'animate-spin' : ''} />
-            <span>{t('readiness.nextMove.recheckAll', 'Re-check selected models')}</span>
-          </button>
-          {onOpenSettings && (
-            <button
-              type="button"
-              className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-2 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-50"
-              onClick={onOpenSettings}
-            >
-              <Settings2 size={13} />
-              <span>{t('readiness.nextMove.modelHealth', 'Open model health overview')}</span>
-            </button>
-          )}
+            {onOpenSettings && (
+              <button
+                type="button"
+                className="ps-action-secondary inline-flex items-center gap-2 rounded-full px-3 py-2 text-xs font-medium transition-colors hover:border-[rgba(255,255,255,0.18)] hover:bg-[rgba(255,255,255,0.08)] hover:text-[color:var(--ps-text)]"
+                onClick={onOpenSettings}
+              >
+                <Settings2 size={13} />
+                <span>{t('readiness.nextMove.modelHealth', 'Open model health overview')}</span>
+              </button>
+            )}
+          </div>
         </div>
-      </div>
+      ) : (
+        <>
+          <div className="mt-4 grid gap-3 xl:grid-cols-[minmax(0,1.35fr)_repeat(3,minmax(0,1fr))]">
+            <div
+              className={`rounded-[1.45rem] border px-4 py-3 shadow-sm ${
+                hasBlockingIssue
+                  ? 'border-[rgba(255,123,134,0.24)] bg-[rgba(255,123,134,0.12)]'
+                  : 'border-[rgba(83,196,143,0.24)] bg-[rgba(83,196,143,0.12)]'
+              }`}
+            >
+              <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[color:var(--ps-text-muted)]">
+                {t('readiness.workspacePulse.eyebrow', 'Readiness pulse')}
+              </p>
+              <p className="mt-2 text-sm font-semibold text-[color:var(--ps-text)]">
+                {hasBlockingIssue
+                  ? t('readiness.workspacePulse.blockedTitle', 'Repair first, then compare')
+                  : t('readiness.workspacePulse.readyTitle', 'Good enough to start a clean compare')}
+              </p>
+              <p className="mt-2 text-sm leading-6 text-[color:var(--ps-text-muted)]">
+                {hasBlockingIssue
+                  ? t(
+                      'readiness.workspacePulse.blockedBody',
+                      'Use this panel like a pre-flight checklist: unblock the broken tabs here so the result board and analyst lane do not start from missing answers.'
+                    )
+                  : t(
+                      'readiness.workspacePulse.readyBody',
+                      'At least one selected tab is usable. Ask once, then come back only if the result board exposes a real failure.'
+                    )}
+              </p>
+            </div>
+
+            <div className="ps-metric-card rounded-[1.45rem] px-4 py-3 shadow-sm">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[color:var(--ps-text-muted)]">
+                {t('readiness.workspacePulse.readyEyebrow', 'Ready now')}
+              </p>
+              <p className="mt-2 text-2xl font-semibold text-[color:var(--ps-text)]">{readyCount}</p>
+              <p className="mt-1 text-sm text-[color:var(--ps-text-muted)]">
+                {t(
+                  'readiness.workspacePulse.readyBodyCompact',
+                  'These tabs can participate in the next compare turn right away.'
+                )}
+              </p>
+            </div>
+
+            <div className="ps-metric-card rounded-[1.45rem] px-4 py-3 shadow-sm">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[color:var(--ps-text-muted)]">
+                {t('readiness.workspacePulse.blockedEyebrow', 'Needs repair')}
+              </p>
+              <p className="mt-2 text-2xl font-semibold text-[color:var(--ps-text)]">{blockedCount}</p>
+              <p className="mt-1 text-sm text-[color:var(--ps-text-muted)]">
+                {t(
+                  'readiness.workspacePulse.blockedBodyCompact',
+                  'Fix these before you trust analyst recommendations or workflow staging.'
+                )}
+              </p>
+            </div>
+
+            <div className="ps-metric-card rounded-[1.45rem] px-4 py-3 shadow-sm">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[color:var(--ps-text-muted)]">
+                {t('readiness.workspacePulse.pendingEyebrow', 'Still settling')}
+              </p>
+              <p className="mt-2 text-2xl font-semibold text-[color:var(--ps-text)]">
+                {loadingCount + checkingCount}
+              </p>
+              <p className="mt-1 text-sm text-[color:var(--ps-text-muted)]">
+                {t(
+                  'readiness.workspacePulse.pendingBodyCompact',
+                  'These tabs are loading or still being checked, so re-run readiness after the pages settle.'
+                )}
+              </p>
+            </div>
+          </div>
+
+          <div className="ps-shell-panel mt-4 flex flex-wrap items-center justify-between gap-3 rounded-[1.45rem] px-4 py-3 shadow-sm">
+            <div className="min-w-0">
+              <p className="ps-eyebrow">
+                {t('readiness.nextMove.eyebrow', 'Best next move')}
+              </p>
+              <p className="mt-1 text-sm font-semibold text-[color:var(--ps-text)]">
+                {hasBlockingIssue
+                  ? t('readiness.nextMove.blockedTitle', 'Use the repair center before the next compare')
+                  : t('readiness.nextMove.readyTitle', 'You can switch back to the result board and ask once')}
+              </p>
+              <p className="mt-1 text-sm text-[color:var(--ps-text-muted)]">
+                {hasBlockingIssue
+                  ? t(
+                      'readiness.nextMove.blockedBody',
+                      'This keeps the compare board readable and stops the analyst lane from overreacting to avoidable missing tabs.'
+                    )
+                  : t(
+                      'readiness.nextMove.readyBody',
+                      'Readiness has done its job. The next useful signal should come from a real compare run, not from repeatedly refreshing this panel.'
+                    )}
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {modelsToOpen.length > 0 && (
+                <button
+                  type="button"
+                  className="inline-flex items-center gap-2 rounded-full border border-[rgba(255,123,134,0.24)] bg-[rgba(255,123,134,0.12)] px-3 py-2 text-xs font-medium text-[color:var(--ps-danger)] transition-colors hover:bg-[rgba(255,123,134,0.2)]"
+                  onClick={() => {
+                    modelsToOpen.forEach((model) =>
+                      window.open(getModelConfig(model).openUrl, '_blank', 'noopener,noreferrer')
+                    );
+                  }}
+                >
+                  <ArrowUpRight size={13} />
+                  <span>{t('readiness.nextMove.openBlocked', 'Open blocked tabs')}</span>
+                </button>
+              )}
+              <button
+                type="button"
+                className="ps-action-secondary inline-flex items-center gap-2 rounded-full px-3 py-2 text-xs font-medium transition-colors hover:border-[rgba(255,255,255,0.18)] hover:bg-[rgba(255,255,255,0.08)] hover:text-[color:var(--ps-text)]"
+                onClick={() => {
+                  void refreshModelReadiness(models);
+                }}
+              >
+                <RefreshCcw size={13} className={isCheckingReadiness ? 'animate-spin' : ''} />
+                <span>{t('readiness.nextMove.recheckAll', 'Re-check selected models')}</span>
+              </button>
+              {onOpenSettings && (
+                <button
+                  type="button"
+                  className="ps-action-secondary inline-flex items-center gap-2 rounded-full px-3 py-2 text-xs font-medium transition-colors hover:border-[rgba(255,255,255,0.18)] hover:bg-[rgba(255,255,255,0.08)] hover:text-[color:var(--ps-text)]"
+                  onClick={onOpenSettings}
+                >
+                  <Settings2 size={13} />
+                  <span>{t('readiness.nextMove.modelHealth', 'Open model health overview')}</span>
+                </button>
+              )}
+            </div>
+          </div>
+        </>
+      )}
 
       {attentionReports.length > 0 && (
-        <div className="mt-4 rounded-[1.45rem] border border-rose-100 bg-rose-50/55 px-4 py-4">
+        <div className="mt-4 rounded-[1.45rem] border border-[rgba(255,123,134,0.2)] bg-[rgba(255,123,134,0.08)] px-4 py-4">
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div className="min-w-0">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-rose-700">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[color:var(--ps-danger)]">
                 {t('readiness.repair.eyebrow', 'Repair center')}
               </p>
-              <p className="mt-1 text-sm text-slate-700">
+              <p className="mt-1 text-sm text-[color:var(--ps-text-soft)]">
                 {t(
                   'readiness.repair.summary',
                   'Resolve the blocking models here, then run one more readiness check before the next compare.'
                 )}
               </p>
               <div className="mt-3 flex flex-wrap gap-2 text-[11px] font-medium">
-                <span className="rounded-full border border-rose-200 bg-white px-2.5 py-1 text-rose-700">
+                <span className="rounded-full border border-[rgba(255,123,134,0.24)] bg-[rgba(255,255,255,0.08)] px-2.5 py-1 text-[color:var(--ps-danger)]">
                   {attentionReports.length}{' '}
                   {attentionReports.length === 1
                     ? t('readiness.repair.blockerSingle', 'model needs attention')
@@ -374,7 +455,7 @@ export const ReadinessPanel: React.FC<ReadinessPanelProps> = ({ models, onOpenSe
                 {attentionReports.slice(0, 3).map(({ model }) => (
                   <span
                     key={model}
-                    className="rounded-full border border-white/90 bg-white/80 px-2.5 py-1 text-slate-600"
+                    className="rounded-full border border-[color:var(--ps-border)] bg-[rgba(255,255,255,0.05)] px-2.5 py-1 text-[color:var(--ps-text-muted)]"
                   >
                     {model}
                   </span>
@@ -384,7 +465,7 @@ export const ReadinessPanel: React.FC<ReadinessPanelProps> = ({ models, onOpenSe
 
             <button
               type="button"
-              className="inline-flex items-center gap-2 rounded-full border border-rose-200 bg-white px-3 py-2 text-xs font-medium text-rose-700 transition-colors hover:bg-rose-100"
+              className="inline-flex items-center gap-2 rounded-full border border-[rgba(255,123,134,0.24)] bg-[rgba(255,255,255,0.08)] px-3 py-2 text-xs font-medium text-[color:var(--ps-danger)] transition-colors hover:bg-[rgba(255,123,134,0.16)]"
               onClick={() => setShowRepairDetails((open) => !open)}
               aria-expanded={showRepairDetails}
             >
@@ -404,7 +485,7 @@ export const ReadinessPanel: React.FC<ReadinessPanelProps> = ({ models, onOpenSe
                   <button
                     key={link.id}
                     type="button"
-                    className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-2 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-50"
+                    className="ps-action-secondary inline-flex items-center gap-2 rounded-full px-3 py-2 text-xs font-medium transition-colors hover:border-[rgba(255,255,255,0.18)] hover:bg-[rgba(255,255,255,0.08)] hover:text-[color:var(--ps-text)]"
                     onClick={() => window.open(link.href, '_blank', 'noopener,noreferrer')}
                   >
                     <ArrowUpRight size={13} />
@@ -414,7 +495,7 @@ export const ReadinessPanel: React.FC<ReadinessPanelProps> = ({ models, onOpenSe
                 {onOpenSettings && (
                   <button
                     type="button"
-                    className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-2 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-50"
+                    className="ps-action-secondary inline-flex items-center gap-2 rounded-full px-3 py-2 text-xs font-medium transition-colors hover:border-[rgba(255,255,255,0.18)] hover:bg-[rgba(255,255,255,0.08)] hover:text-[color:var(--ps-text)]"
                     onClick={onOpenSettings}
                   >
                     <Settings2 size={13} />
@@ -434,13 +515,13 @@ export const ReadinessPanel: React.FC<ReadinessPanelProps> = ({ models, onOpenSe
                     <article
                       key={model}
                       data-testid={`readiness-repair-${model}`}
-                      className="rounded-[1.45rem] border border-rose-100 bg-white/90 p-4 shadow-sm"
+                      className="rounded-[1.45rem] border border-[color:var(--ps-border)] bg-[rgba(10,12,18,0.86)] p-4 shadow-sm"
                     >
                       <div className="flex items-start justify-between gap-3">
                         <div className="min-w-0">
-                          <p className="text-sm font-semibold text-slate-900">{model}</p>
-                          <p className="mt-1 text-sm font-medium text-rose-800">{copy.title}</p>
-                          <p className="mt-2 text-sm leading-6 text-slate-600">{copy.body}</p>
+                          <p className="text-sm font-semibold text-[color:var(--ps-text)]">{model}</p>
+                          <p className="mt-1 text-sm font-medium text-[color:var(--ps-danger)]">{copy.title}</p>
+                          <p className="mt-2 text-sm leading-6 text-[color:var(--ps-text-muted)]">{copy.body}</p>
                         </div>
                         <span
                           className={`rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] ${getStatusTone(report)}`}
@@ -453,7 +534,7 @@ export const ReadinessPanel: React.FC<ReadinessPanelProps> = ({ models, onOpenSe
                         {canOpenModel && (
                           <button
                             type="button"
-                            className="inline-flex items-center gap-2 rounded-full border border-rose-100 bg-rose-50/80 px-3 py-2 text-xs font-medium text-rose-800 transition-colors hover:bg-rose-100"
+                            className="inline-flex items-center gap-2 rounded-full border border-[rgba(255,123,134,0.24)] bg-[rgba(255,123,134,0.12)] px-3 py-2 text-xs font-medium text-[color:var(--ps-danger)] transition-colors hover:bg-[rgba(255,123,134,0.18)]"
                             onClick={() =>
                               window.open(
                                 getModelConfig(model).openUrl,
@@ -468,7 +549,7 @@ export const ReadinessPanel: React.FC<ReadinessPanelProps> = ({ models, onOpenSe
                         )}
                         <button
                           type="button"
-                          className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-2 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-50"
+                          className="ps-action-secondary inline-flex items-center gap-2 rounded-full px-3 py-2 text-xs font-medium transition-colors hover:border-[rgba(255,255,255,0.18)] hover:bg-[rgba(255,255,255,0.08)] hover:text-[color:var(--ps-text)]"
                           onClick={() => {
                             void refreshModelReadiness([model]);
                           }}
@@ -483,12 +564,12 @@ export const ReadinessPanel: React.FC<ReadinessPanelProps> = ({ models, onOpenSe
 
                       <div className="mt-3 flex flex-wrap gap-2 text-[11px]">
                         {report.hostname && (
-                          <span className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 font-medium text-slate-600">
+                          <span className="rounded-full border border-[color:var(--ps-border)] bg-[rgba(255,255,255,0.05)] px-2.5 py-1 font-medium text-[color:var(--ps-text-muted)]">
                             {t('readiness.repair.currentHost', 'Current host')}: {report.hostname}
                           </span>
                         )}
                         {report.failureClass && (
-                          <span className="rounded-full border border-rose-200 bg-rose-50 px-2.5 py-1 font-medium text-rose-700">
+                          <span className="rounded-full border border-[rgba(255,123,134,0.24)] bg-[rgba(255,123,134,0.12)] px-2.5 py-1 font-medium text-[color:var(--ps-danger)]">
                             {t('readiness.repair.failureClass', 'Failure')}:{' '}
                             {formatFailureClass(report.failureClass, (key, defaultValue) =>
                               t(key, defaultValue)
@@ -496,7 +577,7 @@ export const ReadinessPanel: React.FC<ReadinessPanelProps> = ({ models, onOpenSe
                           </span>
                         )}
                         {report.selectorSource && (
-                          <span className="rounded-full border border-slate-200 bg-white px-2.5 py-1 font-medium text-slate-600">
+                          <span className="rounded-full border border-[color:var(--ps-border)] bg-[rgba(255,255,255,0.05)] px-2.5 py-1 font-medium text-[color:var(--ps-text-muted)]">
                             {t('readiness.repair.selectors', 'Selectors')}:{' '}
                             {formatSelectorSource(report.selectorSource, (key, defaultValue) =>
                               t(key, defaultValue)
@@ -504,7 +585,7 @@ export const ReadinessPanel: React.FC<ReadinessPanelProps> = ({ models, onOpenSe
                           </span>
                         )}
                         {report.inputReady !== undefined && (
-                          <span className="rounded-full border border-slate-200 bg-white px-2.5 py-1 font-medium text-slate-600">
+                          <span className="rounded-full border border-[color:var(--ps-border)] bg-[rgba(255,255,255,0.05)] px-2.5 py-1 font-medium text-[color:var(--ps-text-muted)]">
                             {t('readiness.repair.input', 'Input')}:{' '}
                             {report.inputReady
                               ? t('readiness.repair.readyShort', 'ready')
@@ -512,7 +593,7 @@ export const ReadinessPanel: React.FC<ReadinessPanelProps> = ({ models, onOpenSe
                           </span>
                         )}
                         {report.submitReady !== undefined && (
-                          <span className="rounded-full border border-slate-200 bg-white px-2.5 py-1 font-medium text-slate-600">
+                          <span className="rounded-full border border-[color:var(--ps-border)] bg-[rgba(255,255,255,0.05)] px-2.5 py-1 font-medium text-[color:var(--ps-text-muted)]">
                             {t('readiness.repair.submit', 'Submit')}:{' '}
                             {report.submitReady
                               ? t('readiness.repair.readyShort', 'ready')

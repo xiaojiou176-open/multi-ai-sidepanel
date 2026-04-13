@@ -37,7 +37,7 @@ export const InputArea: React.FC = () => {
 
   return (
     <div className="relative">
-      <div className="relative rounded-[1.7rem] border border-rose-100 bg-white/95 shadow-[0_10px_40px_rgba(244,114,182,0.08)] transition-all duration-200 focus-within:border-fuchsia-200 focus-within:shadow-[0_14px_45px_rgba(236,72,153,0.14)]">
+      <div className="relative rounded-[1.7rem] border border-[color:var(--ps-border)] bg-[rgba(10,12,18,0.96)] shadow-[0_26px_60px_rgba(0,0,0,0.38)] transition-all duration-200 focus-within:border-[rgba(138,155,255,0.35)] focus-within:shadow-[0_26px_72px_rgba(0,0,0,0.44)]">
         <textarea
           ref={textareaRef}
           value={input}
@@ -45,28 +45,28 @@ export const InputArea: React.FC = () => {
           onKeyDown={handleKeyDown}
           aria-label={t('input.ariaLabel', 'Compare prompt input')}
           placeholder={t('input.placeholder', 'Ask once, compare every answer...')}
-          className="min-h-[72px] max-h-[200px] w-full resize-none border-none bg-transparent p-4 pb-14 pr-12 text-sm leading-relaxed text-slate-800 focus:ring-0 scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-transparent"
+          className="ps-scrollbar min-h-[88px] max-h-[220px] w-full resize-none border-none bg-transparent px-4 pb-16 pt-12 pr-14 text-sm leading-7 text-[color:var(--ps-text)] placeholder:text-[color:var(--ps-text-muted)] focus:ring-0"
           rows={1}
         />
 
         <div className="pointer-events-none absolute left-4 right-16 top-3 flex items-center justify-between">
-          <span className="rounded-full border border-amber-200 bg-amber-50 px-2.5 py-1 text-[11px] font-medium uppercase tracking-[0.14em] text-amber-700">
+          <span className="rounded-full border border-[rgba(255,138,91,0.24)] bg-[rgba(255,138,91,0.12)] px-2.5 py-1 text-[11px] font-medium uppercase tracking-[0.14em] text-[color:var(--ps-accent)]">
             {t('input.mode', 'Compare-first')}
           </span>
         </div>
 
-        <div className="absolute bottom-2 right-2">
+        <div className="absolute bottom-3 right-3">
           <button
             onClick={sendMessage}
             disabled={!input.trim() || isGenerating}
             aria-label={t('input.sendButton', 'Send compare prompt')}
             title={t('input.sendButton', 'Send compare prompt')}
             className={`
-              flex items-center justify-center rounded-2xl p-2 transition-all duration-200
+              flex size-11 items-center justify-center rounded-[1.1rem] border p-2 transition-all duration-200
               ${
                 input.trim() && !isGenerating
-                  ? 'bg-gradient-to-r from-fuchsia-600 via-rose-500 to-amber-400 text-white shadow-lg shadow-rose-400/30 hover:scale-105 hover:shadow-rose-400/40 active:scale-95'
-                  : 'cursor-not-allowed bg-slate-100 text-slate-400'
+                  ? 'border-[rgba(255,138,91,0.3)] bg-[linear-gradient(135deg,var(--ps-accent),var(--ps-accent-strong))] text-white shadow-[0_18px_30px_rgba(201,100,66,0.3)] hover:scale-105 active:scale-95'
+                  : 'cursor-not-allowed border-[color:var(--ps-border)] bg-[rgba(255,255,255,0.05)] text-[color:var(--ps-text-muted)]'
               }
             `}
           >
@@ -79,11 +79,11 @@ export const InputArea: React.FC = () => {
         </div>
       </div>
 
-      <div className="mt-2 flex flex-wrap items-center justify-between gap-2 px-1">
+      <div className="mt-3 flex flex-wrap items-center justify-between gap-3 px-1">
         {input.trim().length === 0 && (
           <div className="flex flex-col gap-2">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="text-[11px] font-medium uppercase tracking-[0.14em] text-slate-400">
+              <span className="text-[11px] font-medium uppercase tracking-[0.14em] text-[color:var(--ps-text-muted)]">
                 {t('input.packs', 'Prompt packs')}
               </span>
               {visiblePacks.map((pack) => (
@@ -91,7 +91,7 @@ export const InputArea: React.FC = () => {
                   key={pack.id}
                   type="button"
                   title={pack.description}
-                  className="rounded-full border border-amber-100 bg-amber-50/80 px-2.5 py-1 text-[11px] font-medium text-amber-800 transition-colors hover:bg-amber-100"
+                  className="rounded-full border border-[rgba(255,138,91,0.2)] bg-[rgba(255,138,91,0.12)] px-2.5 py-1 text-[11px] font-medium text-[color:var(--ps-text-soft)] transition-colors hover:bg-[rgba(255,138,91,0.2)]"
                   onClick={() => {
                     setSelectedModelsForCurrentSession(pack.recommendedModels);
                     setInput(pack.prompts[0]?.prompt ?? '');
@@ -103,7 +103,7 @@ export const InputArea: React.FC = () => {
             </div>
 
             <div className="flex flex-wrap items-center gap-2">
-              <span className="text-[11px] font-medium uppercase tracking-[0.14em] text-slate-400">
+              <span className="text-[11px] font-medium uppercase tracking-[0.14em] text-[color:var(--ps-text-muted)]">
                 {recipes.length > 0
                   ? t('input.recipes', 'Quick recipes')
                   : t('input.starters', 'Starter prompts')}
@@ -113,7 +113,7 @@ export const InputArea: React.FC = () => {
                     <button
                       key={recipe.id}
                       type="button"
-                      className="rounded-full border border-fuchsia-100 bg-fuchsia-50/80 px-2.5 py-1 text-[11px] font-medium text-fuchsia-700 transition-colors hover:bg-fuchsia-100"
+                      className="rounded-full border border-[rgba(138,155,255,0.2)] bg-[rgba(138,155,255,0.14)] px-2.5 py-1 text-[11px] font-medium text-[color:var(--ps-text-soft)] transition-colors hover:bg-[rgba(138,155,255,0.24)]"
                       onClick={() => {
                         setInput(recipe.prompt);
                         setSelectedModelsForCurrentSession(recipe.models);
@@ -126,7 +126,7 @@ export const InputArea: React.FC = () => {
                     <button
                       key={prompt}
                       type="button"
-                      className="rounded-full border border-fuchsia-100 bg-fuchsia-50/80 px-2.5 py-1 text-[11px] font-medium text-fuchsia-700 transition-colors hover:bg-fuchsia-100"
+                      className="rounded-full border border-[rgba(138,155,255,0.2)] bg-[rgba(138,155,255,0.14)] px-2.5 py-1 text-[11px] font-medium text-[color:var(--ps-text-soft)] transition-colors hover:bg-[rgba(138,155,255,0.24)]"
                       onClick={() => setInput(prompt)}
                     >
                       {prompt}
@@ -135,10 +135,10 @@ export const InputArea: React.FC = () => {
             </div>
           </div>
         )}
-        <p className="text-[11px] text-slate-500">
+        <p className="text-[11px] text-[color:var(--ps-text-muted)]">
           {t('input.footer', 'Send one prompt, then compare the answers in one local workspace.')}
         </p>
-        <p className="inline-flex items-center gap-1 text-[11px] text-emerald-700">
+        <p className="inline-flex items-center gap-1 text-[11px] text-[color:var(--ps-success)]">
           <ShieldCheck size={12} />
           {t('input.trust', 'Uses your existing browser sessions')}
         </p>
