@@ -30,13 +30,17 @@ interface WorkflowPanelProps {
 }
 
 const statusToneMap: Record<WorkflowPanelStatus, string> = {
-  idle: 'border-slate-200 bg-slate-50 text-slate-700',
-  runnable: 'border-sky-200 bg-sky-50 text-sky-700',
-  waiting_external: 'border-cyan-200 bg-cyan-50 text-cyan-700',
-  seed_ready: 'border-emerald-200 bg-emerald-50 text-emerald-700',
-  blocked: 'border-amber-200 bg-amber-50 text-amber-800',
-  error: 'border-rose-200 bg-rose-50 text-rose-700',
-  running_compare: 'border-fuchsia-200 bg-fuchsia-50 text-fuchsia-700',
+  idle: 'border-[color:var(--ps-border)] bg-[rgba(255,255,255,0.05)] text-[color:var(--ps-text-muted)]',
+  runnable:
+    'border-[rgba(138,155,255,0.28)] bg-[rgba(138,155,255,0.14)] text-[color:var(--ps-focus)]',
+  waiting_external: 'border-cyan-400/30 bg-cyan-400/10 text-cyan-300',
+  seed_ready:
+    'border-[rgba(83,196,143,0.28)] bg-[rgba(83,196,143,0.12)] text-[color:var(--ps-success)]',
+  blocked:
+    'border-[rgba(243,192,107,0.28)] bg-[rgba(243,192,107,0.12)] text-[color:var(--ps-warning)]',
+  error:
+    'border-[rgba(255,123,134,0.28)] bg-[rgba(255,123,134,0.12)] text-[color:var(--ps-danger)]',
+  running_compare: 'border-[rgba(255,138,91,0.28)] bg-[rgba(255,138,91,0.14)] text-[color:var(--ps-accent)]',
 };
 
 const getCurrentStepLabel = (
@@ -185,17 +189,17 @@ export const WorkflowPanel = ({
   return (
     <section
       data-testid={`workflow-panel-${turnId}`}
-      className="mt-4 rounded-[1.4rem] border border-sky-100 bg-sky-50/55 px-4 py-4"
+      className="ps-shell-panel mt-4 rounded-[1.4rem] px-4 py-4"
     >
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-sky-700">
+          <p className="ps-eyebrow">
             {t('workflow.eyebrow', 'Next-step workflow')}
           </p>
-          <h3 className="mt-1 text-sm font-semibold text-slate-900">
+          <h3 className="mt-1 text-sm font-semibold text-[color:var(--ps-text)]">
             {getTitle(status, hasAnalystResult, t)}
           </h3>
-          <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">
+          <p className="mt-2 max-w-2xl text-sm leading-6 text-[color:var(--ps-text-muted)]">
             {getBody(status, hasAnalystResult, waitingFor, errorMessage, t)}
           </p>
         </div>
@@ -207,57 +211,57 @@ export const WorkflowPanel = ({
       </div>
 
       <div className="mt-4 flex flex-wrap gap-2 text-[11px] font-medium">
-        <span className="rounded-full border border-white/80 bg-white px-3 py-2 text-slate-600">
+        <span className="rounded-full border border-[color:var(--ps-border)] bg-[rgba(255,255,255,0.05)] px-3 py-2 text-[color:var(--ps-text-muted)]">
           {t('workflow.meta.currentStep', 'Current step')}:{' '}
           {getCurrentStepLabel(currentStepId, t)}
         </span>
-        <span className="rounded-full border border-white/80 bg-white px-3 py-2 text-slate-600">
+        <span className="rounded-full border border-[color:var(--ps-border)] bg-[rgba(255,255,255,0.05)] px-3 py-2 text-[color:var(--ps-text-muted)]">
           {t('workflow.meta.targets', 'Targets')}: {targetModels.join(', ')}
         </span>
-        <span className="rounded-full border border-white/80 bg-white px-3 py-2 text-slate-600">
+        <span className="rounded-full border border-[color:var(--ps-border)] bg-[rgba(255,255,255,0.05)] px-3 py-2 text-[color:var(--ps-text-muted)]">
           {t('workflow.meta.seedOnly', 'Seed actions stay honest')}: {t('workflow.meta.seedOnlyValue', 'they stage the next prompt, they do not auto-send')}
         </span>
       </div>
 
       {canUseSeed && (
-        <div className="mt-4 rounded-2xl border border-emerald-100 bg-white px-4 py-4">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-emerald-700">
+        <div className="mt-4 rounded-2xl border border-[rgba(83,196,143,0.24)] bg-[rgba(255,255,255,0.05)] px-4 py-4">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[color:var(--ps-success)]">
             {t('workflow.seed.title', 'Staged next-round seed')}
           </p>
-          <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-slate-800">{seedPrompt}</p>
+          <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-[color:var(--ps-text-soft)]">{seedPrompt}</p>
         </div>
       )}
 
       {status === 'waiting_external' && nextActionSummary && (
-        <div className="mt-4 rounded-2xl border border-amber-100 bg-white px-4 py-4">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-amber-700">
+        <div className="mt-4 rounded-2xl border border-[rgba(243,192,107,0.24)] bg-[rgba(255,255,255,0.05)] px-4 py-4">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[color:var(--ps-warning)]">
             {t('workflow.nextAction.title', 'Next external action')}
           </p>
           <div className="mt-2 flex flex-wrap gap-2 text-[11px] font-medium">
             {nextActionLabel && (
-              <span className="rounded-full border border-amber-200 bg-amber-50 px-2.5 py-1 text-amber-800">
+              <span className="rounded-full border border-[rgba(243,192,107,0.24)] bg-[rgba(243,192,107,0.12)] px-2.5 py-1 text-[color:var(--ps-warning)]">
                 {nextActionLabel}
               </span>
             )}
             {emittedActionCommand && (
-              <span className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-slate-600">
+              <span className="rounded-full border border-[color:var(--ps-border)] bg-[rgba(255,255,255,0.05)] px-2.5 py-1 text-[color:var(--ps-text-muted)]">
                 {t('workflow.nextAction.command', 'Command')}: {emittedActionCommand}
               </span>
             )}
             {emittedActionStepId && (
-              <span className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-slate-600">
+              <span className="rounded-full border border-[color:var(--ps-border)] bg-[rgba(255,255,255,0.05)] px-2.5 py-1 text-[color:var(--ps-text-muted)]">
                 {t('workflow.nextAction.step', 'Step')}: {emittedActionStepId}
               </span>
             )}
           </div>
-          <p className="mt-3 text-sm leading-6 text-slate-700">{nextActionSummary}</p>
+          <p className="mt-3 text-sm leading-6 text-[color:var(--ps-text-soft)]">{nextActionSummary}</p>
         </div>
       )}
 
       <div className="mt-4 grid gap-2 sm:flex sm:flex-wrap">
         <button
           type="button"
-          className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-sky-200 bg-white px-3 py-2 text-xs font-medium text-sky-700 transition-colors hover:bg-sky-100 disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto"
+          className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-[rgba(138,155,255,0.28)] bg-[rgba(138,155,255,0.12)] px-3 py-2 text-xs font-medium text-[color:var(--ps-focus)] transition-colors hover:bg-[rgba(138,155,255,0.18)] disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto"
           onClick={status === 'seed_ready' ? onRunNextCompare : onRunWorkflow}
           disabled={primaryActionDisabled}
         >
@@ -267,7 +271,7 @@ export const WorkflowPanel = ({
 
         <button
           type="button"
-          className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-2 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto"
+          className="ps-action-secondary inline-flex w-full items-center justify-center gap-2 rounded-full px-3 py-2 text-xs font-medium transition-colors hover:border-[rgba(255,255,255,0.18)] hover:bg-[rgba(255,255,255,0.08)] hover:text-[color:var(--ps-text)] disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto"
           onClick={onUseSeed}
           disabled={!canUseSeed}
         >
@@ -276,21 +280,21 @@ export const WorkflowPanel = ({
         </button>
 
         {(status === 'blocked' || status === 'error') && (
-          <span className="inline-flex w-full items-center gap-2 rounded-full border border-rose-200 bg-rose-50 px-3 py-2 text-[11px] font-medium text-rose-700 sm:w-auto">
+          <span className="inline-flex w-full items-center gap-2 rounded-full border border-[rgba(255,123,134,0.28)] bg-[rgba(255,123,134,0.12)] px-3 py-2 text-[11px] font-medium text-[color:var(--ps-danger)] sm:w-auto">
             <AlertTriangle size={13} />
             <span>{t('workflow.actions.fixAndRetry', 'Fix the blocker, then run workflow again')}</span>
           </span>
         )}
 
         {status === 'waiting_external' && (
-          <span className="inline-flex w-full items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-3 py-2 text-[11px] font-medium text-amber-800 sm:w-auto">
+          <span className="inline-flex w-full items-center gap-2 rounded-full border border-[rgba(243,192,107,0.28)] bg-[rgba(243,192,107,0.12)] px-3 py-2 text-[11px] font-medium text-[color:var(--ps-warning)] sm:w-auto">
             <RefreshCcw size={13} />
             <span>{t('workflow.actions.waitingHint', 'This is a real running step, not just a seed action')}</span>
           </span>
         )}
 
         {status === 'seed_ready' && (
-          <span className="inline-flex w-full items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-2 text-[11px] font-medium text-emerald-700 sm:w-auto">
+          <span className="inline-flex w-full items-center gap-2 rounded-full border border-[rgba(83,196,143,0.28)] bg-[rgba(83,196,143,0.12)] px-3 py-2 text-[11px] font-medium text-[color:var(--ps-success)] sm:w-auto">
             <ArrowRight size={13} />
             <span>{t('workflow.actions.seedHint', 'Choose whether to stage the prompt or send the next compare now')}</span>
           </span>

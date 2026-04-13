@@ -215,27 +215,27 @@ export const SettingsPanel: React.FC<SettingsProps> = ({ onClose }) => {
   return (
     <div
       data-testid="settings-panel"
-      className="absolute inset-0 bg-white/95 backdrop-blur-sm z-50 flex flex-col animate-in fade-in slide-in-from-bottom-4 duration-200"
+      className="absolute inset-0 z-50 flex flex-col animate-in fade-in slide-in-from-bottom-4 duration-200 bg-[rgba(7,8,10,0.94)] backdrop-blur-xl text-[color:var(--ps-text)]"
     >
       {/* Header */}
-      <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
-        <h2 className="text-xl font-bold text-gray-800">{t('settings.title', 'Settings')}</h2>
+      <div className="flex items-center justify-between border-b border-[color:var(--ps-border)] px-6 py-4">
+        <h2 className="text-xl font-bold text-[color:var(--ps-text)]">{t('settings.title', 'Settings')}</h2>
         <button
           type="button"
           onClick={onClose}
           aria-label={t('settings.close', 'Close settings')}
           title={t('settings.close', 'Close settings')}
-          className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+          className="ps-action-secondary rounded-full p-2 transition-colors hover:border-[rgba(255,255,255,0.18)] hover:bg-[rgba(255,255,255,0.08)] hover:text-[color:var(--ps-text)]"
         >
-          <X size={20} className="text-gray-500" />
+          <X size={20} className="text-[color:var(--ps-text-muted)]" />
         </button>
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto p-6 space-y-8">
+      <div className="flex-1 space-y-8 overflow-y-auto p-6">
         {/* Language */}
         <section>
-          <div className="flex items-center gap-2 mb-4 text-purple-600">
+          <div className="mb-4 flex items-center gap-2 text-[color:var(--ps-accent)]">
             <Globe size={20} />
             <h3 className="font-semibold">{t('settings.language', 'Language')}</h3>
           </div>
@@ -244,8 +244,8 @@ export const SettingsPanel: React.FC<SettingsProps> = ({ onClose }) => {
               onClick={() => setSettings((s) => ({ ...s, language: 'zh' }))}
               className={`p-3 rounded-xl border-2 text-sm font-medium transition-all ${
                 settings.language === 'zh'
-                  ? 'border-purple-500 bg-purple-50 text-purple-700'
-                  : 'border-gray-200 hover:border-purple-200 text-gray-600'
+                  ? 'border-[rgba(255,138,91,0.32)] bg-[rgba(255,138,91,0.14)] text-[color:var(--ps-accent)]'
+                  : 'border-[color:var(--ps-border)] bg-[rgba(255,255,255,0.04)] hover:border-[rgba(255,255,255,0.18)] text-[color:var(--ps-text-muted)]'
               }`}
             >
               {t('settings.language.zh', 'Chinese')}
@@ -254,8 +254,8 @@ export const SettingsPanel: React.FC<SettingsProps> = ({ onClose }) => {
               onClick={() => setSettings((s) => ({ ...s, language: 'en' }))}
               className={`p-3 rounded-xl border-2 text-sm font-medium transition-all ${
                 settings.language === 'en'
-                  ? 'border-purple-500 bg-purple-50 text-purple-700'
-                  : 'border-gray-200 hover:border-purple-200 text-gray-600'
+                  ? 'border-[rgba(255,138,91,0.32)] bg-[rgba(255,138,91,0.14)] text-[color:var(--ps-accent)]'
+                  : 'border-[color:var(--ps-border)] bg-[rgba(255,255,255,0.04)] hover:border-[rgba(255,255,255,0.18)] text-[color:var(--ps-text-muted)]'
               }`}
             >
               {t('settings.language.en', 'English')}
@@ -265,7 +265,7 @@ export const SettingsPanel: React.FC<SettingsProps> = ({ onClose }) => {
 
         {/* Theme */}
         <section>
-          <div className="flex items-center gap-2 mb-4 text-purple-600">
+          <div className="mb-4 flex items-center gap-2 text-[color:var(--ps-accent)]">
             <Sun size={20} />
             <h3 className="font-semibold">{t('settings.theme', 'Theme')}</h3>
           </div>
@@ -276,8 +276,8 @@ export const SettingsPanel: React.FC<SettingsProps> = ({ onClose }) => {
                 onClick={() => setSettings((s) => ({ ...s, theme: item.id }))}
                 className={`flex flex-col items-center gap-2 p-3 rounded-xl border-2 text-sm font-medium transition-all ${
                   settings.theme === item.id
-                    ? 'border-purple-500 bg-purple-50 text-purple-700'
-                    : 'border-gray-200 hover:border-purple-200 text-gray-600'
+                    ? 'border-[rgba(138,155,255,0.32)] bg-[rgba(138,155,255,0.14)] text-[color:var(--ps-focus)]'
+                    : 'border-[color:var(--ps-border)] bg-[rgba(255,255,255,0.04)] hover:border-[rgba(255,255,255,0.18)] text-[color:var(--ps-text-muted)]'
                 }`}
               >
                 <item.icon size={20} />
@@ -289,7 +289,7 @@ export const SettingsPanel: React.FC<SettingsProps> = ({ onClose }) => {
 
         {/* Input Behavior */}
         <section>
-          <div className="flex items-center gap-2 mb-4 text-purple-600">
+          <div className="mb-4 flex items-center gap-2 text-[color:var(--ps-accent)]">
             <Keyboard size={20} />
             <h3 className="font-semibold">{t('settings.input', 'Input')}</h3>
           </div>
@@ -298,8 +298,8 @@ export const SettingsPanel: React.FC<SettingsProps> = ({ onClose }) => {
               onClick={() => setSettings((s) => ({ ...s, enterToSend: !s.enterToSend }))}
               className={`w-full flex items-center justify-between p-3 rounded-xl border-2 text-sm font-medium transition-all ${
                 settings.enterToSend
-                  ? 'border-purple-500 bg-purple-50 text-purple-700'
-                  : 'border-gray-200 hover:border-purple-200 text-gray-600'
+                  ? 'border-[rgba(138,155,255,0.32)] bg-[rgba(138,155,255,0.14)] text-[color:var(--ps-focus)]'
+                  : 'border-[color:var(--ps-border)] bg-[rgba(255,255,255,0.04)] hover:border-[rgba(255,255,255,0.18)] text-[color:var(--ps-text-muted)]'
               }`}
               aria-pressed={settings.enterToSend}
             >
@@ -314,8 +314,8 @@ export const SettingsPanel: React.FC<SettingsProps> = ({ onClose }) => {
               }
               className={`w-full flex items-center justify-between p-3 rounded-xl border-2 text-sm font-medium transition-all ${
                 settings.doubleClickToEdit
-                  ? 'border-purple-500 bg-purple-50 text-purple-700'
-                  : 'border-gray-200 hover:border-purple-200 text-gray-600'
+                  ? 'border-[rgba(138,155,255,0.32)] bg-[rgba(138,155,255,0.14)] text-[color:var(--ps-focus)]'
+                  : 'border-[color:var(--ps-border)] bg-[rgba(255,255,255,0.04)] hover:border-[rgba(255,255,255,0.18)] text-[color:var(--ps-text-muted)]'
               }`}
               aria-pressed={settings.doubleClickToEdit}
             >
@@ -329,21 +329,21 @@ export const SettingsPanel: React.FC<SettingsProps> = ({ onClose }) => {
 
         {/* Data Management */}
         <section>
-          <div className="flex items-center gap-2 mb-4 text-purple-600">
+          <div className="mb-4 flex items-center gap-2 text-[color:var(--ps-accent)]">
             <Database size={20} />
             <h3 className="font-semibold">{t('settings.data', 'Data')}</h3>
           </div>
           <div className="grid grid-cols-2 gap-3">
             <button
               onClick={handleExport}
-              className="flex items-center justify-center gap-2 p-3 rounded-xl border-2 border-gray-200 hover:border-purple-200 hover:bg-purple-50 text-gray-600 hover:text-purple-700 transition-all"
+              className="flex items-center justify-center gap-2 rounded-xl border-2 border-[color:var(--ps-border)] bg-[rgba(255,255,255,0.04)] p-3 text-[color:var(--ps-text-muted)] transition-all hover:border-[rgba(255,255,255,0.18)] hover:bg-[rgba(255,255,255,0.08)] hover:text-[color:var(--ps-text)]"
             >
               <Download size={18} />
               <span className="font-medium">{t('settings.data.export', 'Export chats')}</span>
             </button>
             <button
               onClick={() => fileInputRef.current?.click()}
-              className="flex items-center justify-center gap-2 p-3 rounded-xl border-2 border-gray-200 hover:border-purple-200 hover:bg-purple-50 text-gray-600 hover:text-purple-700 transition-all"
+              className="flex items-center justify-center gap-2 rounded-xl border-2 border-[color:var(--ps-border)] bg-[rgba(255,255,255,0.04)] p-3 text-[color:var(--ps-text-muted)] transition-all hover:border-[rgba(255,255,255,0.18)] hover:bg-[rgba(255,255,255,0.08)] hover:text-[color:var(--ps-text)]"
             >
               <Upload size={18} />
               <span className="font-medium">{t('settings.data.import', 'Import chats')}</span>
@@ -356,9 +356,9 @@ export const SettingsPanel: React.FC<SettingsProps> = ({ onClose }) => {
               className="hidden"
             />
           </div>
-          <div className="mt-3 rounded-2xl border border-amber-100 bg-amber-50/70 px-4 py-3 text-sm text-amber-900">
+          <div className="mt-3 rounded-2xl border border-[rgba(243,192,107,0.24)] bg-[rgba(243,192,107,0.12)] px-4 py-3 text-sm text-[color:var(--ps-warning)]">
             <p className="font-semibold">{t('settings.data.compareExport', 'Compare exports')}</p>
-            <p className="mt-1 text-sm text-amber-800">
+            <p className="mt-1 text-sm text-[color:var(--ps-warning)]">
               {t(
                 'settings.data.compareExportHint',
                 'Readable compare exports now live inside each compare turn so backup JSON can stay focused on migration and restore.'
@@ -368,35 +368,35 @@ export const SettingsPanel: React.FC<SettingsProps> = ({ onClose }) => {
         </section>
 
         <section>
-          <div className="mb-4 flex items-center gap-2 text-purple-600">
+          <div className="mb-4 flex items-center gap-2 text-[color:var(--ps-accent)]">
             <Save size={20} />
             <h3 className="font-semibold">{t('settings.recipes', 'Prompt recipes')}</h3>
           </div>
-          <div className="mb-3 rounded-2xl border border-sky-100 bg-sky-50/70 px-4 py-3 text-sm text-sky-900">
+          <div className="mb-3 rounded-2xl border border-[rgba(138,155,255,0.24)] bg-[rgba(138,155,255,0.12)] px-4 py-3 text-sm text-[color:var(--ps-focus)]">
             <p className="font-semibold">{t('settings.packsLibrary', 'Prompt packs library')}</p>
-            <p className="mt-1 text-sm text-sky-800">
+            <p className="mt-1 text-sm text-[color:var(--ps-focus)]">
               {t(
                 'settings.packsLibraryHint',
                 'Built-in packs now live in the compare workspace. Keep this panel focused on your own saved recipes.'
               )}
             </p>
           </div>
-          <div className="space-y-3 rounded-2xl border border-gray-100 bg-gray-50/70 p-4">
+          <div className="space-y-3 rounded-2xl border border-[color:var(--ps-border)] bg-[rgba(255,255,255,0.03)] p-4">
             <input
               type="text"
               value={recipeName}
               onChange={(event) => setRecipeName(event.target.value)}
               placeholder={t('settings.recipesName', 'Recipe name')}
-              className="w-full rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm text-gray-700 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full rounded-xl border border-[color:var(--ps-border)] bg-[rgba(255,255,255,0.04)] px-3 py-2 text-sm text-[color:var(--ps-text)] placeholder:text-[color:var(--ps-text-muted)] focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[rgba(138,155,255,0.24)]"
             />
             <textarea
               value={recipePrompt}
               onChange={(event) => setRecipePrompt(event.target.value)}
               placeholder={t('settings.recipesPrompt', 'Prompt template')}
-              className="min-h-[92px] w-full rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm text-gray-700 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="min-h-[92px] w-full rounded-xl border border-[color:var(--ps-border)] bg-[rgba(255,255,255,0.04)] px-3 py-2 text-sm text-[color:var(--ps-text)] placeholder:text-[color:var(--ps-text-muted)] focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[rgba(138,155,255,0.24)]"
             />
             <div className="flex items-center justify-between gap-3">
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-[color:var(--ps-text-muted)]">
                 {t(
                   'settings.recipesHint',
                   'Recipes use the models currently selected in the side panel.'
@@ -404,7 +404,7 @@ export const SettingsPanel: React.FC<SettingsProps> = ({ onClose }) => {
               </p>
               <button
                 type="button"
-                className="rounded-full border border-purple-200 bg-purple-50 px-3 py-1.5 text-xs font-medium text-purple-700 transition-colors hover:bg-purple-100"
+                className="inline-flex items-center rounded-full border border-[rgba(255,138,91,0.24)] bg-[rgba(255,138,91,0.12)] px-3 py-1.5 text-xs font-medium text-[color:var(--ps-accent)] transition-colors hover:bg-[rgba(255,138,91,0.18)]"
                 onClick={() => {
                   if (!recipeName.trim() || !recipePrompt.trim()) return;
                   setSettings((current) => ({
@@ -429,25 +429,25 @@ export const SettingsPanel: React.FC<SettingsProps> = ({ onClose }) => {
 
             <div className="space-y-2">
               {(settings.recipes ?? []).length === 0 ? (
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-[color:var(--ps-text-muted)]">
                   {t('settings.recipesEmpty', 'No saved recipes yet.')}
                 </p>
               ) : (
                 (settings.recipes ?? []).map((recipe) => (
                   <div
                     key={recipe.id}
-                    className="flex flex-col gap-2 rounded-xl border border-white bg-white px-3 py-3 text-sm text-gray-700 md:flex-row md:items-center md:justify-between"
+                    className="flex flex-col gap-2 rounded-xl border border-[color:var(--ps-border)] bg-[rgba(255,255,255,0.05)] px-3 py-3 text-sm text-[color:var(--ps-text-soft)] md:flex-row md:items-center md:justify-between"
                   >
                     <div className="min-w-0">
-                      <p className="font-medium text-gray-800">{recipe.name}</p>
-                      <p className="truncate text-xs text-gray-500">{recipe.prompt}</p>
-                      <p className="mt-1 text-[11px] text-gray-400">
+                      <p className="font-medium text-[color:var(--ps-text)]">{recipe.name}</p>
+                      <p className="truncate text-xs text-[color:var(--ps-text-muted)]">{recipe.prompt}</p>
+                      <p className="mt-1 text-[11px] text-[color:var(--ps-text-muted)]">
                         {recipe.models.join(', ')}
                       </p>
                     </div>
                     <button
                       type="button"
-                      className="self-start rounded-full border border-rose-200 bg-rose-50 px-3 py-1.5 text-xs font-medium text-rose-700 transition-colors hover:bg-rose-100"
+                      className="self-start rounded-full border border-[rgba(255,123,134,0.24)] bg-[rgba(255,123,134,0.12)] px-3 py-1.5 text-xs font-medium text-[color:var(--ps-danger)] transition-colors hover:bg-[rgba(255,123,134,0.18)]"
                       onClick={() => {
                         setSettings((current) => ({
                           ...current,
@@ -465,11 +465,11 @@ export const SettingsPanel: React.FC<SettingsProps> = ({ onClose }) => {
         </section>
 
         <section>
-          <div className="mb-4 flex items-center gap-2 text-purple-600">
+          <div className="mb-4 flex items-center gap-2 text-[color:var(--ps-accent)]">
             <Bot size={20} />
             <h3 className="font-semibold">{t('settings.analysis', 'AI Compare Analyst')}</h3>
           </div>
-          <div className="space-y-4 rounded-2xl border border-gray-100 bg-gray-50/70 p-4">
+          <div className="space-y-4 rounded-2xl border border-[color:var(--ps-border)] bg-[rgba(255,255,255,0.03)] p-4">
             <button
               type="button"
               onClick={() =>
@@ -483,8 +483,8 @@ export const SettingsPanel: React.FC<SettingsProps> = ({ onClose }) => {
               }
               className={`w-full flex items-center justify-between p-3 rounded-xl border-2 text-sm font-medium transition-all ${
                 settings.analysis.enabled
-                  ? 'border-purple-500 bg-purple-50 text-purple-700'
-                  : 'border-gray-200 hover:border-purple-200 text-gray-600'
+                  ? 'border-[rgba(138,155,255,0.32)] bg-[rgba(138,155,255,0.14)] text-[color:var(--ps-focus)]'
+                  : 'border-[color:var(--ps-border)] bg-[rgba(255,255,255,0.04)] hover:border-[rgba(255,255,255,0.18)] text-[color:var(--ps-text-muted)]'
               }`}
               aria-pressed={settings.analysis.enabled}
             >
@@ -666,7 +666,7 @@ export const SettingsPanel: React.FC<SettingsProps> = ({ onClose }) => {
 
         <section>
           <div className="mb-4 flex items-center justify-between gap-3">
-            <div className="flex items-center gap-2 text-purple-600">
+            <div className="flex items-center gap-2 text-[color:var(--ps-accent)]">
               <Activity size={20} />
               <h3 className="font-semibold">{t('settings.health', 'Model health')}</h3>
             </div>
@@ -675,14 +675,14 @@ export const SettingsPanel: React.FC<SettingsProps> = ({ onClose }) => {
               onClick={() => {
                 void refreshModelReadiness(MODEL_ORDER);
               }}
-              className="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-3 py-1.5 text-xs font-medium text-gray-600 transition-colors hover:border-purple-200 hover:text-purple-700"
+              className="ps-action-secondary inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-medium transition-colors hover:border-[rgba(255,255,255,0.18)] hover:bg-[rgba(255,255,255,0.08)] hover:text-[color:var(--ps-text)]"
             >
               <RefreshCcw size={14} className={isCheckingReadiness ? 'animate-spin' : ''} />
               <span>{t('readiness.refresh', 'Refresh')}</span>
             </button>
           </div>
 
-          <div className="space-y-2 rounded-2xl border border-gray-100 bg-gray-50/70 p-4">
+          <div className="space-y-2 rounded-2xl border border-[color:var(--ps-border)] bg-[rgba(255,255,255,0.03)] p-4">
             {MODEL_ORDER.map((model) => {
               const report = modelReadiness[model];
               return (
@@ -729,21 +729,21 @@ export const SettingsPanel: React.FC<SettingsProps> = ({ onClose }) => {
         </section>
 
         <section className="pt-3">
-          <div className="mb-4 flex items-center gap-2 border-t border-dashed border-gray-200 pt-5 text-purple-600">
+          <div className="mb-4 flex items-center gap-2 border-t border-dashed border-[color:var(--ps-border)] pt-5 text-[color:var(--ps-accent)]">
             <ShieldAlert size={20} />
             <h3 className="font-semibold">{t('settings.guides', 'Guides')}</h3>
           </div>
-          <div className="space-y-3 rounded-2xl border border-gray-100 bg-gray-50/70 p-4">
-            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-gray-400">
+          <div className="space-y-3 rounded-2xl border border-[color:var(--ps-border)] bg-[rgba(255,255,255,0.03)] p-4">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[color:var(--ps-text-muted)]">
               {t('settings.guidesModeLabel', 'Help center')}
             </p>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-[color:var(--ps-text-muted)]">
               {t(
                 'settings.guidesBody',
                 'Open the strongest setup and support guides when you need the install path, supported sites, first compare repair map, or FAQ answers. MCP starter kits and agent guides stay available when you are ready for the builder lane.'
               )}
             </p>
-            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-gray-500">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[color:var(--ps-text-muted)]">
               {t('settings.guidesEssentialTitle', 'Compare-first essentials')}
             </p>
             <div className="flex flex-wrap gap-2">
@@ -752,21 +752,21 @@ export const SettingsPanel: React.FC<SettingsProps> = ({ onClose }) => {
                   key={link.id}
                   type="button"
                   onClick={() => window.open(link.href, '_blank', 'noopener,noreferrer')}
-                  className="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-3 py-2 text-xs font-medium text-gray-700 transition-colors hover:border-purple-200 hover:text-purple-700"
+                  className="ps-action-secondary inline-flex items-center gap-2 rounded-full px-3 py-2 text-xs font-medium transition-colors hover:border-[rgba(255,255,255,0.18)] hover:bg-[rgba(255,255,255,0.08)] hover:text-[color:var(--ps-text)]"
                 >
                   <ArrowUpRight size={14} />
                   <span>{t(`settings.guidesLink.${link.id}`, link.fallbackLabel)}</span>
                 </button>
               ))}
             </div>
-            <div className="rounded-2xl border border-dashed border-gray-200 bg-white/80 p-3">
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-gray-500">
+            <div className="rounded-2xl border border-dashed border-[color:var(--ps-border)] bg-[rgba(255,255,255,0.04)] p-3">
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[color:var(--ps-text-muted)]">
                 {t('settings.guidesBuilderTitle', 'Builder lane (Optional)')}
               </p>
-              <p className="mt-1 text-[11px] font-medium uppercase tracking-[0.12em] text-gray-400">
+              <p className="mt-1 text-[11px] font-medium uppercase tracking-[0.12em] text-[color:var(--ps-text-muted)]">
                 {t('settings.guidesBuilderKickoff', 'After compare-first is healthy')}
               </p>
-              <p className="mt-2 text-sm text-gray-600">
+              <p className="mt-2 text-sm text-[color:var(--ps-text-muted)]">
                 {t(
                   'settings.guidesBuilderBody',
                   'Open these only after the first compare path is healthy. They are for host setup, MCP wiring, and agent-side integration.'
@@ -778,7 +778,7 @@ export const SettingsPanel: React.FC<SettingsProps> = ({ onClose }) => {
                     key={link.id}
                     type="button"
                     onClick={() => window.open(link.href, '_blank', 'noopener,noreferrer')}
-                    className="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-gray-50 px-3 py-2 text-xs font-medium text-gray-600 transition-colors hover:border-purple-200 hover:bg-purple-50 hover:text-purple-700"
+                    className="ps-action-secondary inline-flex items-center gap-2 rounded-full px-3 py-2 text-xs font-medium transition-colors hover:border-[rgba(255,255,255,0.18)] hover:bg-[rgba(255,255,255,0.08)] hover:text-[color:var(--ps-text)]"
                   >
                     <ArrowUpRight size={14} />
                     <span>{t(`settings.guidesLink.${link.id}`, link.fallbackLabel)}</span>
@@ -791,32 +791,32 @@ export const SettingsPanel: React.FC<SettingsProps> = ({ onClose }) => {
 
         {/* Shortcuts (Read-only for now) */}
         <section>
-          <div className="flex items-center gap-2 mb-4 text-purple-600">
+          <div className="mb-4 flex items-center gap-2 text-[color:var(--ps-accent)]">
             <Keyboard size={20} />
             <h3 className="font-semibold">{t('settings.shortcuts')}</h3>
           </div>
-          <div className="space-y-2 bg-gray-50 p-4 rounded-xl border border-gray-100">
+          <div className="space-y-2 rounded-xl border border-[color:var(--ps-border)] bg-[rgba(255,255,255,0.03)] p-4">
             <div className="flex justify-between items-center">
-              <span className="text-sm text-gray-600">
+              <span className="text-sm text-[color:var(--ps-text-muted)]">
                 {t('settings.shortcuts.send', 'Send message')}
               </span>
-              <kbd className="px-2 py-1 text-xs font-mono bg-white border rounded shadow-sm">
+              <kbd className="rounded border border-[color:var(--ps-border)] bg-[rgba(255,255,255,0.05)] px-2 py-1 text-xs font-mono text-[color:var(--ps-text-soft)] shadow-sm">
                 {settings.enterToSend ? 'Enter' : 'Ctrl/Cmd + Enter'}
               </kbd>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-sm text-gray-600">
+              <span className="text-sm text-[color:var(--ps-text-muted)]">
                 {t('settings.shortcuts.newChat', 'New chat')}
               </span>
-              <kbd className="px-2 py-1 text-xs font-mono bg-white border rounded shadow-sm">
+              <kbd className="rounded border border-[color:var(--ps-border)] bg-[rgba(255,255,255,0.05)] px-2 py-1 text-xs font-mono text-[color:var(--ps-text-soft)] shadow-sm">
                 Ctrl/Cmd + N
               </kbd>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-sm text-gray-600">
+              <span className="text-sm text-[color:var(--ps-text-muted)]">
                 {t('settings.shortcuts.newLine', 'New line')}
               </span>
-              <kbd className="px-2 py-1 bg-white border border-gray-200 rounded text-xs font-mono text-gray-500">
+              <kbd className="rounded border border-[color:var(--ps-border)] bg-[rgba(255,255,255,0.05)] px-2 py-1 text-xs font-mono text-[color:var(--ps-text-soft)]">
                 Shift + Enter
               </kbd>
             </div>
@@ -825,11 +825,11 @@ export const SettingsPanel: React.FC<SettingsProps> = ({ onClose }) => {
       </div>
 
       {/* Footer */}
-      <div className="p-6 border-t border-gray-100 bg-gray-50/50">
+      <div className="border-t border-[color:var(--ps-border)] bg-[rgba(255,255,255,0.03)] p-6">
         <button
           onClick={handleSave}
           disabled={isSaving}
-          className="w-full py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl font-semibold shadow-lg shadow-purple-500/30 hover:shadow-purple-500/40 active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+          className="ps-action-primary flex w-full items-center justify-center gap-2 rounded-xl py-3 font-semibold transition-all hover:shadow-[0_20px_40px_rgba(201,100,66,0.32)] active:scale-[0.98]"
         >
           {isSaving ? (
             <span>{t('common.saving', 'Saving...')}</span>

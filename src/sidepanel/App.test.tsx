@@ -469,8 +469,8 @@ describe('App', () => {
       createNewSession: vi.fn(),
     });
 
-    const { getByText } = render(<App />);
-    expect(getByText('2 comparisons')).toBeInTheDocument();
+    const { getByTestId } = render(<App />);
+    expect(getByTestId('turn-count-card')).toHaveAttribute('aria-label', '2 comparisons');
   });
 
   it('shows singular turn count for one user prompt', () => {
@@ -497,7 +497,7 @@ describe('App', () => {
       createNewSession: vi.fn(),
     });
 
-    const { getByText } = render(<App />);
-    expect(getByText('1 comparison')).toBeInTheDocument();
+    const { getByTestId } = render(<App />);
+    expect(getByTestId('turn-count-card')).toHaveAttribute('aria-label', '1 comparison');
   });
 });

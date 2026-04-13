@@ -25,9 +25,11 @@ import { formatReadinessStatus } from '../utils/runtimeLabels';
 type AnalystLabelTone = 'decision' | 'needsRun' | 'seed';
 
 const analystLabelClasses: Record<AnalystLabelTone, string> = {
-  decision: 'border-emerald-200 bg-emerald-50 text-emerald-700',
-  needsRun: 'border-amber-200 bg-amber-50 text-amber-800',
-  seed: 'border-slate-200 bg-slate-100 text-slate-700',
+  decision:
+    'border-[rgba(83,196,143,0.28)] bg-[rgba(83,196,143,0.12)] text-[color:var(--ps-success)]',
+  needsRun:
+    'border-[rgba(243,192,107,0.28)] bg-[rgba(243,192,107,0.12)] text-[color:var(--ps-warning)]',
+  seed: 'border-[color:var(--ps-border)] bg-[rgba(255,255,255,0.05)] text-[color:var(--ps-text-muted)]',
 };
 
 const AnalystLabel = ({
@@ -140,14 +142,14 @@ export const CompareAnalystPanel = ({
 
   if (needsTwoAnswers) {
     return (
-      <section className="rounded-[1.4rem] border border-slate-200 bg-slate-50/70 px-4 py-4">
+      <section className="rounded-[1.4rem] border border-[color:var(--ps-border)] bg-[rgba(255,255,255,0.05)] px-4 py-4">
         <div className="flex items-center gap-2">
-          <Bot className="text-slate-500" size={16} />
-          <p className="text-sm font-semibold text-slate-900">
+          <Bot className="text-[color:var(--ps-text-muted)]" size={16} />
+          <p className="text-sm font-semibold text-[color:var(--ps-text)]">
             {t('analysis.title', 'AI Compare Analyst')}
           </p>
         </div>
-        <p className="mt-2 text-sm text-slate-600">
+        <p className="mt-2 text-sm text-[color:var(--ps-text-muted)]">
           {t(
             'analysis.empty',
             'Wait until at least two model answers are complete before running AI Compare Analyst.'
@@ -159,18 +161,18 @@ export const CompareAnalystPanel = ({
 
   return (
     <section
-      className="rounded-[1.4rem] border border-indigo-100 bg-indigo-50/60 px-4 py-4"
+      className="ps-shell-panel rounded-[1.4rem] px-4 py-4"
       data-testid={`compare-analyst-panel-${turnId}`}
     >
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-indigo-600">
+          <p className="ps-eyebrow">
             {t('analysis.eyebrow', 'AI Compare Analyst')}
           </p>
-          <h3 className="mt-1 text-sm font-semibold text-slate-900">
+          <h3 className="mt-1 text-sm font-semibold text-[color:var(--ps-text)]">
             {t('analysis.title', 'Turn compare results into the next move')}
           </h3>
-          <p className="mt-1 text-sm text-slate-600">
+          <p className="mt-1 text-sm text-[color:var(--ps-text-muted)]">
             {providerBlocked
               ? t(
                   'analysis.boundaryBlocked',
@@ -187,10 +189,10 @@ export const CompareAnalystPanel = ({
                 )}
           </p>
           <div className="mt-2 flex flex-wrap gap-2 text-[11px] font-medium">
-            <span className="rounded-full border border-indigo-200 bg-white px-2.5 py-1 text-indigo-700">
+            <span className="rounded-full border border-[rgba(138,155,255,0.28)] bg-[rgba(138,155,255,0.12)] px-2.5 py-1 text-[color:var(--ps-focus)]">
               {t('analysis.modeLabel', 'Lane')}: {providerLabel}
             </span>
-            <span className="rounded-full border border-slate-200 bg-white px-2.5 py-1 text-slate-600">
+            <span className="rounded-full border border-[color:var(--ps-border)] bg-[rgba(255,255,255,0.05)] px-2.5 py-1 text-[color:var(--ps-text-muted)]">
               {t('analysis.modelLabel', 'Analyst model')}: {analystModel}
             </span>
             <AnalystLabel
@@ -198,7 +200,7 @@ export const CompareAnalystPanel = ({
               tone={analysisResult ? 'decision' : 'needsRun'}
             />
           </div>
-          <p className="mt-3 text-sm text-slate-600">
+          <p className="mt-3 text-sm text-[color:var(--ps-text-muted)]">
             {analysisResult
               ? t(
                   'analysis.role.ready',
@@ -214,7 +216,7 @@ export const CompareAnalystPanel = ({
         {showPrimaryRunAction && (
             <button
               type="button"
-              className="inline-flex items-center gap-2 rounded-full border border-indigo-200 bg-white px-3 py-2 text-xs font-medium text-indigo-700 transition-colors hover:bg-indigo-50"
+              className="inline-flex items-center gap-2 rounded-full border border-[rgba(138,155,255,0.28)] bg-[rgba(138,155,255,0.12)] px-3 py-2 text-xs font-medium text-[color:var(--ps-focus)] transition-colors hover:bg-[rgba(138,155,255,0.18)]"
               onClick={() => {
                 void runCompareAnalysis(turnId);
               }}
@@ -229,13 +231,13 @@ export const CompareAnalystPanel = ({
         providerBlocked ||
         (analysis.status === ANALYSIS_STATUSES.BLOCKED &&
           analysis.blockReason === ANALYSIS_BLOCK_REASONS.PROVIDER_BLOCKED)) && (
-        <div className="mt-4 rounded-2xl border border-amber-200 bg-white px-4 py-4">
+        <div className="mt-4 rounded-2xl border border-[rgba(243,192,107,0.24)] bg-[rgba(255,255,255,0.05)] px-4 py-4">
           <div className="flex flex-wrap items-center gap-2">
             <AnalystLabel
               label={t('analysis.state.needsRun', 'Needs analyst run')}
               tone="needsRun"
             />
-            <p className="text-sm font-semibold text-slate-900">
+            <p className="text-sm font-semibold text-[color:var(--ps-text)]">
               {providerBlocked
                 ? usingRuntimeLane
                   ? t('analysis.blocked.runtimeTitle', 'The local Switchyard runtime lane is not ready')
@@ -243,7 +245,7 @@ export const CompareAnalystPanel = ({
                 : t('analysis.disabled.title', 'AI Compare Analyst is turned off')}
             </p>
           </div>
-          <p className="mt-2 text-sm text-slate-600">
+          <p className="mt-2 text-sm text-[color:var(--ps-text-muted)]">
             {providerBlocked
               ? providerAvailabilityReason ??
                 t(
@@ -258,7 +260,7 @@ export const CompareAnalystPanel = ({
           <div className="mt-3">
             <button
               type="button"
-              className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-3 py-2 text-xs font-medium text-amber-800 transition-colors hover:bg-amber-100"
+              className="inline-flex items-center gap-2 rounded-full border border-[rgba(243,192,107,0.28)] bg-[rgba(243,192,107,0.12)] px-3 py-2 text-xs font-medium text-[color:var(--ps-warning)] transition-colors hover:bg-[rgba(243,192,107,0.18)]"
               onClick={openAnalysisSettings}
             >
               <Sparkles size={14} />

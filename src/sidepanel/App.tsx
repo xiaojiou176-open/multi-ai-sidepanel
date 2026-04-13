@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { PanelLeftClose, PanelLeftOpen, Settings, ShieldCheck, Sparkles } from 'lucide-react';
+import { PanelLeftClose, PanelLeftOpen, Settings, ShieldCheck } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { ModelSelector } from './components/ModelSelector';
 import { InputArea } from './components/InputArea';
@@ -184,6 +184,8 @@ function App() {
     ],
     [currentPromptCount, readinessSummary.blockedCount, readinessSummary.readyCount, selectedModels.length, t]
   );
+  const showPreflightChecklist =
+    selectedModels.length === 0 || currentPromptCount === 0 || readinessSummary.blockedCount > 0;
 
   useEffect(() => {
     loadSessions();
@@ -271,7 +273,7 @@ function App() {
   }, [updateLastMessage]);
 
   return (
-    <div className="flex h-screen overflow-hidden bg-[radial-gradient(circle_at_top_left,_rgba(253,230,255,0.9),_transparent_28%),linear-gradient(180deg,_#fff8fc_0%,_#ffffff_40%,_#fffaf2_100%)] font-sans text-slate-900">
+    <div className="flex h-screen overflow-hidden bg-[radial-gradient(circle_at_top_left,_rgba(255,138,91,0.08),_transparent_24%),radial-gradient(circle_at_top_right,_rgba(138,155,255,0.12),_transparent_24%),linear-gradient(180deg,_rgba(7,8,10,1)_0%,_rgba(10,12,18,1)_100%)] font-sans text-[color:var(--ps-text)]">
       <a
         href="#compare-main-content"
         className="sr-only z-50 rounded-full bg-slate-900 px-4 py-2 text-sm font-medium text-white focus:not-sr-only focus:absolute focus:left-4 focus:top-4"
@@ -292,7 +294,7 @@ function App() {
         id="session-workspace-drawer"
         className={`
           fixed inset-y-0 left-0 z-40 w-72 transform transition-transform duration-300 ease-in-out
-          ${isSidebarOpen ? 'translate-x-0 shadow-[0_18px_48px_rgba(15,23,42,0.18)]' : '-translate-x-full'}
+          ${isSidebarOpen ? 'translate-x-0 shadow-[0_30px_80px_rgba(0,0,0,0.45)]' : '-translate-x-full'}
         `}
         aria-hidden={!isSidebarOpen}
       >
@@ -306,14 +308,14 @@ function App() {
         ) : null}
       </div>
 
-      <div className="relative flex h-full min-w-0 flex-1 flex-col bg-white/80 backdrop-blur-xl">
-        <header className="z-10 border-b border-rose-100/80 bg-white/78 px-4 py-3 backdrop-blur-md">
+      <div className="relative flex h-full min-w-0 flex-1 flex-col">
+        <header className="z-10 border-b border-[color:var(--ps-border)] bg-[rgba(7,8,10,0.82)] px-4 py-4 backdrop-blur-xl">
           <div className="flex items-start justify-between gap-3">
             <div className="min-w-0">
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => setIsSidebarOpen((open) => !open)}
-                  className="rounded-2xl border border-rose-100 bg-white/85 p-2 text-slate-600 transition-colors hover:bg-rose-50"
+                  className="ps-action-secondary rounded-2xl p-2 transition-colors hover:border-[rgba(255,255,255,0.16)] hover:bg-[rgba(255,255,255,0.08)] hover:text-[color:var(--ps-text)]"
                   title={isSidebarOpen ? t('common.closeSidebar') : t('common.openSidebar')}
                   aria-label={isSidebarOpen ? t('common.closeSidebar') : t('common.openSidebar')}
                   aria-expanded={isSidebarOpen}
@@ -323,14 +325,14 @@ function App() {
                 </button>
                 <div className="min-w-0">
                   <div className="flex items-center gap-2">
-                    <h1 className="bg-gradient-to-r from-fuchsia-700 via-rose-600 to-amber-500 bg-clip-text text-lg font-semibold tracking-tight text-transparent">
+                    <h1 className="bg-gradient-to-r from-[color:var(--ps-text)] via-[color:var(--ps-text)] to-[color:var(--ps-accent)] bg-clip-text text-lg font-semibold tracking-tight text-transparent">
                       Prompt Switchboard
                     </h1>
-                    <span className="inline-flex rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-[11px] font-medium uppercase tracking-[0.16em] text-emerald-700">
+                    <span className="inline-flex rounded-full border border-[rgba(83,196,143,0.28)] bg-[rgba(83,196,143,0.12)] px-2.5 py-1 text-[11px] font-medium uppercase tracking-[0.16em] text-[color:var(--ps-success)]">
                       {t('app.trust', 'Local-first')}
                     </span>
                   </div>
-                  <p className="mt-1 text-sm text-slate-500">
+                  <p className="mt-1 text-sm text-[color:var(--ps-text-muted)]">
                     {t(
                       'app.subtitle',
                       'Ask once, compare multiple AI chats side by side from one browser workspace.'
@@ -341,14 +343,14 @@ function App() {
             </div>
 
             <div className="flex shrink-0 items-center gap-2">
-              <div className="hidden rounded-full border border-rose-100 bg-white/85 p-1 shadow-sm sm:flex">
+              <div className="hidden rounded-full border border-[color:var(--ps-border)] bg-[rgba(255,255,255,0.04)] p-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] sm:flex">
                 <button
                   type="button"
                   onClick={() => setViewMode('compare')}
                   className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
                     viewMode === 'compare'
-                      ? 'bg-gradient-to-r from-fuchsia-600 to-rose-500 text-white shadow-sm'
-                      : 'text-slate-500 hover:text-slate-800'
+                      ? 'bg-white text-slate-900 shadow-sm'
+                      : 'text-[color:var(--ps-text-muted)] hover:text-[color:var(--ps-text)]'
                   }`}
                 >
                   {t('compare.view.compare', 'Compare')}
@@ -358,8 +360,8 @@ function App() {
                   onClick={() => setViewMode('transcript')}
                   className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
                     viewMode === 'transcript'
-                      ? 'bg-gradient-to-r from-fuchsia-600 to-rose-500 text-white shadow-sm'
-                      : 'text-slate-500 hover:text-slate-800'
+                      ? 'bg-white text-slate-900 shadow-sm'
+                      : 'text-[color:var(--ps-text-muted)] hover:text-[color:var(--ps-text)]'
                   }`}
                 >
                   {t('compare.view.transcript', 'Transcript')}
@@ -369,7 +371,7 @@ function App() {
                 onClick={() => {
                   getModelOpenUrls().forEach((url) => window.open(url, '_blank'));
                 }}
-                className="inline-flex items-center gap-2 rounded-2xl border border-rose-100 bg-white/90 px-3 py-2 text-xs font-medium text-slate-700 transition-colors hover:bg-rose-50"
+                className="ps-action-secondary inline-flex items-center gap-2 rounded-2xl px-3 py-2 text-xs font-medium transition-colors hover:border-[rgba(255,255,255,0.18)] hover:bg-[rgba(255,255,255,0.08)] hover:text-[color:var(--ps-text)]"
                 title={t('app.openAllTitle', 'Open supported AI tabs')}
               >
                 <ShieldCheck size={14} />
@@ -378,7 +380,7 @@ function App() {
               </button>
               <button
                 onClick={() => setShowSettings(true)}
-                className="rounded-2xl border border-rose-100 bg-white/90 p-2 text-slate-600 transition-colors hover:bg-rose-50"
+                className="ps-action-secondary rounded-2xl p-2 transition-colors hover:border-[rgba(255,255,255,0.18)] hover:bg-[rgba(255,255,255,0.08)] hover:text-[color:var(--ps-text)]"
                 title={t('settings.title')}
                 aria-label={t('settings.title')}
               >
@@ -387,51 +389,76 @@ function App() {
             </div>
           </div>
 
-          <div className="mt-3 rounded-[1.6rem] border border-rose-100/80 bg-white/78 px-3 py-3 shadow-sm">
-            <div className="flex flex-wrap items-center justify-between gap-2">
-              <div className="min-w-0">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-fuchsia-600">
+          <div className="ps-shell-panel-strong mt-4 rounded-[1.8rem] px-4 py-4">
+            <div className="flex flex-wrap items-start justify-between gap-4">
+              <div className="min-w-0 max-w-2xl">
+                <p className="ps-eyebrow">
                   {t('app.modelRail', 'Model rail')}
                 </p>
-                <p className="mt-1 text-sm text-slate-500">
-                  {t(
-                    'app.modelRailHint',
-                    'Choose the sites you want in this compare run, then review the result board before taking the next step.'
-                  )}
+                <p className="mt-2 text-sm font-semibold text-[color:var(--ps-text)]">
+                  {workspacePulse.label}
+                </p>
+                <p className="mt-2 text-sm leading-6 text-[color:var(--ps-text-muted)]">
+                  {workspacePulse.body}
                 </p>
               </div>
-              <div className="flex items-center gap-2">
-                <div className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-3 py-1.5 text-xs font-medium text-amber-700">
-                  <Sparkles size={14} />
-                  <span>
-                    {currentPromptCount}{' '}
+              <div className="flex flex-wrap items-center gap-2">
+                <div className="ps-metric-card rounded-full px-3 py-2 text-xs">
+                  <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[color:var(--ps-text-muted)]">
+                    {t('app.workspacePulse.selectedEyebrow', 'Selected tabs')}
+                  </span>
+                  <p className="mt-1 font-semibold text-[color:var(--ps-text)]">{selectedModels.length}</p>
+                </div>
+                <div className="ps-metric-card rounded-full px-3 py-2 text-xs">
+                  <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[color:var(--ps-text-muted)]">
+                    {t('app.workspacePulse.readinessEyebrow', 'Ready now')}
+                  </span>
+                  <p className="mt-1 font-semibold text-[color:var(--ps-text)]">{readinessSummary.readyCount}</p>
+                </div>
+                <div className="ps-metric-card rounded-full px-3 py-2 text-xs">
+                  <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[color:var(--ps-text-muted)]">
+                    {t('readiness.workspacePulse.blockedEyebrow', 'Needs repair')}
+                  </span>
+                  <p className="mt-1 font-semibold text-[color:var(--ps-text)]">{readinessSummary.blockedCount}</p>
+                </div>
+                <div
+                  className="ps-metric-card rounded-full px-3 py-2 text-xs"
+                  data-testid="turn-count-card"
+                  aria-label={`${currentPromptCount} ${
+                    currentPromptCount === 1
+                      ? t('app.turnSingular', 'comparison')
+                      : t('app.turnPlural', 'comparisons')
+                  }`}
+                >
+                  <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[color:var(--ps-text-muted)]">
                     {currentPromptCount === 1
                       ? t('app.turnSingular', 'comparison')
                       : t('app.turnPlural', 'comparisons')}
                   </span>
+                  <p className="mt-1 font-semibold text-[color:var(--ps-text)]">{currentPromptCount}</p>
                 </div>
-                <div className="flex rounded-full border border-rose-100 bg-white/85 p-1 shadow-sm sm:hidden">
+                <div className="flex rounded-full border border-[color:var(--ps-border)] bg-[rgba(255,255,255,0.04)] p-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] sm:hidden">
                   <button
                     type="button"
                     onClick={() => setViewMode('compare')}
                     className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
                       viewMode === 'compare'
-                        ? 'bg-gradient-to-r from-fuchsia-600 to-rose-500 text-white shadow-sm'
-                        : 'text-slate-500 hover:text-slate-800'
+                        ? 'bg-white text-slate-900 shadow-sm'
+                        : 'text-[color:var(--ps-text-muted)] hover:text-[color:var(--ps-text)]'
                     }`}
                   >
                     {t('compare.view.compare', 'Compare')}
                   </button>
                   <button
-                    type="button"
-                    onClick={() => setViewMode('transcript')}
-                    className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
-                      viewMode === 'transcript'
-                        ? 'bg-gradient-to-r from-fuchsia-600 to-rose-500 text-white shadow-sm'
-                        : 'text-slate-500 hover:text-slate-800'
-                    }`}
-                  >
-                    {t('compare.view.transcript', 'Transcript')}
+                  type="button"
+                  onClick={() => setViewMode('transcript')}
+                  className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
+                    viewMode === 'transcript'
+                      ? 'bg-white text-slate-900 shadow-sm'
+                      : 'text-[color:var(--ps-text-muted)] hover:text-[color:var(--ps-text)]'
+                  }`}
+                >
+                  {t('compare.view.transcript', 'Transcript')}
                   </button>
                 </div>
               </div>
@@ -441,147 +468,52 @@ function App() {
               <ModelSelector />
             </div>
 
-            <div className="mt-3 grid gap-3 lg:grid-cols-[minmax(0,1.4fr)_repeat(3,minmax(0,1fr))]">
-              <div className={`rounded-[1.45rem] border px-4 py-3 shadow-sm ${workspacePulse.tone}`}>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.16em]">
-                  {t('app.workspacePulse.eyebrow', 'Workspace pulse')}
-                </p>
-                <p className="mt-2 text-sm font-semibold">{workspacePulse.label}</p>
-                <p className="mt-2 text-sm leading-6 text-current/80">{workspacePulse.body}</p>
+            {showPreflightChecklist ? (
+              <div className="mt-4 grid gap-3 lg:grid-cols-3">
+                {firstSuccessRail.map((item) => (
+                  <article
+                    key={item.step}
+                    className={
+                      item.active
+                        ? 'rounded-[1.3rem] border border-[rgba(255,138,91,0.32)] bg-[linear-gradient(135deg,rgba(255,138,91,0.18),rgba(138,155,255,0.16))] px-4 py-4 text-white shadow-[0_20px_40px_rgba(0,0,0,0.22)]'
+                        : 'rounded-[1.3rem] border border-[color:var(--ps-border)] bg-[rgba(255,255,255,0.04)] px-4 py-4 text-[color:var(--ps-text)]'
+                    }
+                  >
+                    <p
+                      className={
+                        item.active
+                          ? 'text-[11px] font-semibold uppercase tracking-[0.16em] text-white/70'
+                          : 'text-[11px] font-semibold uppercase tracking-[0.16em] text-[color:var(--ps-text-muted)]'
+                      }
+                    >
+                      {item.step}. {item.title}
+                    </p>
+                    <p
+                      className={
+                        item.active
+                          ? 'mt-3 text-sm leading-6 text-white/85'
+                          : 'mt-3 text-sm leading-6 text-[color:var(--ps-text-muted)]'
+                      }
+                    >
+                      {item.body}
+                    </p>
+                  </article>
+                ))}
               </div>
-
-              <div className="rounded-[1.45rem] border border-slate-200 bg-white/90 px-4 py-3 shadow-sm">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">
-                  {t('app.workspacePulse.selectedEyebrow', 'Selected tabs')}
-                </p>
-                <p className="mt-2 text-2xl font-semibold text-slate-900">{selectedModels.length}</p>
-                <p className="mt-1 text-sm text-slate-600">
-                  {selectedModels.length > 0
-                    ? t(
-                        'app.workspacePulse.selectedBody',
-                        'Keep this set tight so the compare board stays readable and the analyst lane has a clear target.'
-                      )
-                    : t(
-                        'app.workspacePulse.selectedEmpty',
-                        'Choose at least one model to start the compare lane.'
-                      )}
-                </p>
-              </div>
-
-              <div className="rounded-[1.45rem] border border-slate-200 bg-white/90 px-4 py-3 shadow-sm">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">
-                  {t('app.workspacePulse.readinessEyebrow', 'Ready now')}
-                </p>
-                <p className="mt-2 text-2xl font-semibold text-slate-900">{readinessSummary.readyCount}</p>
-                <p className="mt-1 text-sm text-slate-600">
-                  {readinessSummary.blockedCount > 0
-                    ? t(
-                        'app.workspacePulse.readinessBodyBlocked',
-                        '{{count}} blocked model still needs repair before you trust the analyst lane.',
-                        { count: readinessSummary.blockedCount }
-                      )
-                    : t(
-                        'app.workspacePulse.readinessBody',
-                        '{{count}} loading or checking model is still settling in the background.',
-                        {
-                          count:
-                            readinessSummary.loadingCount + readinessSummary.checkingCount,
-                        }
-                      )}
-                </p>
-              </div>
-
-              <div className="rounded-[1.45rem] border border-slate-200 bg-white/90 px-4 py-3 shadow-sm">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">
-                  {t('app.workspacePulse.nextEyebrow', 'Next step')}
-                </p>
-                <p className="mt-2 text-sm font-semibold text-slate-900">
-                  {readinessSummary.blockedCount > 0
-                    ? t('app.workspacePulse.nextRepair', 'Use Repair Center')
-                    : currentPromptCount > 0
-                      ? t('app.workspacePulse.nextReview', 'Review result board')
-                      : t('app.workspacePulse.nextAsk', 'Ask once from the composer')}
-                </p>
-                <p className="mt-2 text-sm text-slate-600">
-                  {readinessSummary.blockedCount > 0
-                    ? t(
-                        'app.workspacePulse.nextRepairBody',
-                        'Fix blocked tabs first so compare and analyst flows stay balanced.'
-                      )
-                    : currentPromptCount > 0
-                      ? t(
-                          'app.workspacePulse.nextReviewBody',
-                          'Keep the answers in view, then decide whether to retry failures, export, or stage a follow-up.'
-                        )
-                      : t(
-                          'app.workspacePulse.nextAskBody',
-                          'Your first clean compare should create one readable board, not a noisy recovery session.'
-                        )}
-                </p>
-              </div>
-            </div>
+            ) : null}
           </div>
         </header>
 
-        <section className="px-4 pb-4">
-          <div className="rounded-[1.6rem] border border-slate-200 bg-white/90 px-4 py-4 shadow-sm">
-            <div className="flex flex-wrap items-center justify-between gap-2">
-              <div>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">
-                  {t('app.firstSuccess.eyebrow', 'First compare path')}
-                </p>
-                <p className="mt-2 text-sm font-semibold text-slate-900">
-                  {t(
-                    'app.firstSuccess.title',
-                    'Keep the first success path small: select, verify, ask once.'
-                  )}
-                </p>
-              </div>
-              <span className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-emerald-700">
-                {currentPromptCount > 0
-                  ? t('app.firstSuccess.stageReview', 'review')
-                  : readinessSummary.readyCount > 0 && readinessSummary.blockedCount === 0
-                    ? t('app.firstSuccess.stageAsk', 'ask once')
-                    : selectedModels.length > 0
-                      ? t('app.firstSuccess.stageReady', 'ready check')
-                      : t('app.firstSuccess.stageSelect', 'select tabs')}
-              </span>
-            </div>
-
-            <div className="mt-4 grid gap-3 lg:grid-cols-3">
-              {firstSuccessRail.map((item) => (
-                <article
-                  key={item.step}
-                  className={
-                    item.active
-                      ? 'rounded-[1.2rem] border border-slate-900 bg-slate-900 px-4 py-4 text-white'
-                      : 'rounded-[1.2rem] border border-slate-200 bg-slate-50/80 px-4 py-4 text-slate-900'
-                  }
-                >
-                  <p
-                    className={
-                      item.active
-                        ? 'text-[11px] font-semibold uppercase tracking-[0.16em] text-white/70'
-                        : 'text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500'
-                    }
-                  >
-                    {item.step}. {item.title}
-                  </p>
-                  <p className={item.active ? 'mt-3 text-sm leading-6 text-white/85' : 'mt-3 text-sm leading-6 text-slate-600'}>
-                    {item.body}
-                  </p>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <ReadinessPanel models={selectedModels} onOpenSettings={() => setShowSettings(true)} />
+        <ReadinessPanel
+          models={selectedModels}
+          onOpenSettings={() => setShowSettings(true)}
+          compact={currentPromptCount > 0}
+        />
 
         <main
           id="compare-main-content"
           tabIndex={-1}
-          className="relative flex-1 overflow-hidden focus:outline-none"
+          className="relative flex-1 overflow-hidden bg-[rgba(7,8,10,0.4)] focus:outline-none"
         >
           {viewMode === 'compare' ? (
             <CompareView messages={currentMessages} />
@@ -590,7 +522,7 @@ function App() {
           )}
         </main>
 
-        <div className="border-t border-rose-100/80 bg-white/75 p-4 backdrop-blur-sm">
+        <div className="border-t border-[color:var(--ps-border)] bg-[rgba(7,8,10,0.88)] p-4 backdrop-blur-xl">
           <InputArea />
         </div>
 

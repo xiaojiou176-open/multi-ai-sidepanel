@@ -98,18 +98,18 @@ export const SessionList = React.memo(({ onClose, onSessionSelected }: SessionLi
   return (
     <div
       id="session-workspace-drawer"
-      className="flex h-full w-72 flex-col border-r border-rose-100 bg-[linear-gradient(180deg,_rgba(255,248,252,0.96),_rgba(255,255,255,0.96))]"
+      className="flex h-full w-72 flex-col border-r border-[color:var(--ps-border)] bg-[linear-gradient(180deg,rgba(7,8,10,0.98),rgba(11,13,18,0.98))]"
     >
-      <div className="space-y-4 border-b border-rose-100 p-4">
+      <div className="space-y-4 border-b border-[color:var(--ps-border)] p-4">
         <div className="flex items-start justify-between gap-3">
           <div className="space-y-1">
-            <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-fuchsia-600">
+            <p className="ps-eyebrow">
               {t('session.workspace', 'Workspace')}
             </p>
-            <h2 className="text-lg font-semibold tracking-tight text-slate-900">
+            <h2 className="text-lg font-semibold tracking-tight text-[color:var(--ps-text)]">
               {t('session.heading', 'Recent comparisons')}
             </h2>
-            <p className="text-sm leading-6 text-slate-500">
+            <p className="text-sm leading-6 text-[color:var(--ps-text-muted)]">
               {t(
                 'session.subtitle',
                 'Keep every compare run, switch contexts fast, and reopen the tabs you already trust.'
@@ -120,7 +120,7 @@ export const SessionList = React.memo(({ onClose, onSessionSelected }: SessionLi
             <button
               type="button"
               onClick={onClose}
-              className="rounded-xl border border-rose-100 bg-white/90 p-2 text-slate-500 transition-colors hover:bg-rose-50 hover:text-slate-700"
+              className="ps-action-secondary rounded-xl p-2 transition-colors hover:border-[rgba(255,255,255,0.18)] hover:bg-[rgba(255,255,255,0.08)] hover:text-[color:var(--ps-text)]"
               aria-label={t('common.closeSidebar', 'Close sidebar')}
               title={t('common.closeSidebar', 'Close sidebar')}
             >
@@ -132,27 +132,27 @@ export const SessionList = React.memo(({ onClose, onSessionSelected }: SessionLi
         <button
           onClick={createNewSession}
           aria-label={t('session.new')}
-          className="flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-fuchsia-600 via-rose-500 to-amber-400 px-4 py-3 font-semibold text-white shadow-lg shadow-rose-300/30 transition-all duration-200 hover:scale-[1.01] hover:shadow-xl"
+          className="ps-action-primary flex w-full items-center justify-center gap-2 rounded-2xl px-4 py-3 font-semibold transition-all duration-200 hover:scale-[1.01]"
         >
           <Plus size={18} />
           <span>{t('session.new')}</span>
         </button>
 
         <div className="relative">
-          <Search className="pointer-events-none absolute left-3 top-2.5 text-slate-400" size={16} />
+          <Search className="pointer-events-none absolute left-3 top-2.5 text-[color:var(--ps-text-muted)]" size={16} />
           <input
             type="text"
             value={searchInput}
             onChange={(event) => setSearchInput(event.target.value)}
             placeholder={t('session.search')}
-            className="w-full rounded-xl border border-rose-100 bg-white/90 py-2 pl-9 pr-3 text-sm text-slate-700 transition-all focus:border-transparent focus:outline-none focus:ring-2 focus:ring-fuchsia-500"
+            className="w-full rounded-xl border border-[color:var(--ps-border)] bg-[rgba(255,255,255,0.04)] py-2 pl-9 pr-3 text-sm text-[color:var(--ps-text)] transition-all placeholder:text-[color:var(--ps-text-muted)] focus:border-[rgba(138,155,255,0.35)] focus:outline-none focus:ring-2 focus:ring-[rgba(138,155,255,0.24)]"
           />
           {searchInput && (
             <button
               onClick={() => setSearchInput('')}
-              className="absolute right-2 top-2 rounded p-1 hover:bg-slate-100"
+              className="absolute right-2 top-2 rounded p-1 hover:bg-[rgba(255,255,255,0.08)]"
             >
-              <X size={14} className="text-slate-400" />
+              <X size={14} className="text-[color:var(--ps-text-muted)]" />
             </button>
           )}
         </div>
@@ -161,8 +161,8 @@ export const SessionList = React.memo(({ onClose, onSessionSelected }: SessionLi
       <div className="flex-1 overflow-y-auto p-3">
         {filteredSessions.length === 0 ? (
           <div className="flex h-32 flex-col items-center justify-center px-4 text-center">
-            <Search size={32} className="mb-2 text-slate-300" />
-            <p className="text-sm text-slate-500">
+            <Search size={32} className="mb-2 text-[color:var(--ps-text-muted)]" />
+            <p className="text-sm text-[color:var(--ps-text-muted)]">
               {debouncedSearch ? t('session.noResults') : t('session.empty')}
             </p>
           </div>
@@ -191,8 +191,8 @@ export const SessionList = React.memo(({ onClose, onSessionSelected }: SessionLi
                     group relative cursor-pointer rounded-[1.4rem] p-3 transition-all duration-200
                     ${
                       isActive
-                        ? 'border border-fuchsia-200 bg-white shadow-[0_14px_40px_rgba(236,72,153,0.12)]'
-                        : 'border border-white/60 bg-white/75 hover:border-rose-100 hover:bg-white'
+                        ? 'border-[rgba(255,138,91,0.34)] bg-[linear-gradient(135deg,rgba(255,138,91,0.16),rgba(138,155,255,0.18))] shadow-[0_20px_48px_rgba(0,0,0,0.26)]'
+                        : 'border border-[color:var(--ps-border)] bg-[rgba(255,255,255,0.03)] hover:border-[rgba(255,255,255,0.14)] hover:bg-[rgba(255,255,255,0.06)]'
                     }
                   `}
                 >
@@ -207,18 +207,18 @@ export const SessionList = React.memo(({ onClose, onSessionSelected }: SessionLi
                           if (event.key === 'Enter') handleSaveEdit();
                           if (event.key === 'Escape') handleCancelEdit();
                         }}
-                        className="flex-1 rounded-lg border border-fuchsia-300 px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-fuchsia-500"
+                        className="flex-1 rounded-lg border border-[rgba(138,155,255,0.35)] bg-[rgba(7,8,10,0.45)] px-2 py-1 text-sm text-[color:var(--ps-text)] focus:outline-none focus:ring-2 focus:ring-[rgba(138,155,255,0.24)]"
                         autoFocus
                       />
                       <button
                         onClick={handleSaveEdit}
-                        className="rounded p-1 text-green-600 hover:bg-green-50"
+                        className="rounded p-1 text-[color:var(--ps-success)] hover:bg-[rgba(83,196,143,0.12)]"
                       >
                         <Check size={14} />
                       </button>
                       <button
                         onClick={handleCancelEdit}
-                        className="rounded p-1 text-red-600 hover:bg-red-50"
+                        className="rounded p-1 text-[color:var(--ps-danger)] hover:bg-[rgba(255,123,134,0.12)]"
                       >
                         <X size={14} />
                       </button>
@@ -227,35 +227,35 @@ export const SessionList = React.memo(({ onClose, onSessionSelected }: SessionLi
                     <div className="flex items-start gap-2">
                       <MessageSquare
                         size={16}
-                        className={`mt-0.5 shrink-0 ${isActive ? 'text-fuchsia-600' : 'text-slate-400'}`}
+                        className={`mt-0.5 shrink-0 ${isActive ? 'text-[color:var(--ps-accent)]' : 'text-[color:var(--ps-text-muted)]'}`}
                       />
                       <div className="min-w-0 flex-1">
                         <h3
-                          className={`truncate text-sm font-semibold ${isActive ? 'text-fuchsia-950' : 'text-slate-700'}`}
+                          className={`truncate text-sm font-semibold ${isActive ? 'text-white' : 'text-[color:var(--ps-text)]'}`}
                         >
                           {session.title}
                         </h3>
                         {isPinned && (
-                          <span className="mt-1 inline-flex rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-amber-700">
+                          <span className="mt-1 inline-flex rounded-full border border-[rgba(243,192,107,0.24)] bg-[rgba(243,192,107,0.12)] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[color:var(--ps-warning)]">
                             {t('session.pinned', 'Pinned')}
                           </span>
                         )}
 
                         <div className="mt-1 flex items-center gap-2 text-xs">
-                          <span className={isActive ? 'text-fuchsia-700' : 'text-slate-500'}>
+                          <span className={isActive ? 'text-white/80' : 'text-[color:var(--ps-text-muted)]'}>
                             {session.messages.length} {t('session.messages')}
                           </span>
-                          <span className="text-slate-300">·</span>
+                          <span className="text-[color:var(--ps-text-muted)]/50">·</span>
                           <span
                             data-testid={`session-${session.id}-models`}
-                            className={isActive ? 'text-fuchsia-700' : 'text-slate-500'}
+                            className={isActive ? 'text-white/80' : 'text-[color:var(--ps-text-muted)]'}
                           >
                             {session.selectedModels.length} {t('session.models')}
                           </span>
                         </div>
 
                         {session.messages.length > 0 && (
-                          <p className="mt-1 truncate text-xs text-slate-400">
+                          <p className="mt-1 truncate text-xs text-[color:var(--ps-text-muted)]">
                             {session.messages[session.messages.length - 1].text.substring(0, 30)}
                             {session.messages[session.messages.length - 1].text.length > 30
                               ? '...'
@@ -263,7 +263,7 @@ export const SessionList = React.memo(({ onClose, onSessionSelected }: SessionLi
                           </p>
                         )}
 
-                        <span className="mt-1 block text-xs text-slate-400">
+                        <span className="mt-1 block text-xs text-[color:var(--ps-text-muted)]">
                           {formatTime(session.updatedAt)}
                         </span>
                       </div>
@@ -283,7 +283,7 @@ export const SessionList = React.memo(({ onClose, onSessionSelected }: SessionLi
                             pinnedSessionIds: nextPinned,
                           });
                         }}
-                        className="rounded-lg p-1.5 text-slate-600 transition-colors hover:bg-amber-50 hover:text-amber-600"
+                        className="rounded-lg p-1.5 text-[color:var(--ps-text-muted)] transition-colors hover:bg-[rgba(243,192,107,0.12)] hover:text-[color:var(--ps-warning)]"
                         title={t('session.pin', 'Pin')}
                       >
                         <Pin size={14} className={isPinned ? 'fill-current' : ''} />
@@ -293,7 +293,7 @@ export const SessionList = React.memo(({ onClose, onSessionSelected }: SessionLi
                           event.stopPropagation();
                           handleStartEdit(session);
                         }}
-                        className="rounded-lg p-1.5 text-slate-600 transition-colors hover:bg-fuchsia-50 hover:text-fuchsia-600"
+                        className="rounded-lg p-1.5 text-[color:var(--ps-text-muted)] transition-colors hover:bg-[rgba(138,155,255,0.14)] hover:text-[color:var(--ps-focus)]"
                         title={t('session.rename')}
                       >
                         <Edit2 size={14} />
@@ -301,7 +301,7 @@ export const SessionList = React.memo(({ onClose, onSessionSelected }: SessionLi
                       {sessions.length > 1 && (
                         <button
                           onClick={(event) => handleDeleteClick(session.id, event)}
-                          className="rounded-lg p-1.5 text-slate-600 transition-colors hover:bg-red-50 hover:text-red-600"
+                          className="rounded-lg p-1.5 text-[color:var(--ps-text-muted)] transition-colors hover:bg-[rgba(255,123,134,0.12)] hover:text-[color:var(--ps-danger)]"
                           title={t('session.delete')}
                         >
                           <Trash2 size={14} />

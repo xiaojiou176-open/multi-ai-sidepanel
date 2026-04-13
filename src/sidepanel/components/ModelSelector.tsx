@@ -1,5 +1,4 @@
 import React from 'react';
-import { Sparkles } from 'lucide-react';
 import { clsx } from 'clsx';
 import { getModelIcon } from '../../assets/icons/getModelIcon';
 import { ModelName } from '../../utils/types';
@@ -21,23 +20,33 @@ export const ModelSelector: React.FC = () => {
             onClick={() => toggleModel(model)}
             aria-pressed={isSelected}
             className={clsx(
-              'flex items-center gap-2 rounded-2xl border px-3 py-2 text-xs font-medium transition-all duration-200',
+              'group flex min-w-fit items-center gap-3 rounded-[1.15rem] border px-3.5 py-2.5 text-xs font-medium transition-all duration-200',
               isSelected
-                ? 'border-fuchsia-200 bg-gradient-to-r from-fuchsia-50 via-rose-50 to-amber-50 text-fuchsia-700 shadow-sm'
-                : 'border-white/70 bg-white/80 text-slate-500 hover:border-rose-100 hover:bg-white hover:text-slate-700'
+                ? 'border-[rgba(255,138,91,0.4)] bg-[linear-gradient(135deg,rgba(255,138,91,0.18),rgba(138,155,255,0.22))] text-white shadow-[0_18px_32px_rgba(0,0,0,0.25)]'
+                : 'border-[color:var(--ps-border)] bg-[rgba(255,255,255,0.03)] text-[color:var(--ps-text-muted)] hover:border-[rgba(255,255,255,0.16)] hover:bg-[rgba(255,255,255,0.06)] hover:text-[color:var(--ps-text)]'
             )}
           >
             <span
               aria-hidden="true"
               className={clsx(
-                'flex h-6 w-6 items-center justify-center rounded-xl border text-slate-700',
-                isSelected ? 'border-fuchsia-200 bg-white' : 'border-slate-200 bg-slate-50'
+                'flex size-7 items-center justify-center rounded-[0.95rem] border',
+                isSelected
+                  ? 'border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.12)] text-white'
+                  : 'border-[color:var(--ps-border)] bg-[rgba(255,255,255,0.04)] text-[color:var(--ps-text-soft)]'
               )}
             >
               {getModelIcon(model, 'h-3.5 w-3.5')}
             </span>
-            <span>{model}</span>
-            {isSelected && <Sparkles size={12} className="text-fuchsia-500" />}
+            <span className="tracking-[0.02em]">{model}</span>
+            <span
+              aria-hidden="true"
+              className={clsx(
+                'size-2 rounded-full transition-all',
+                isSelected
+                  ? 'bg-[color:var(--ps-accent)] shadow-[0_0_0_4px_rgba(255,138,91,0.16)]'
+                  : 'bg-[rgba(255,255,255,0.16)] group-hover:bg-[rgba(255,255,255,0.28)]'
+              )}
+            />
           </button>
         );
       })}

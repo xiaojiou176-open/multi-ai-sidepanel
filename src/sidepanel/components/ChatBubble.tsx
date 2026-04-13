@@ -33,25 +33,29 @@ const STATUS_META: Partial<
   [DELIVERY_STATUS.PENDING]: {
     labelKey: 'status.pending',
     defaultLabel: 'Pending',
-    className: 'bg-amber-50 text-amber-700 border-amber-200',
+    className:
+      'border-[rgba(243,192,107,0.28)] bg-[rgba(243,192,107,0.12)] text-[color:var(--ps-warning)]',
     icon: <Clock3 size={12} />,
   },
   [DELIVERY_STATUS.STREAMING]: {
     labelKey: 'status.streaming',
     defaultLabel: 'Streaming',
-    className: 'bg-sky-50 text-sky-700 border-sky-200',
+    className:
+      'border-[rgba(138,155,255,0.28)] bg-[rgba(138,155,255,0.14)] text-[color:var(--ps-focus)]',
     icon: <LoaderCircle size={12} className="animate-spin" />,
   },
   [DELIVERY_STATUS.COMPLETE]: {
     labelKey: 'status.complete',
     defaultLabel: 'Complete',
-    className: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+    className:
+      'border-[rgba(83,196,143,0.28)] bg-[rgba(83,196,143,0.12)] text-[color:var(--ps-success)]',
     icon: <CheckCircle2 size={12} />,
   },
   [DELIVERY_STATUS.ERROR]: {
     labelKey: 'status.error',
     defaultLabel: 'Failed',
-    className: 'bg-rose-50 text-rose-700 border-rose-200',
+    className:
+      'border-[rgba(255,123,134,0.28)] bg-[rgba(255,123,134,0.12)] text-[color:var(--ps-danger)]',
     icon: <AlertTriangle size={12} />,
   },
 };
@@ -78,13 +82,13 @@ export const ChatBubble: React.FC<ChatBubbleProps> = ({
     >
       {/* Avatar (Assistant) */}
       {!isUser && !isSystem && (
-        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-100 to-pink-100 flex items-center justify-center border border-purple-200 shadow-sm flex-shrink-0 mt-1">
-          {model === 'ChatGPT' && <Sparkles size={16} className="text-green-600" />}
-          {model === 'Gemini' && <Sparkles size={16} className="text-blue-600" />}
-          {model === 'Perplexity' && <Sparkles size={16} className="text-teal-600" />}
-          {model === 'Grok' && <Sparkles size={16} className="text-gray-800" />}
-          {model === 'Qwen' && <Sparkles size={16} className="text-indigo-600" />}
-          {!model && <Bot size={16} className="text-purple-600" />}
+        <div className="mt-1 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border border-[color:var(--ps-border)] bg-[rgba(255,255,255,0.05)] shadow-sm">
+          {model === 'ChatGPT' && <Sparkles size={16} className="text-[color:var(--ps-success)]" />}
+          {model === 'Gemini' && <Sparkles size={16} className="text-[color:var(--ps-focus)]" />}
+          {model === 'Perplexity' && <Sparkles size={16} className="text-cyan-300" />}
+          {model === 'Grok' && <Sparkles size={16} className="text-white" />}
+          {model === 'Qwen' && <Sparkles size={16} className="text-violet-300" />}
+          {!model && <Bot size={16} className="text-[color:var(--ps-accent)]" />}
         </div>
       )}
 
@@ -97,7 +101,7 @@ export const ChatBubble: React.FC<ChatBubbleProps> = ({
         {/* Model Name */}
         {!isUser && !isSystem && model && (
           <div className="mb-1 ml-1 flex flex-wrap items-center gap-2">
-            <span className="text-xs font-medium text-gray-500">{model}</span>
+            <span className="text-xs font-medium text-[color:var(--ps-text-muted)]">{model}</span>
             {statusMeta && (
               <span
                 className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] font-medium ${statusMeta.className}`}
@@ -114,10 +118,10 @@ export const ChatBubble: React.FC<ChatBubbleProps> = ({
           className={twMerge(
             'px-4 py-3 rounded-2xl text-sm leading-relaxed shadow-sm',
             isSystem
-              ? 'bg-gray-50 border border-gray-200 text-gray-600'
+              ? 'ps-system-bubble'
               : isUser
-                ? 'bg-gradient-to-br from-purple-600 to-pink-600 text-white rounded-tr-none'
-                : 'bg-white border border-gray-100 text-gray-800 rounded-tl-none shadow-sm'
+                ? 'ps-user-bubble rounded-tr-none'
+                : 'ps-assistant-bubble rounded-tl-none'
           )}
         >
           <div
@@ -131,8 +135,8 @@ export const ChatBubble: React.FC<ChatBubbleProps> = ({
 
       {/* Avatar (User) */}
       {isUser && (
-        <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center border border-gray-200 shadow-sm flex-shrink-0 mt-1">
-          <User size={16} className="text-gray-600" />
+        <div className="mt-1 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border border-[color:var(--ps-border)] bg-[rgba(255,255,255,0.05)] shadow-sm">
+          <User size={16} className="text-[color:var(--ps-text-soft)]" />
         </div>
       )}
     </div>
