@@ -50,7 +50,7 @@
     "docker_status": "repo_owned_container_entry_ready",
     "dockerfile": "Dockerfile",
     "dockerignore": ".dockerignore",
-    "doc_page": "docs/mcp-docker-sidecar.html",
+    "doc_page": "docs/docker-integration.html",
     "purpose": "Containerized local Prompt Switchboard MCP sidecar and operator helper for builder-facing flows.",
     "not_a": [
       "hosted_compare_service",
@@ -81,7 +81,7 @@
   "official_registry_surface": {
     "official_docs": ["https://modelcontextprotocol.io/registry"],
     "status": "official_registry_listing_live_websiteurl_backed",
-    "summary": "The official MCP Registry already returns a live Prompt Switchboard MCP entry for the same local sidecar install surface.",
+    "summary": "The official MCP Registry already returns a live Prompt Switchboard MCP entry for the same governed integration surface.",
     "external_publish_packet": {
       "surface": "official_mcp_registry_package_upgrade",
       "missing": [

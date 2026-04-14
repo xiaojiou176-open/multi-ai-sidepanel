@@ -20,7 +20,7 @@
       "id": "prompt-switchboard-mcp-sidecar-container",
       "kind": "container_image",
       "path": "Dockerfile",
-      "manifest": "docs/mcp-docker-sidecar.html",
+      "manifest": "docs/docker-integration.html",
       "currentStatus": "repo_owned_container_entry_not_published_to_any_registry"
     },
     {
@@ -106,7 +106,7 @@
       "role": "containerized_sidecar_entry"
     },
     {
-      "path": "docs/mcp-docker-sidecar.html",
+      "path": "docs/docker-integration.html",
       "role": "container_truth_doc"
     },
     {

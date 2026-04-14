@@ -38,7 +38,7 @@ describe('front door contract', () => {
     expect(readme).toContain(metadata.use_case_compare_path.replace('./', './docs/'));
     expect(readme).toContain(metadata.use_case_rewriting_path.replace('./', './docs/'));
     expect(readme).toContain(metadata.use_case_coding_path.replace('./', './docs/'));
-    expect(readme).toContain(metadata.use_case_local_first_path.replace('./', './docs/'));
+    expect(readme).toContain(metadata.use_case_browser_compare_path.replace('./', './docs/'));
     expect(readme).toContain(metadata.use_case_agents_path.replace('./', './docs/'));
     expect(readme).toContain(metadata.discussions_url);
     expect(readme).toContain(metadata.releases_url);
@@ -80,7 +80,7 @@ describe('front door contract', () => {
     expect(landing).toContain(metadata.use_case_compare_path);
     expect(landing).toContain(metadata.use_case_rewriting_path);
     expect(landing).toContain(metadata.use_case_coding_path);
-    expect(landing).toContain(metadata.use_case_local_first_path);
+    expect(landing).toContain(metadata.use_case_browser_compare_path);
     expect(landing).toContain(metadata.use_case_agents_path);
     expect(landing).toContain(metadata.nav_icon_path);
     expect(landing).not.toContain('Build locally in 2 commands');
@@ -99,7 +99,7 @@ describe('front door contract', () => {
     const compareUseCase = read('docs', 'compare-chatgpt-vs-gemini-vs-perplexity.html');
     const rewritingUseCase = read('docs', 'best-ai-for-rewriting-text.html');
     const codingUseCase = read('docs', 'best-ai-for-coding-explanations.html');
-    const localFirstUseCase = read('docs', 'local-first-ai-comparison.html');
+    const browserCompareUseCase = read('docs', 'browser-ai-comparison.html');
     const normalizedInstall = normalize(install);
     const normalizedFirstCompare = normalize(firstCompare);
     const normalizedFaq = normalize(faq);
@@ -190,9 +190,9 @@ describe('front door contract', () => {
     expect(codingUseCase).toContain('property="og:url"');
     expect(codingUseCase).toContain('"@type": "TechArticle"');
     expect(codingUseCase).toContain(metadata.first_compare_path);
-    expect(localFirstUseCase).toContain('property="og:url"');
-    expect(localFirstUseCase).toContain('"@type": "TechArticle"');
-    expect(localFirstUseCase).toContain(metadata.first_compare_path);
+    expect(browserCompareUseCase).toContain('property="og:url"');
+    expect(browserCompareUseCase).toContain('"@type": "TechArticle"');
+    expect(browserCompareUseCase).toContain(metadata.first_compare_path);
   });
 
   it('keeps machine-readable distribution truth aligned with the front-door truth', () => {
@@ -240,7 +240,7 @@ describe('front door contract', () => {
     expect(sitemap).toContain('compare-chatgpt-vs-gemini-vs-perplexity.html');
     expect(sitemap).toContain('best-ai-for-rewriting-text.html');
     expect(sitemap).toContain('best-ai-for-coding-explanations.html');
-    expect(sitemap).toContain('local-first-ai-comparison.html');
+    expect(sitemap).toContain('browser-ai-comparison.html');
     expect(sitemap).toContain('mcp-coding-agents.html');
     expect(sitemap).toContain('mcp-starter-kits.html');
     expect(sitemap).toContain('mcp-host-packets.html');
@@ -270,7 +270,7 @@ describe('front door contract', () => {
       ['docs', 'compare-chatgpt-vs-gemini-vs-perplexity.html'],
       ['docs', 'best-ai-for-rewriting-text.html'],
       ['docs', 'best-ai-for-coding-explanations.html'],
-      ['docs', 'local-first-ai-comparison.html'],
+      ['docs', 'browser-ai-comparison.html'],
       ['docs', 'mcp-coding-agents.html'],
       ['docs', 'mcp-starter-kits.html'],
       ['docs', 'mcp-host-packets.html'],

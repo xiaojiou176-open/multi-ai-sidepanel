@@ -4,11 +4,11 @@ One prompt, many AI chats, one side panel.
 
 Teach an agent or operator one browser-first compare workflow: check readiness in already-open AI tabs, ask once from the side panel, then retry or export from the same turn.
 
-Prompt Switchboard is a **compare-first, local-first, browser-native AI compare workspace**. It lets you send one prompt to ChatGPT, Gemini, Perplexity, Qwen, and Grok, then compare the replies in one side panel instead of bouncing between tabs.
+Prompt Switchboard is a **compare-first, browser-native AI compare workspace**. It lets you send one prompt to ChatGPT, Gemini, Perplexity, Qwen, and Grok, then compare the replies in one side panel instead of bouncing between tabs.
 
-It also ships a governed local MCP sidecar for **Codex and Claude Code browser workflows**. OpenCode and OpenClaw stay on repo-owned public packet lanes until stronger host proof or official listing proof exists.
+After the core compare flow is clear, the repo also exposes governed integrations for **Codex and Claude Code browser workflows**. OpenCode and OpenClaw remain later, packet-style follow-through lanes instead of the main product story.
 
-Agent-facing truth comes before every sidecar story: the first thing this repo teaches is how to run one real compare turn inside the extension itself. The local MCP sidecar, registry pack, host packets, and public bundles are second-ring carry-forward surfaces around that browser product, not the first install or first success door.
+Agent-facing truth comes after the product story is clear: the first thing this repo teaches is how to run one real compare turn inside the extension itself. Registry packs, host packets, and public bundles are supporting surfaces around that browser product, not the first install or first success door.
 
 > **Trust boundary**
 >
@@ -28,14 +28,14 @@ The shortest way to evaluate Prompt Switchboard is simple: install the latest pa
 | --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Product install | **GitHub Release zip is the supported install path today.**                                                                                                      |
 | Core product    | **Browser extension + compare-first side panel** with your existing signed-in tabs.                                                                              |
-| Builder lane    | **Local MCP sidecar** for Codex and Claude Code, plus repo-owned starter packets for OpenCode and OpenClaw, and an optional Docker wrapper for the same sidecar. |
-| Official registry | **The official MCP Registry already returns a live Prompt Switchboard MCP entry for the local sidecar.**                                                     |
+| Optional integrations | **Governed coding-agent integrations** for Codex and Claude Code, plus repo-owned starter packets for OpenCode and OpenClaw, and an optional Docker wrapper for the same surface. |
+| Official registry | **The official MCP Registry already returns a live Prompt Switchboard MCP entry for the governed integration surface.**                                      |
 | Not live yet    | **Browser store, host marketplaces, and any Glama listing.**                                                                                                     |
 
 The supported install path today is the packaged GitHub Release zip. Browser-store submission materials are being kept ready, but GitHub Releases remains the supported install surface today.
-The official MCP Registry already returns a live Prompt Switchboard MCP entry for the same local sidecar install surface. That registry proof does **not** make the browser-store path live, and it does **not** mean every host marketplace is already published.
+The official MCP Registry already returns a live Prompt Switchboard MCP entry for the same governed integration surface. That registry proof does **not** make the browser-store path live, and it does **not** mean every host marketplace is already published.
 
-The optional builder lane stays one step lower in the information hierarchy. Reach for MCP starter kits, host packets, Docker sidecar docs, and distribution truth only after the first compare path is already clear.
+The optional integration lane stays one step lower in the information hierarchy. Reach for MCP starter kits, host packets, Docker integration docs, and distribution truth only after the first compare path is already clear.
 
 Before the first compare run, make sure the supported AI tabs you want to use
 are already open and signed in inside the same browser profile.
@@ -64,8 +64,8 @@ Use these pages in that exact order:
 - **Recover only the failures you care about**: retry the models that failed instead of replaying the whole compare run.
 - **Turn disagreement into the next move**: seed the next compare round, keep seed-only actions honest, and run the next compare only when you choose to.
 - **Carry useful results outside the side panel**: copy a compare summary, export Markdown, or keep a readable local artifact instead of only a backup dump.
-- **Add optional AI analysis without replacing the core compare lane**: the AI Compare Analyst can summarize consensus, explain disagreement, recommend the best-fit answer to continue from, and draft the next question by reusing one browser tab you already trust, while the main compare flow stays local-first.
-- **Expose product actions through a local MCP sidecar**: Prompt Switchboard can expose readiness, compare, retry, export, session, analyst, and next-step workflow actions to local agents without becoming generic browser automation.
+- **Add optional AI analysis without replacing the core compare lane**: the AI Compare Analyst can summarize consensus, explain disagreement, recommend the best-fit answer to continue from, and draft the next question by reusing one browser tab you already trust, while the main compare flow stays inside the same browser workspace.
+- **Expose product actions through governed coding-agent integrations**: Prompt Switchboard can expose readiness, compare, retry, export, session, analyst, and next-step workflow actions to local agents without becoming generic browser automation.
 - **Keep everything local in your browser**: no hosted relay sits between your prompt and the supported AI sites.
 - **Reuse the AI tabs you already use**: Prompt Switchboard works with the browser sessions you already keep open.
 - **Start from reusable prompt packs**: launch writing, research, coding, and rewriting compare runs without starting from a blank prompt every time.
@@ -92,9 +92,9 @@ Chromium or Chrome for Testing. Real Chrome proof keeps the same signed-in
 profile, then uses `chrome://extensions` -> **Developer Mode** -> **Load unpacked**
 manually.
 
-Need the local build path, release workflow, Docker sidecar lane, or front-door
+Need the local build path, release workflow, Docker integration lane, or front-door
 maintenance steps? Read [`CONTRIBUTING.md`](./CONTRIBUTING.md) and the dedicated
-[Docker sidecar page](./docs/mcp-docker-sidecar.html).
+[Docker integration page](./docs/docker-integration.html).
 
 Maintainer-only cleanup and runtime hygiene commands stay in
 [`CONTRIBUTING.md`](./CONTRIBUTING.md) so this README can stay focused on the
@@ -104,7 +104,7 @@ public product surface.
 
 If you want to see the value quickly, try one of these on three or more supported sites:
 
-- `Summarize the launch plan for a local-first browser extension in three bullets.`
+- `Summarize the launch plan for a browser-native AI extension in three bullets.`
 - `Compare the trade-offs between React and Vue for a browser extension UI.`
 - `Rewrite this paragraph in a clearer, friendlier tone for a GitHub README.`
 
@@ -113,7 +113,7 @@ If you want to see the value quickly, try one of these on three or more supporte
 - [Compare ChatGPT vs Gemini vs Perplexity](./docs/compare-chatgpt-vs-gemini-vs-perplexity.html)
 - [Best AI for rewriting text](./docs/best-ai-for-rewriting-text.html)
 - [Best AI for coding explanations](./docs/best-ai-for-coding-explanations.html)
-- [Why local-first AI comparison matters](./docs/local-first-ai-comparison.html)
+- [Why browser-native AI comparison matters](./docs/browser-ai-comparison.html)
 - [Prompt packs](./docs/prompt-packs.html)
 
 ### After The First Compare Works
@@ -128,7 +128,7 @@ If you already use MCP-capable coding agents, come here **after** the first comp
 
 - [Prompt Switchboard for Codex, Claude Code, and MCP agents](./docs/mcp-coding-agents.html)
 - [Prompt Switchboard MCP starter kits](./docs/mcp-starter-kits.html)
-- [Prompt Switchboard MCP Docker sidecar](./docs/mcp-docker-sidecar.html)
+- [Prompt Switchboard Docker integration](./docs/docker-integration.html)
 - [Prompt Switchboard host packets](./docs/mcp-host-packets.html)
 - [Prompt Switchboard public distribution matrix](./docs/public-distribution-matrix.html)
 
@@ -160,17 +160,17 @@ The strongest product claim here is not abstract AI productivity. It is much sim
 3. **Compare clearly**: review the answers side by side, inspect the per-model run timeline, copy the best response, or jump back into the original model tab.
 4. **Recover, export, and continue**: retry only the failed models, use the repair center when readiness blocks a run, export a readable compare artifact, or seed the next compare round from the completed answers.
 
-## Builder Lane (Second Ring, After The First Compare)
+## Integrations (Second Ring, After The First Compare)
 
-Prompt Switchboard also includes a local MCP sidecar for product-level agent integrations.
-That builder lane is real, but it is **not** the default first-stop story of the repo.
+Prompt Switchboard also includes governed coding-agent integrations for product-level workflows.
+Those integrations are real, but they are **not** the default first-stop story of the repo.
 The default story is still: install, run one compare, then export or retry from the same turn.
 
-- The sidecar speaks MCP over `stdio`.
-- The extension bridge stays local on `127.0.0.1`.
+- The integration speaks MCP over `stdio`.
+- The extension bridge stays on your own machine at `127.0.0.1`.
 - The exposed surface stays product-specific: readiness, compare, retry,
   export, session reads, the analyst lane, and workflow helpers.
-- The optional Docker sidecar wraps the same local MCP surface; it does **not**
+- The optional Docker integration wraps the same local MCP surface; it does **not**
   turn Prompt Switchboard into a hosted compare service or public HTTP API.
 - The MCP surface does **not** expose arbitrary DOM selectors or generic
   website automation.
@@ -180,7 +180,7 @@ Current truthful split:
 - **Supported now**: Codex and Claude Code are the strongest repo-specific host
   flows.
 - **Official MCP Registry**: a live Prompt Switchboard entry already points to
-  the local sidecar install/docs surface.
+  the governed integration install/docs surface.
 - **ClawHub**: the standalone compare-workflows skill is now publicly listed at
   `https://clawhub.ai/xiaojiou176/prompt-switchboard-compare-workflows`.
 - **awesome-opencode**: the curated project/resource entry is submitted on
@@ -245,7 +245,7 @@ This detail view highlights the compare-first design with the current next-step 
 
 ### Trust Boundary Map
 
-![Prompt Switchboard workflow diagram showing open sites, ask once, compare clearly, and the local-first trust boundary.](./docs/assets/prompt-switchboard-workflow.svg)
+![Prompt Switchboard workflow diagram showing open sites, ask once, compare clearly, and the browser trust boundary.](./docs/assets/prompt-switchboard-workflow.svg)
 
 The workflow map makes the runtime boundary explicit: Prompt Switchboard orchestrates the browser-side flow, while the supported AI websites remain the actual execution surfaces.
 
@@ -273,7 +273,7 @@ Need the public-facing install and support detail page? Read [`docs/supported-si
 
 - You already use multiple AI chat sites and want a faster way to compare answers.
 - You want the trust boundary to stay inside the browser instead of adding another hosted layer.
-- You want session history and settings to stay local-first.
+- You want session history and settings to stay in the same browser workspace.
 
 **Not the goal**
 

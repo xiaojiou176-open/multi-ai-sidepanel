@@ -331,8 +331,8 @@ expect(
 );
 expect(
   typeof publicDistributionMatrix?.docker_glama_surface?.doc_page === 'string' &&
-    publicDistributionMatrix.docker_glama_surface.doc_page === 'docs/mcp-docker-sidecar.html',
-  'Public distribution matrix must point Docker docs at docs/mcp-docker-sidecar.html.',
+    publicDistributionMatrix.docker_glama_surface.doc_page === 'docs/docker-integration.html',
+  'Public distribution matrix must point Docker docs at docs/docker-integration.html.',
   findings
 );
 expectNonEmptyString(
@@ -504,7 +504,7 @@ for (const relPath of [
   'docker/README.md',
   'docker/entrypoint.mjs',
   'docker/healthcheck.mjs',
-  'docs/mcp-docker-sidecar.html',
+  'docs/docker-integration.html',
 ]) {
   expect(existsSync(path.join(repoRoot, relPath)), `${relPath} must exist.`, findings);
 }
@@ -580,7 +580,7 @@ for (const needle of [
   'Quick placement map',
   'public-distribution-matrix.html',
   'mcp-host-packets.html',
-  'mcp-docker-sidecar.html',
+  'docker-integration.html',
 ]) {
   if (!readme.includes(needle)) {
     findings.push(`README must mention ${needle}.`);

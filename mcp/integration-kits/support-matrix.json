@@ -17,7 +17,7 @@
     "support_tier": "repo_owned_container_helper",
     "dockerfile": "../../Dockerfile",
     "dockerignore": "../../.dockerignore",
-    "doc_page": "../../docs/mcp-docker-sidecar.html",
+    "doc_page": "../../docs/docker-integration.html",
     "purpose": "Containerized local Prompt Switchboard MCP sidecar and operator helper for builder-facing flows.",
     "not_a": [
       "browser_extension_install_surface",

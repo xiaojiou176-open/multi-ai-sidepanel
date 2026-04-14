@@ -55,7 +55,7 @@ under `scripts/mcp/native-messaging-manifest.mjs`.
 This repo now also ships a Docker entry for the local MCP sidecar and operator
 helper.
 
-- public builder-facing guide: `docs/mcp-docker-sidecar.html`
+- public builder-facing guide: `docs/docker-integration.html`
 - container truth boundary: local sidecar helper only
 - not a hosted compare service
 - not a public HTTP API
