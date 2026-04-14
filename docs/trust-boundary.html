@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Prompt Switchboard trust boundary | Local-first AI comparison</title>
+    <title>Prompt Switchboard trust boundary | Browser AI comparison</title>
     <meta
       name="description"
-      content="Understand the Prompt Switchboard trust boundary: local-first runtime, existing browser sessions, no hosted relay, and no telemetry collector in this repository build."
+      content="Understand the Prompt Switchboard trust boundary: in-browser runtime, existing browser sessions, no hosted relay, and no telemetry collector in this repository build."
     />
     <link
       rel="canonical"
@@ -15,7 +15,7 @@
     <meta property="og:type" content="article" />
     <meta
       property="og:title"
-      content="Prompt Switchboard trust boundary | Local-first AI comparison"
+      content="Prompt Switchboard trust boundary | Browser AI comparison"
     />
     <meta
       property="og:description"
@@ -32,11 +32,11 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta
       name="twitter:title"
-      content="Prompt Switchboard trust boundary | Local-first AI comparison"
+      content="Prompt Switchboard trust boundary | Browser AI comparison"
     />
     <meta
       name="twitter:description"
-      content="Understand the local-first trust boundary: existing browser sessions, no hosted relay, and no account layer."
+      content="Understand the browser trust boundary: existing browser sessions, no hosted relay, and no account layer."
     />
     <meta
       name="twitter:image"
@@ -225,7 +225,7 @@
           <section class="subcard">
             <h2>What stays true</h2>
             <ul>
-              <li>Local-first runtime in the browser</li>
+              <li>Browser runtime stays in charge</li>
               <li>Uses your existing browser login sessions</li>
               <li>No hosted relay or prompt API in this repository build</li>
               <li>No telemetry collector in this repository build</li>
@@ -258,7 +258,7 @@
         </p>
         <p>
           Prompt Switchboard can now export readable compare artifacts, but that share surface
-          remains local-first: the repository build does not create hosted share links or move the
+          remains browser-bound: the repository build does not create hosted share links or move the
           compare result behind a relay.
         </p>
         <p>
@@ -269,8 +269,8 @@
           and direct browser API-key execution is not shipped in this repository build.
         </p>
         <p>
-          The MCP sidecar is local-only as well. External agents talk to a local stdio server, and
-          that sidecar talks to the extension over a localhost bridge. The bridge exposes Prompt
+          The MCP integration is local-only as well. External agents talk to a local stdio server, and
+          that integration talks to the extension over a localhost bridge. The bridge exposes Prompt
           Switchboard product actions such as readiness, compare, retry, export, session reads,
           compare analysis, and built-in next-step workflow tools. Workflow snapshots stay
           session-scoped runtime cache, so `run_workflow`, `list_workflow_runs`, `get_workflow_run`,

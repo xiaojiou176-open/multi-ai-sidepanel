@@ -13,7 +13,7 @@
     <meta property="og:title" content="FAQ | Prompt Switchboard" />
     <meta
       property="og:description"
-      content="Prompt Switchboard FAQ: install path, supported sites, trust boundary, local-first scope, and where to get help."
+      content="Prompt Switchboard FAQ: install path, supported sites, trust boundary, and where to get help."
     />
     <meta
       property="og:image"
@@ -67,7 +67,7 @@
             "name": "Does the repository ship a public API or SDK today?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "No. The current builder-facing surface is the local MCP sidecar plus the shared bridge protocol, not a public HTTP API or general-purpose SDK."
+              "text": "No. The current host-facing surface is the repo-owned MCP server plus the shared bridge protocol, not a public HTTP API or general-purpose SDK."
             }
           },
           {
@@ -112,10 +112,10 @@
           },
           {
             "@type": "Question",
-            "name": "Can I run the MCP sidecar in Docker?",
+            "name": "Can I run the MCP server in Docker?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Yes, for the local sidecar/helper lane. The Docker image packages the local MCP sidecar and operator helper, but it does not turn Prompt Switchboard into a hosted compare service. The browser extension, login state, and compare-first trust boundary still stay on the host."
+              "text": "Yes. The Docker image packages the repo-owned MCP server and operator helper, but it does not turn Prompt Switchboard into a hosted compare service. The browser extension, login state, and compare-first trust boundary still stay on the host."
             }
           }
         ]
@@ -337,9 +337,9 @@
           <section class="item">
             <h3>Can I export a compare result or share it outside the side panel?</h3>
             <p>
-              Yes, but the current share surface is still local-first. Prompt Switchboard can copy a
-              compare summary, export Markdown, and keep a readable compare artifact without turning
-              the product into a hosted share-link service.
+              Yes, but the current share surface stays export-based and host-local. Prompt
+              Switchboard can copy a compare summary, export Markdown, and keep a readable compare
+              artifact without turning the product into a hosted share-link service.
             </p>
           </section>
           <section class="item">
@@ -376,9 +376,9 @@
             </p>
           </section>
           <section class="item">
-            <h3>What does the MCP sidecar expose?</h3>
+            <h3>What does the MCP server expose?</h3>
             <p>
-              The MCP sidecar exposes Prompt Switchboard product actions, not arbitrary browser
+              The MCP server exposes Prompt Switchboard product actions, not arbitrary browser
               automation. The current surface covers readiness checks, model-tab opening, compare
               runs, failed-model retries, session reads, compare export, the browser-session
               analysis lane, the optional local Switchyard runtime-backed analyst lane, and the
@@ -395,7 +395,7 @@
               contract instead of inventing a second public CLI protocol, while
               <code>readiness</code> returns the cached readiness snapshot and
               <code>workflow-get</code> reads the current workflow snapshot through the same local
-              sidecar story.
+              MCP server path.
             </p>
           </section>
           <section class="item">
@@ -458,28 +458,27 @@
           <section class="item">
             <h3>Is there a public API or SDK today?</h3>
             <p>
-              Not yet. The current builder-facing surface is the local MCP sidecar plus the shared
+              Not yet. The current host-facing surface is the repo-owned MCP server plus the shared
               bridge protocol inside this repository. Prompt Switchboard does not ship a public HTTP
               API or a general-purpose SDK in this release.
             </p>
           </section>
           <section class="item">
-            <h3>Does the MCP sidecar need a hosted relay?</h3>
+            <h3>Does the MCP server need a hosted relay?</h3>
             <p>
-              No. MCP clients connect to a local stdio sidecar, and that sidecar reaches the
-              extension through a localhost bridge on the same machine.
+              No. MCP clients connect to a local stdio server, and that server reaches the
+              extension through a localhost bridge on the host machine.
             </p>
           </section>
           <section class="item">
-            <h3>Can I run the MCP sidecar in Docker?</h3>
+            <h3>Can I run the MCP server in Docker?</h3>
             <p>
-              Yes, for the local sidecar/helper lane. The Docker image packages the local MCP
-              sidecar and repo-local operator helper, but it does not turn Prompt Switchboard into a
-              hosted compare service.
+              Yes. The Docker image packages the repo-owned MCP server and repo-local operator
+              helper, but it does not turn Prompt Switchboard into a hosted compare service.
             </p>
             <p>
               The browser extension, login state, and compare-first trust boundary still stay on the
-              host. Use <a href="./mcp-docker-sidecar.html">the Docker sidecar page</a> when you
+              host. Use <a href="./docker-integration.html">the Docker integration page</a> when you
               want the exact build, run, and bridge-port story.
             </p>
           </section>
@@ -511,7 +510,7 @@
           <section class="item">
             <h3>Does this release use Chrome Native Messaging?</h3>
             <p>
-              No. The shipped transport is the local stdio sidecar plus the localhost bridge. Native
+              No. The shipped transport is a local stdio MCP server plus the localhost bridge. Native
               Messaging remains an optional future hardening path, not the active runtime transport
               in this build.
             </p>
@@ -555,7 +554,7 @@
             <p>
               No. Prompt Switchboard is a compare-first browser extension for a defined set of AI
               chat surfaces. It is intentionally narrower than a generic automation stack, and the
-              MCP sidecar keeps that same product boundary instead of exposing raw browser control.
+              MCP server keeps that same product boundary instead of exposing raw browser control.
             </p>
           </section>
         </div>
@@ -576,7 +575,7 @@
           </section>
           <section class="item">
             <h3>Trust boundary</h3>
-            <p>Use this when you want the local-first and no-hosted-relay explanation.</p>
+            <p>Use this when you want the browser-kept and no-hosted-relay explanation.</p>
             <p><a class="nav-link" href="./trust-boundary.html">Read trust boundary</a></p>
           </section>
           <section class="item">
@@ -596,9 +595,9 @@
             <h3>MCP-capable coding agents</h3>
             <p>
               Use this when you want the shortest explanation of how Prompt Switchboard fits OpenAI
-              Codex and Claude Code through the governed MCP sidecar, while keeping other
-              MCP-capable local coding agents in the compatibility-note layer instead of turning
-              Prompt Switchboard into generic browser automation.
+              Codex and Claude Code through the governed MCP integration, while keeping other
+              MCP-capable coding hosts in the compatibility-note layer instead of turning Prompt
+              Switchboard into generic browser automation.
             </p>
             <p><a class="nav-link" href="./mcp-coding-agents.html">Open MCP agents guide</a></p>
           </section>

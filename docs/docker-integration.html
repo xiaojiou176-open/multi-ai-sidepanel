@@ -3,20 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Prompt Switchboard Docker MCP sidecar</title>
+    <title>Prompt Switchboard Docker integration</title>
     <meta
       name="description"
-      content="Run the local Prompt Switchboard MCP sidecar in Docker without pretending the compare-first browser product became a hosted service."
+      content="Run the Prompt Switchboard Docker integration without pretending the compare-first browser product became a hosted service."
     />
     <link
       rel="canonical"
-      href="https://xiaojiou176-open.github.io/multi-ai-sidepanel/mcp-docker-sidecar.html"
+      href="https://xiaojiou176-open.github.io/multi-ai-sidepanel/docker-integration.html"
     />
     <meta property="og:type" content="article" />
-    <meta property="og:title" content="Prompt Switchboard Docker MCP sidecar" />
+    <meta property="og:title" content="Prompt Switchboard Docker integration" />
     <meta
       property="og:description"
-      content="Containerized local MCP sidecar for Prompt Switchboard builder flows. The browser extension still runs on the host, and no hosted compare service is claimed."
+      content="Containerized Prompt Switchboard integration for builder flows. The browser extension still runs on the host, and no hosted compare service is claimed."
     />
     <meta
       property="og:image"
@@ -191,12 +191,12 @@
       </nav>
 
       <main class="card">
-        <span class="chip">Docker sidecar</span>
-        <h1>Containerize the local MCP sidecar, not the whole compare-first product.</h1>
+        <span class="chip">Docker wrapper</span>
+        <h1>Containerize the MCP integration process, not the whole compare-first product.</h1>
         <p>
-          This Docker entry wraps the local Prompt Switchboard MCP sidecar so builder-facing flows
-          can launch it from a container. The browser extension still runs on the host machine, and
-          Prompt Switchboard does not turn into a hosted compare service here.
+          This Docker entry wraps the repo-owned Prompt Switchboard MCP server so coding-host
+          workflows can launch it from a container. The browser extension still runs on the host
+          machine, and Prompt Switchboard does not turn into a hosted compare service here.
         </p>
         <h2 style="margin-top: 24px">What it is</h2>
         <ul>
@@ -220,7 +220,7 @@ docker run --rm -i -p 48123:48123 prompt-switchboard-mcp server</code></pre>
         </p>
         <p>
           Full operator notes live in <code>docker/README.md</code>. The short truthful split is:
-          containerized sidecar now, external listing later.
+          containerized MCP path now, external listing later.
         </p>
         <p>
           Current public Glama pages verify a server catalog and connector surfaces, but this repo

@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.2.2",
   "license": "MIT",
-  "description": "Compare-first, local-first, browser-native AI compare workspace for ChatGPT, Gemini, Perplexity, Qwen, and Grok, with a governed local MCP sidecar for Codex and Claude Code browser workflows.",
+  "description": "Compare-first, browser-native AI compare workspace for ChatGPT, Gemini, Perplexity, Qwen, and Grok, with governed coding-agent integrations for Codex and Claude Code browser workflows.",
   "homepage": "https://xiaojiou176-open.github.io/multi-ai-sidepanel/",
   "repository": {
     "type": "git",

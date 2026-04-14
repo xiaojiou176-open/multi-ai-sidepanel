@@ -10,7 +10,7 @@ const requiredFiles = [
   'docker/README.md',
   'docker/entrypoint.mjs',
   'docker/healthcheck.mjs',
-  'docs/mcp-docker-sidecar.html',
+  'docs/docker-integration.html',
 ];
 
 const findings = [];
@@ -42,16 +42,16 @@ for (const needle of [
   }
 }
 
-const dockerDoc = read('docs/mcp-docker-sidecar.html');
+const dockerDoc = read('docs/docker-integration.html');
 for (const needle of [
-  'Containerize the local MCP sidecar, not the whole compare-first product.',
+  'Containerize the MCP integration process, not the whole compare-first product.',
   'not a hosted compare service',
   'docker run --rm -i -p 48123:48123 prompt-switchboard-mcp server',
   'docker run --rm prompt-switchboard-mcp doctor',
   'Prompt Switchboard listing there yet',
 ]) {
   if (!dockerDoc.includes(needle)) {
-    findings.push(`docs/mcp-docker-sidecar.html must mention ${needle}.`);
+    findings.push(`docs/docker-integration.html must mention ${needle}.`);
   }
 }
 
@@ -63,4 +63,4 @@ if (findings.length > 0) {
   process.exit(1);
 }
 
-console.log('[docker-surface] passed: docker sidecar surface stays truthful and complete');
+console.log('[docker-surface] passed: docker integration surface stays truthful and complete');

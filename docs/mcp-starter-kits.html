@@ -247,14 +247,14 @@
             Copy the right MCP setup without guessing what Prompt Switchboard really supports.
           </h1>
           <p>
-            Prompt Switchboard is a compare-first browser workspace with a governed local MCP
-            sidecar. These starter kits remove setup friction for the strongest current host flows
+            Prompt Switchboard is a compare-first browser workspace with a governed repo-owned MCP
+            server. These starter kits remove setup friction for the strongest current host flows
             and keep the weaker ecosystem paths honest.
           </p>
           <p>
             <strong
               >If you are brand new here, get one compare run working first, then come back for the
-              builder lane.</strong
+              coding-host setup layer.</strong
             >
             This page is meant to shorten host setup after the compare-first path already makes
             sense.
@@ -264,20 +264,21 @@
             Browser-store submission materials are being kept ready, but GitHub Releases remains the
             supported install surface today. Start with the
             <a href="./install.html">install guide</a> and keep the
-            <a href="./trust-boundary.html">trust boundary</a> close when you wire a builder lane.
+            <a href="./trust-boundary.html">trust boundary</a> close when you wire a coding host.
           </p>
           <p>
-            If you need a containerized local helper instead of a host-native sidecar process, read
-            <a href="./mcp-docker-sidecar.html">the Docker sidecar guide</a>. It packages the local
-            MCP sidecar and operator helper, not a hosted Prompt Switchboard service.
+            If you need a containerized helper instead of running the MCP server directly on the
+            host, read <a href="./docker-integration.html">the Docker integration guide</a>. It
+            packages the repo-owned MCP server and operator helper, not a hosted Prompt Switchboard
+            service.
           </p>
         </section>
         <section class="card">
           <h2>What the kits connect to</h2>
           <p>
             These kits are not just config snippets in a vacuum. They connect to a real
-            builder-facing browser surface, a real workflow panel, and the built-in analyst lane
-            that already ships in the repo.
+            coding-host browser surface, a real workflow panel, and the built-in analyst lane that
+            already ships in the repo.
           </p>
           <div class="stack">
             <img
@@ -387,9 +388,9 @@
             <li>
               Run <code>npm run mcp:operator -- doctor</code> to check the local bridge state.
             </li>
-            <li>Start the sidecar with <code>npm run mcp:operator -- server</code>.</li>
+            <li>Start the MCP server with <code>npm run mcp:operator -- server</code>.</li>
             <li>Load the unpacked extension in the same browser profile.</li>
-            <li>Use a client-specific starter kit only after the local sidecar path is healthy.</li>
+            <li>Use a client-specific starter kit only after the MCP server path is healthy.</li>
             <li>
               Run <code>npm run release:host-kits</code> when you need the current host packets
               packed into local artifacts.

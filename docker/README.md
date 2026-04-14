@@ -5,7 +5,7 @@ Switchboard MCP sidecar and operator helper.
 
 - runtime entrypoint: root `Dockerfile`
 - healthcheck: `docker/healthcheck.mjs`
-- public builder-facing doc: `docs/mcp-docker-sidecar.html`
+- public builder-facing doc: `docs/docker-integration.html`
 
 Truth boundary:
 

@@ -6,7 +6,7 @@
     <title>Prompt Switchboard for Codex</title>
     <meta
       name="description"
-      content="Set up Prompt Switchboard for Codex with a compare-first local MCP flow, public bundle packet, placement hints, and a truthful support boundary."
+      content="Set up Prompt Switchboard for Codex with a compare-first MCP flow, public bundle packet, placement hints, and a truthful support boundary."
     />
     <link
       rel="canonical"
@@ -56,7 +56,7 @@
         <h1>Use Prompt Switchboard with Codex through the strongest current repo-owned host lane.</h1>
         <p>
           Codex is still a config-first MCP surface, not an official Prompt Switchboard marketplace
-          listing. This packet keeps the public install shape honest: local MCP server, compare-first
+          listing. This packet keeps the public install shape honest: repo-owned MCP server, compare-first
           flow, Codex config snippet, and a bundle-ready archive you can pack today.
         </p>
         <div class="cta-row">
@@ -91,7 +91,7 @@
         <h2>Placement and config</h2>
         <p>
           Paste the MCP block into the Codex MCP server section inside your <code>config.toml</code>.
-          Keep the repository path explicit so the sidecar can launch from the right clone.
+          Keep the repository path explicit so the MCP server can launch from the right clone.
         </p>
         <pre>[mcp_servers.prompt_switchboard]
 command = "npm"
@@ -118,7 +118,7 @@ cwd = "/absolute/path/to/multi-ai-sidepanel"</pre>
           <li>Public bundle shipped now: <code>mcp/integration-kits/public-bundles/codex-bundle/</code></li>
           <li>Packable artifact path: run <code>npm run release:host-kits</code></li>
           <li>Official listing status: not claimed, not verified, not published</li>
-          <li>Prompt Switchboard remains local-first, compare-first, and browser-native. It does not become a hosted relay, SDK, or generic automation shell in this packet.</li>
+          <li>Prompt Switchboard remains compare-first and browser-native. It does not become a hosted relay, SDK, or generic automation shell in this packet.</li>
         </ul>
       </section>
     </div>

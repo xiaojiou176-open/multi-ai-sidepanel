@@ -19,7 +19,7 @@
     <meta property="og:title" content="Prompt Switchboard for Codex and Claude Code via MCP" />
     <meta
       property="og:description"
-      content="Prompt Switchboard exposes a local MCP sidecar so Codex and Claude Code can compare answers, retry failed models, export results, run AI Compare Analyst, and inspect the built-in next-step workflow inside browser workflows, while OpenCode and OpenClaw now get public-bundle-ready MCP paths without being overclaimed as verified host lanes."
+      content="Prompt Switchboard exposes a governed MCP integration so Codex and Claude Code can compare answers, retry failed models, export results, run AI Compare Analyst, and inspect the built-in next-step workflow inside browser workflows, while OpenCode and OpenClaw now get public-bundle-ready MCP paths without being overclaimed as verified host lanes."
     />
     <meta
       property="og:image"
@@ -47,7 +47,7 @@
         "@context": "https://schema.org",
         "@type": "TechArticle",
         "headline": "Prompt Switchboard MCP setup for Codex and Claude Code, plus OpenCode / OpenClaw public packets",
-        "description": "Prompt Switchboard exposes a local MCP sidecar so Codex and Claude Code can run compare, retry, export, analysis, and next-step workflow actions without turning the product into generic browser automation, and now ships public-bundle-ready MCP paths for OpenCode and OpenClaw.",
+        "description": "Prompt Switchboard exposes a governed MCP integration so Codex and Claude Code can run compare, retry, export, analysis, and next-step workflow actions without turning the product into generic browser automation, and now ships public-bundle-ready MCP paths for OpenCode and OpenClaw.",
         "author": {
           "@type": "Organization",
           "name": "Prompt Switchboard"
@@ -58,7 +58,7 @@
           "Claude Code",
           "OpenCode",
           "OpenClaw",
-          "Local-first browser extension workflow"
+          "Browser-based AI compare workflow"
         ],
         "url": "https://xiaojiou176-open.github.io/multi-ai-sidepanel/mcp-coding-agents.html",
         "image": "https://xiaojiou176-open.github.io/multi-ai-sidepanel/assets/prompt-switchboard-social-preview.png",
@@ -68,7 +68,7 @@
           "Claude Code",
           "OpenCode",
           "OpenClaw",
-          "local coding agents",
+          "coding-agent workflows",
           "browser-side compare workspace"
         ]
       }
@@ -275,16 +275,16 @@
 
       <main>
         <section class="card">
-          <span class="chip">Builder surface</span>
+          <span class="chip">Host integration</span>
           <h1>
             Use Prompt Switchboard with Codex and Claude Code MCP workflows, plus OpenCode /
             OpenClaw public packets.
           </h1>
           <p>
             Prompt Switchboard is not a generic AI assistant and not a raw browser automation port.
-            It is a local-first compare workspace that exposes a governed MCP surface for compare,
-            retry, export, session, analyst, and next-step workflow actions inside the browser
-            workflow you already trust.
+            It is a compare workspace that exposes a governed MCP surface for compare, retry,
+            export, session, analyst, and next-step workflow actions inside the browser workflow
+            you already trust.
           </p>
           <p>
             Codex and Claude Code are the strongest repo-specific bindings in this release. OpenCode
@@ -303,7 +303,7 @@
 
           <div class="grid">
             <section class="subcard">
-              <h2>What local agents can do here</h2>
+              <h2>What coding hosts can do here</h2>
               <ul>
                 <li>Check whether supported model tabs are ready before a compare run</li>
                 <li>Queue one compare turn from a single prompt</li>
@@ -328,11 +328,11 @@
         </section>
 
         <section class="card">
-          <h2>See the builder surface</h2>
+          <h2>See the host integration surface</h2>
           <p>
             These screenshots are not generic concept art. They are repo-owned proof that the
-            current builder lane is grounded in a real browser-side compare product, a real workflow
-            panel, and a real analyst surface.
+            current host integration story is grounded in a real browser-side compare product, a
+            real workflow panel, and a real analyst surface.
           </p>
           <div class="grid">
             <section class="subcard">
@@ -356,8 +356,8 @@
           <h2>Know the boundary at a glance</h2>
           <p>
             Codex and Claude Code are the official coding products. Prompt Switchboard is the
-            browser-side orchestration layer that helps those workflows stay compare-first and
-            local-first.
+            browser-side orchestration layer that helps those workflows stay compare-first inside
+            the browser.
           </p>
           <table aria-label="Official coding agent surface compared with Prompt Switchboard">
             <thead>
@@ -388,9 +388,9 @@
         </section>
 
         <section class="card">
-          <h2>Current builder-facing contract</h2>
+          <h2>Current host-facing contract</h2>
           <p>
-            Today the builder-facing contract is the local MCP sidecar plus the shared bridge
+            Today the host-facing contract is the repo-owned MCP server plus the shared bridge
             protocol inside this repository. Prompt Switchboard does
             <strong>not</strong> ship a public HTTP API or a general-purpose SDK in this release.
           </p>
@@ -436,7 +436,7 @@
             If you are evaluating the real integration contract, start with
             <code>mcp/server.ts</code> for the public tool and resource surface, then read
             <code>src/bridge/protocol.ts</code> for the shared command and payload contract that the
-            extension and sidecar both use.
+            extension and MCP server both use.
           </p>
           <p>
             The resource layer now tells the same truth as the docs: use
@@ -465,10 +465,10 @@
             starter skill templates for all four documented hosts.
           </p>
           <p>
-            If you want a containerized builder lane, use
-            <a href="./mcp-docker-sidecar.html">the Docker sidecar guide</a>. That Docker surface
-            packages the local sidecar and operator helper only. It does not turn Prompt Switchboard
-            into a hosted compare service or a public HTTP API.
+            If you want a containerized host setup, use
+            <a href="./docker-integration.html">the Docker integration guide</a>. That Docker surface
+            packages the repo-owned MCP server and operator helper only. It does not turn Prompt
+            Switchboard into a hosted compare service or a public HTTP API.
           </p>
           <p>
             Use <a href="./public-distribution-matrix.html">the public distribution matrix</a>
@@ -478,7 +478,7 @@
           <p>
             If the product lane itself is not proven yet, use
             <a href="./first-compare-guide.html">the first compare guide</a>
-            before you spend time on the builder lane.
+            before you spend time wiring coding hosts.
           </p>
           <p>
             A healthy agent loop is simple: call <code>prompt_switchboard.bridge_status</code>, then
@@ -493,7 +493,7 @@
             external step result.
           </p>
           <p>
-            The workflow tools stay product-bound. They stage or inspect the built-in local compare
+            The workflow tools stay product-bound. They stage or inspect the built-in compare
             follow-up path; they do <strong>not</strong> turn Prompt Switchboard into a DAG engine,
             a hosted orchestrator, or a generic browser automation plane.
           </p>
@@ -526,7 +526,7 @@
             </thead>
             <tbody>
               <tr>
-                <td>Local MCP sidecar + product actions</td>
+                <td>Repo-owned MCP server + product actions</td>
                 <td>Supported now</td>
               </tr>
               <tr>
@@ -605,7 +605,7 @@
             <li>
               Run <code>npm run mcp:operator -- doctor</code> to inspect the local bridge state.
             </li>
-            <li>Start the sidecar with <code>npm run mcp:operator -- server</code>.</li>
+            <li>Start the MCP server with <code>npm run mcp:operator -- server</code>.</li>
             <li>
               Use <code>npm run mcp:operator -- smoke</code> to prove the tool and resource surface,
               including the workflow tools.
@@ -676,8 +676,8 @@
           <p>
             The repo-specific rule of thumb is simple: Codex uses the official
             <code>config.toml</code> flow, Claude Code uses the official <code>.mcp.json</code> /
-            <code>claude mcp add</code> flow, and Prompt Switchboard stays the local MCP server plus
-            browser-side product surface.
+            <code>claude mcp add</code> flow, and Prompt Switchboard stays the repo-owned MCP
+            server plus browser-side product surface.
           </p>
           <p>
             For the exact trust boundary and transport story, keep the
